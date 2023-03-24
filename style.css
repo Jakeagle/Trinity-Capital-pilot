@@ -7,6 +7,11 @@ body {
   height: 100vh;
 }
 
+p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.3rem;
+}
+
 hr {
   width: 120%;
   margin: 1rem 0 1rem 0;
@@ -16,8 +21,12 @@ hr {
   font-family: 'Montserrat', sans-serif;
 }
 
+.app {
+  transition: all 1s;
+}
 .formDiv {
   text-align: center;
+  transition: all 1s;
 }
 
 .image-div {
@@ -54,6 +63,22 @@ hr {
   width: 35rem;
 }
 
+.banking {
+  background-image: linear-gradient(to top left, #ae8626, #f7ef8a);
+  margin: 1.5rem 0 1.5rem 0;
+}
+
+.bankingTitle {
+  text-align: center;
+}
+
+.bankingText {
+  text-align: center;
+}
+.bankingImg {
+  font-size: 2.7rem;
+}
+
 .balance {
   font-family: 'Montserrat', sans-serif;
   grid-column: 1 / span 2;
@@ -87,11 +112,10 @@ hr {
 }
 
 .accountsTitle {
-  font-size: 1rem;
+  font-size: 65%;
 }
 
 .lastUpdated {
-  font-size: 1rem;
   text-align: right;
 }
 
@@ -183,7 +207,7 @@ hr {
 }
 
 .operation--donate {
-  background-image: linear-gradient(to top left, #ffb003, #ffcb03);
+  background-image: linear-gradient(to top left, #ae8626, #f7ef8a);
 }
 
 .form {
