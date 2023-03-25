@@ -58,25 +58,25 @@
 
 <div class="signOnForm">
   <div class="row formDiv">
-    <div class="col usernameBox">
+    <div class="col-lg-4 col-md-4 col-sm-6 usernameBox">
       <input
         type="text"
         placeholder="user"
-        class="login__input login__input--user"
+        class="login__input login__input--user signOnGroup"
       />
     </div>
 
-    <div class="col pinBox">
+    <div class="col-lg-4 col-md-4 col-sm-6 pinBox">
       <input
         type="text"
         placeholder="PIN"
         maxlength="4"
-        class="login__input login__input--pin"
+        class="login__input login__input--pin signOnGroup"
       />
     </div>
 
-    <div class="col button">
-      <button class="login__btn">&rarr;</button>
+    <div class="col-lg-4 col-md-4 col-sm-6 button">
+      <button class="login__btn signOnGroup">&rarr;</button>
     </div>
   </div>
 </div>
@@ -107,18 +107,19 @@
       <p class="balance__label">Current balance for: #4872</p>
       <p class="balance__date">As of <span class="date"></span></p>
     </div>
-    <p class="balance__value"></p>
+    <p class="balance__value">13000</p>
   </div>
 
   <!--Main Content-->
   <div class="row">
     <!--Acounts Section-->
-    <div class="col-4 accounts">
-      <div class="row accountsRow">
+    <div class="col-lg-4 col-md-4 col-sm-12 accounts">
+      <div class="row accountsTitle">
         <h3 class="col accountsTitle headings">Accounts</h3>
         <h3 class="col accountsTitle headings">Number</h3>
-        <h3 class="col accountsTitle lastUpdated headings heading-R">update</h3>
+        <h3 class="col accountsTitle lastUpdated headings heading-R">Last Updated</h3>
       </div>
+      <div class="accountContainer">
       <div class="row accountsRow">
         <div class="col accountType">Checking</div>
         <div class="col accountNumber">4872</div>
@@ -133,13 +134,13 @@
 
       <div class="row accountsRow">
         <div class="col accountType">Donations</div>
-
         <div class="col accountNumber">6712</div>
         <div class="col updateDate">12/25/22</div>
       </div>
     </div>
+    </div>
     <!--transactions-->
-    <div class="col-8 transactions">
+    <div class="col-lg-8 col-md-8 col-sm-12 transactions">
       <h3 class="transactionsTitle headings">Transactions</h3>
       <div class="transactions__row">
         <div class="transactions__type transactions__type--deposit">
