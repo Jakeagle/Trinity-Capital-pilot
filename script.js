@@ -6,7 +6,7 @@ const jfAccount1 = {
   accountHolder: 'Jakob Ferguson',
   currency: 'USD',
   locale: 'en-US',
-  transactions: [550, 1200, -200, 25, 25, 155],
+  transactions: [550, 1200, -200, 25, 25, 155, 1200, -300],
   accountType: 'Checking',
   accountNumber: '4585120945465872',
   movementsDates: [
@@ -25,7 +25,7 @@ const jfAccount2 = {
   accountHolder: 'Jakob Ferguson',
   currency: 'USD',
   locale: 'en-US',
-  transactions: [550, 1200, 200, 25, 25, 155],
+  transactions: [700, 100, 2100, 25, 25, 155, -300, 500],
   accountType: 'Savings',
   accountNumber: '3112153745644899',
   movementsDates: [
@@ -36,7 +36,7 @@ const jfAccount2 = {
     '2020-05-08T14:11:59.604Z',
     '2020-07-26T17:01:17.194Z',
     '2020-07-28T23:36:17.929Z',
-    '2020-08-01T10:51:36.790Z',
+    '2023-08-12T10:51:36.790Z',
   ],
 };
 
@@ -44,7 +44,7 @@ const djAccount1 = {
   accountHolder: 'Darlene Jones',
   currency: 'USD',
   locale: 'en-US',
-  transactions: [450, 1900, -100, 55, 5, 105],
+  transactions: [450, 1900, -100, 55, 5, 105, 1000, -500],
   accountType: 'Checking',
   accountNumber: '1247885477086903',
 
@@ -69,7 +69,7 @@ const profile1 = {
     {
       ...jfAccount1,
       type: 'Checking',
-      accountNumber: '4585120945465872',
+      accountNumberA: '4585120945465872',
       routingNumber: 141257185,
       currency: 'USD',
       locale: 'en-US',
@@ -79,7 +79,7 @@ const profile1 = {
     {
       ...jfAccount2,
       type: 'Savings',
-      accountNumber: '3112153745644899',
+      accountNumberA: '3112153745644899',
       routingNumber: 141257185,
       currency: 'USD',
       locale: 'en-US',
@@ -132,6 +132,11 @@ const formDiv = document.getElementById('.formDiv');
 const mainApp = document.querySelector('.app');
 const lastUpdated = document.querySelector('.updateDate');
 const transActionsDate = document.querySelector('.transactions__date');
+let currentTime;
+
+function updateTime() {
+  currentTime = new Date();
+}
 
 mainApp.style.opacity = 0;
 // Listen for form submission
@@ -152,6 +157,10 @@ loginButton.addEventListener('click', function (event) {
       currentProfile.memberName.split(' ')[0]
     }`;
 
+    balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
+      currentProfile.locale,
+      options
+    ).format(now)}`;
     // Hide login form and display main app
     const formDiv = document.querySelector('.formDiv');
     const mainApp = document.querySelector('.app');
@@ -169,7 +178,6 @@ loginButton.addEventListener('click', function (event) {
         break;
       }
     }
-
     // Update the UI with the first account's information
     updateUI(currentAccount);
   } else {
@@ -241,7 +249,29 @@ const displayAccounts = function () {
   });
 };
 
-//display balance and transactions
+const accNumSwitch = document.querySelector('.form__input--user--switch');
+const accPinSwitch = document.querySelector('.form__input--pin--switch');
+const accBtnSwitch = document.querySelector('.form__btn--switch');
+let listedAccounts = '';
+
+accBtnSwitch.addEventListener('click', function (e) {
+  e.preventDefault();
+  let targetAccount = accNumSwitch.value;
+  let accountToSwitch = currentProfile.accounts.find(
+    account => account.accountNumber.slice(-4) === targetAccount
+  );
+
+  if (accountToSwitch) {
+    balanceLabel.textContent = `Current balance for: #${accountToSwitch.accountNumber.slice(
+      -4
+    )}`;
+    updateUI(accountToSwitch);
+    balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
+      currentProfile.locale,
+      options
+    ).format(now)}`;
+  }
+});
 
 const transactionContainer = document.querySelector('.transactions');
 
@@ -250,7 +280,6 @@ const formatMovementDate = function (date, locale) {
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
 
   const daysPassed = calcDaysPassed(new Date(), date);
-  console.log(daysPassed);
 
   if (daysPassed === 0) return 'Today';
   if (daysPassed === 1) return 'Yesterday';
@@ -277,6 +306,16 @@ function formatCur(value, currency, locale) {
   }).format(value);
 }
 
+const balanceDate = document.querySelector(`.balance__date`);
+const now = new Date();
+const options = {
+  hour: 'numeric',
+  minute: 'numeric',
+  day: 'numeric',
+  month: 'numeric',
+  year: 'numeric',
+  // weekday: 'long',
+};
 const displayBalance = function (acc) {
   acc.balance = acc.transactions.reduce((acc, mov) => acc + mov, 0);
   balanceValue.textContent = formatCur(acc.balance, acc.locale, acc.currency);
