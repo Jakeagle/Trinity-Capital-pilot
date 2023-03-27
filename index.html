@@ -24,189 +24,230 @@
       crossorigin="anonymous"
     ></script>
 
-   <!-----<script>
+    <!-----<script>
       alert(
         'THIS IS A MARKUP TEST. This website has no functionality and is only live to test the responsiveness, and to allow others to see what the site looks like'
       );
-    </script> --> 
-   
-    <script src="https://kit.fontawesome.com/60a3862749.js" crossorigin="anonymous"></script>
+    </script> -->
+
+    <script
+      src="https://kit.fontawesome.com/60a3862749.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
+    <!----Customer login section----->
 
-
-<!----Customer login section----->
-
-<div class="header">
-  <div class="row headerRow">
-    <div class="col title-div">
-      <h1 class="title1">Trinity</h1>
-    </div>
-    <div class="col image-div">
-      <img src="png-transparent-black-artwork-il.png" alt="Logo" class="logo" />
-    </div>
-    <div class="col title-div-2">
-      <h1 class="title2">Capital</h1>
-    </div>
-  </div>
-</div>
-
-<hr />
-<div class="signOnprompt">
-  <h2 class="signOntext headings">Sign in to view Accounts</h2>
-</div>
-
-<div class="signOnForm">
-  <div class="row formDiv">
-    <div class="col-lg-4 col-md-4 col-sm-6 usernameBox">
-      <input
-        type="text"
-        placeholder="user"
-        class="login__input login__input--user signOnGroup"
-      />
-    </div>
-
-    <div class="col-lg-4 col-md-4 col-sm-6 pinBox">
-      <input
-        type="text"
-        placeholder="PIN"
-        maxlength="4"
-        class="login__input login__input--pin signOnGroup"
-      />
-    </div>
-
-    <div class="col-lg-4 col-md-4 col-sm-6 button">
-      <button class="login__btn signOnGroup">&rarr;</button>
-    </div>
-  </div>
-</div>
-
-<hr />
-
-<div class="app">
-
-  <!--Banking tools-->
-  <div class="banking">
-    <h2 class="headings bankingTitle">Banking</h2>
-
-    <div class="row">
-      <div class="col transferBox"><p class="bankingText"><i class="fa-solid fa-money-bill-transfer bankingImg"></i></p><p class="transfer bankingText">Transfer</p> </div>
-      <div class="col payBills"><p class="bankingText"><i class="fa-solid fa-file-invoice-dollar bankingImg"></i></p><p class="payBillsText bankingText">Pay Bills</p></div>
-      <div class="col deposit"><p class="bankingText"><i class="fa-solid fa-money-check bankingImg"></i></p><p class="payBillsText bankingText">Deposit</p> </div>
-      <div class="col zelle"><p class="bankingText"><i class="fa-solid fa-dollar-sign bankingImg"></i></p><p class="payBillsText bankingText">Zelle</p> </div>
-    </div>
-  </div>
-
-
-
-
-
-  <!--Balance Div-->
-  <div class="balance">
-    <div>
-      <p class="balance__label">Current balance for: #4872</p>
-      <p class="balance__date">As of <span class="date"></span></p>
-    </div>
-    <p class="balance__value">13000</p>
-  </div>
-
-  <!--Main Content-->
-  <div class="row">
-    <!--Acounts Section-->
-    <div class="col-lg-4 col-md-4 col-sm-12 accounts">
-      <div class="row accountsTitle">
-        <h3 class="col accountsTitle headings">Accounts</h3>
-        <h3 class="col accountsTitle headings">Number</h3>
-        <h3 class="col accountsTitle lastUpdated headings heading-R">Last Updated</h3>
-      </div>
-      <div class="accountContainer">
-      <div class="row accountsRow">
-        <div class="col accountType">Checking</div>
-        <div class="col accountNumber">4872</div>
-        <div class="col updateDate">3/21/23</div>
-      </div>
-
-      <div class="row accountsRow">
-        <div class="col accountType">Savings</div>
-        <div class="col accountNumber">5327</div>
-        <div class="col updateDate">3/02/23</div>
-      </div>
-
-      <div class="row accountsRow">
-        <div class="col accountType">Donations</div>
-        <div class="col accountNumber">6712</div>
-        <div class="col updateDate">12/25/22</div>
-      </div>
-    </div>
-    </div>
-    <!--transactions-->
-    <div class="col-lg-8 col-md-8 col-sm-12 transactions">
-      <h3 class="transactionsTitle headings">Transactions</h3>
-      <div class="transactions__row">
-        <div class="transactions__type transactions__type--deposit">
-          2 deposit
+    <div class="header">
+      <div class="row headerRow">
+        <div class="col title-div">
+          <h1 class="title1">Trinity</h1>
         </div>
-        <div class="transactions__date">3 days ago</div>
-        <div class="transactions__value">$600</div>
-      </div>
-      <div class="transactions__row">
-        <div class="transactions__type transactions__type--withdrawal">
-          1 withdrawal
+        <div class="col image-div">
+          <img
+            src="png-transparent-black-artwork-il.png"
+            alt="Logo"
+            class="logo"
+          />
         </div>
-        <div class="transactions__date">24/01/2037</div>
-        <div class="transactions__value">-$100</div>
+        <div class="col title-div-2">
+          <h1 class="title2">Capital</h1>
+        </div>
       </div>
     </div>
-  </div>
-  <hr />
-  <h2 class="toolsTitle headings">Tools</h2>
-  <!--Account tools-->
-  <div class="row tools">
-   
+
+    <hr />
+    <div class="signOnprompt">
+      <h2 class="signOntext headings">Sign in to view Accounts</h2>
     </div>
-    <div class="row">
-      <!--Loan Div-->
-    <div class="col operation operation--loan">
-      <h2>Request loan</h2>
-      <form class="form form--loan">
-        <input type="number" class="form__input form__input--loan-amount" />
-        <button class="form__btn form__btn--loan">&rarr;</button>
-        <label class="form__label form__label--loan">Amount</label>
-      </form>
+
+    <div class="signOnForm">
+      <div class="row formDiv">
+        <div class="col-lg-4 col-md-4 col-sm-6 usernameBox">
+          <input
+            type="text"
+            placeholder="user"
+            class="login__input login__input--user signOnGroup"
+          />
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-6 pinBox">
+          <input
+            type="text"
+            placeholder="PIN"
+            maxlength="4"
+            class="login__input login__input--pin signOnGroup"
+          />
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-6 button">
+          <button class="login__btn signOnGroup">&rarr;</button>
+        </div>
+      </div>
     </div>
-    <!--Close Account-->
-    <div class="col operation operation--close">
-      <h2>Close account</h2>
-      <form class="form form--close">
-        <input type="text" class="form__input form__input--user" />
-        <input
-          type="password"
-          maxlength="6"
-          class="form__input form__input--pin"
-        />
-        <button class="form__btn form__btn--close">&rarr;</button>
-        <label class="form__label">Confirm user</label>
-        <label class="form__label">Confirm PIN</label>
-      </form>
+
+    <hr />
+
+    <div class="app">
+      <!--Banking tools-->
+      <div class="banking">
+        <h2 class="headings bankingTitle">Banking</h2>
+
+        <div class="row">
+          <div class="col transferBox">
+            <p class="bankingText">
+              <i class="fa-solid fa-money-bill-transfer bankingImg"></i>
+            </p>
+            <p class="transfer bankingText">Transfer</p>
+          </div>
+          <div class="col payBills">
+            <p class="bankingText">
+              <i class="fa-solid fa-file-invoice-dollar bankingImg"></i>
+            </p>
+            <p class="payBillsText bankingText">Pay Bills</p>
+          </div>
+          <div class="col deposit">
+            <p class="bankingText">
+              <i class="fa-solid fa-money-check bankingImg"></i>
+            </p>
+            <p class="payBillsText bankingText">Deposit</p>
+          </div>
+          <div class="col zelle">
+            <p class="bankingText">
+              <i class="fa-solid fa-dollar-sign bankingImg"></i>
+            </p>
+            <p class="payBillsText bankingText">Zelle</p>
+          </div>
+        </div>
+      </div>
+
+      <!--Balance Div-->
+      <div class="balance">
+        <div>
+          <p class="balance__label">Current balance for: #4872</p>
+          <p class="balance__date">As of <span class="date"></span></p>
+        </div>
+        <p class="balance__value">13000</p>
+      </div>
+
+      <!--Main Content-->
+      <div class="row">
+        <!--Acounts Section-->
+        <div class="col-lg-4 col-md-4 col-sm-12 accounts">
+          <div class="row accountsTitle">
+            <h3 class="col accountsTitle headings">Accounts</h3>
+            <h3 class="col accountsTitle headings">Number</h3>
+            <h3 class="col accountsTitle lastUpdated headings heading-R">
+              Last Updated
+            </h3>
+          </div>
+          <div class="accountContainer">
+            <div class="row accountsRow">
+              <div class="col accountType">Checking</div>
+              <div class="col accountNumber">4872</div>
+              <div class="col updateDate">3/21/23</div>
+            </div>
+
+            <div class="row accountsRow">
+              <div class="col accountType">Savings</div>
+              <div class="col accountNumber">5327</div>
+              <div class="col updateDate">3/02/23</div>
+            </div>
+
+            <div class="row accountsRow">
+              <div class="col accountType">Donations</div>
+              <div class="col accountNumber">6712</div>
+              <div class="col updateDate">12/25/22</div>
+            </div>
+          </div>
+
+          <div class="operation operation--switch">
+            <h2>Switch account</h2>
+            <form class="form form--close">
+              <input
+                type="text"
+                class="form__input form__input--user--switch"
+              />
+              <input
+                type="password"
+                maxlength="6"
+                class="form__input form__input--pin--switch"
+              />
+              <button class="form__btn form__btn--switch">&rarr;</button>
+              <label class="form__label">Account Number</label>
+              <label class="form__label">Confirm PIN</label>
+            </form>
+          </div>
+        </div>
+        <!--transactions-->
+        <div class="col-lg-8 col-md-8 col-sm-12 transactions">
+          <h3 class="transactionsTitle headings">Transactions</h3>
+          <div class="transactions__row">
+            <div class="transactions__type transactions__type--deposit">
+              2 deposit
+            </div>
+            <div class="transactions__date">3 days ago</div>
+            <div class="transactions__value">$600</div>
+          </div>
+          <div class="transactions__row">
+            <div class="transactions__type transactions__type--withdrawal">
+              1 withdrawal
+            </div>
+            <div class="transactions__date">24/01/2037</div>
+            <div class="transactions__value">-$100</div>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <h2 class="toolsTitle headings">Tools</h2>
+      <!--Account tools-->
+      <div class="row tools">
+        <div class="row">
+          <!--Loan Div-->
+          <div class="col operation operation--loan">
+            <h2>Request loan</h2>
+            <form class="form form--loan">
+              <input
+                type="number"
+                class="form__input form__input--loan-amount"
+              />
+              <button class="form__btn form__btn--loan">&rarr;</button>
+              <label class="form__label form__label--loan">Amount</label>
+            </form>
+          </div>
+          <!--Close Account-->
+          <div class="col operation operation--close">
+            <h2>Close account</h2>
+            <form class="form form--close">
+              <input type="text" class="form__input form__input--user" />
+              <input
+                type="password"
+                maxlength="6"
+                class="form__input form__input--pin"
+              />
+              <button class="form__btn form__btn--close">&rarr;</button>
+              <label class="form__label">Confirm user</label>
+              <label class="form__label">Confirm PIN</label>
+            </form>
+          </div>
+          <!--Donate-->
+          <div class="col operation operation--donate">
+            <h2>Donate</h2>
+            <form class="form donateForm">
+              <input type="text" class="form__input form__input--user" />
+              <input
+                type="password"
+                maxlength="6"
+                class="form__input form__input--pin"
+              />
+              <button class="form__btn form__btn--close">&rarr;</button>
+              <label class="form__label">Amount</label>
+              <label class="form__label">Confirm PIN</label>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    <!--Donate-->
-    <div class="col operation operation--donate">
-      <h2>Donate</h2>
-      <form class="form donateForm">
-        <input type="text" class="form__input form__input--user" />
-        <input
-          type="password"
-          maxlength="6"
-          class="form__input form__input--pin"
-        />
-        <button class="form__btn form__btn--close">&rarr;</button>
-        <label class="form__label">Amount</label>
-        <label class="form__label">Confirm PIN</label>
-      </form>
-     </div>
-    </div>
-   </div>
- </div>
-<script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
