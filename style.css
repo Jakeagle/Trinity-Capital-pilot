@@ -21,6 +21,10 @@ hr {
   font-family: 'Montserrat', sans-serif;
 }
 
+.heading-R {
+  text-align: right;
+}
+
 .app {
   transition: all 1s;
 }
@@ -127,6 +131,10 @@ hr {
   text-align: right;
 }
 
+.switchButton {
+  text-align: right;
+}
+
 .accountsRow {
   font-family: 'Montserrat', sans-serif;
 
@@ -214,6 +222,11 @@ hr {
   background-image: linear-gradient(to top left, #ae8626, #f7ef8a);
 }
 
+.operation--switch {
+  background-image: linear-gradient(to top left, #ae8626, #f7ef8a);
+  padding: 1rem 1rem;
+}
+
 .form {
   display: grid;
   grid-template-columns: 2.5fr 2.5fr 1fr;
@@ -229,6 +242,7 @@ hr {
 .form.form--loan {
   grid-template-columns: 2.5fr 1fr 2.5fr;
 }
+
 .form__label--loan {
   grid-row: 2;
 }
@@ -291,4 +305,3 @@ hr {
 .header {
   text-align: center;
 }
-
