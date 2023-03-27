@@ -36,7 +36,7 @@ const jfAccount2 = {
     '2020-05-08T14:11:59.604Z',
     '2020-07-26T17:01:17.194Z',
     '2020-07-28T23:36:17.929Z',
-    '2023-08-12T10:51:36.790Z',
+    '2020-08-12T10:51:36.790Z',
   ],
 };
 
@@ -132,11 +132,16 @@ const formDiv = document.getElementById('.formDiv');
 const mainApp = document.querySelector('.app');
 const lastUpdated = document.querySelector('.updateDate');
 const transActionsDate = document.querySelector('.transactions__date');
+
 let currentTime;
 
-function updateTime() {
+const updateTime = function () {
   currentTime = new Date();
-}
+};
+
+const requestLoanbtn = document.querySelector('.form__btn--loan');
+const loanAmount = document.querySelector('.form__input--loan-amount');
+const accNumHTML = document.querySelector('.accountNumber');
 
 mainApp.style.opacity = 0;
 // Listen for form submission
@@ -157,10 +162,6 @@ loginButton.addEventListener('click', function (event) {
       currentProfile.memberName.split(' ')[0]
     }`;
 
-    balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
-      currentProfile.locale,
-      options
-    ).format(now)}`;
     // Hide login form and display main app
     const formDiv = document.querySelector('.formDiv');
     const mainApp = document.querySelector('.app');
@@ -175,6 +176,12 @@ loginButton.addEventListener('click', function (event) {
         balanceLabel.textContent = `Current balance for: #${account.accountNumber.slice(
           -4
         )}`;
+        updateTime();
+        balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
+          currentProfile.locale,
+          options
+        ).format(currentTime)}`;
+
         break;
       }
     }
@@ -184,6 +191,7 @@ loginButton.addEventListener('click', function (event) {
     alert('Invalid PIN. Please try again.');
   }
 });
+
 const balanceValue = document.querySelector('.balance__value');
 const balanceLabel = document.querySelector('.balance__label');
 
@@ -265,11 +273,57 @@ accBtnSwitch.addEventListener('click', function (e) {
     balanceLabel.textContent = `Current balance for: #${accountToSwitch.accountNumber.slice(
       -4
     )}`;
+    currentAccount = accountToSwitch;
+    accNumSwitch.value = '';
+    accPinSwitch.value = '';
     updateUI(accountToSwitch);
+    updateTime();
     balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
       currentProfile.locale,
       options
-    ).format(now)}`;
+    ).format(currentTime)}`;
+
+    const loanBox = document.querySelector('.operation--loan');
+    if (currentAccount.accountType === 'Savings') {
+      loanBox.style.display = 'none';
+      console.log('savings');
+      console.log(currentAccount);
+    } else if (currentAccount.accountType === 'Checking') {
+      loanBox.style.display = 'inline';
+      console.log('checking');
+    }
+
+    console.log(currentTime);
+  }
+});
+
+requestLoanbtn.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Math.floor(loanAmount.value);
+
+  for (const account of currentProfile.accounts) {
+    if (account.type === 'Checking') {
+      currentAccount = account;
+      if (
+        amount > 0 &&
+        currentAccount.transactions.some(mov => mov >= amount * 0.1)
+      ) {
+        setTimeout(function () {
+          // Add movement
+          currentAccount.transactions.push(amount);
+
+          // Add loan date
+          currentAccount.movementsDates.push(new Date().toISOString());
+
+          // Update UI
+          updateUI(currentAccount);
+
+          // Reset timer
+        });
+      }
+      loanAmount.value = '';
+    }
   }
 });
 
@@ -353,6 +407,7 @@ const displayTransactions = function (acc, sort = false) {
 
 const updateUI = function (acc) {
   // Display movements
+
   displayTransactions(acc);
 
   // Display balance
