@@ -1,5 +1,5 @@
-import { displayBalance } from './app.js';
-import { displayTransactions } from './app.js';
+import { displayBalance } from './script.js';
+import { displayTransactions } from './script.js';
 
 ('use strict');
 const jfAccount1 = {
