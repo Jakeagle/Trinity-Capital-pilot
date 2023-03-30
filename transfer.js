@@ -1,4 +1,7 @@
-'use strict';
+import { displayBalance } from './app.js';
+import { displayTransactions } from './app.js';
+
+('use strict');
 const jfAccount1 = {
   accountHolder: 'Jakob Ferguson',
   currency: 'USD',
@@ -109,24 +112,26 @@ let accountFrom = '';
 let accountTo = '';
 let currentProfile;
 let currentAccount;
+const signOnSection = document.querySelector('.signOnSection');
 
 const accounts = [jfAccount1, jfAccount2, djAccount1];
 const profiles = [profile1, profile2];
 const transferPinBtn = document.querySelector('.login__btn--transfer');
+
 transferPinBtn.addEventListener('click', function () {
   const transferPinInput = document.querySelector(
     '.login__input--pin--transfer'
   );
   const transferPin = parseInt(transferPinInput.value);
   currentProfile = profiles.find(profile => profile.pin === transferPin);
-  console.log(currentProfile);
+
   for (let i = 0; i < currentProfile.accounts.length; i++) {
     const option = document.createElement('option');
     option.value = i;
     option.textContent = `${
       currentProfile.accounts[i].accountType
     }----------${currentProfile.accounts[i].accountNumberA.slice(-4)}`;
-    console.log(accountListFrom);
+
     accountListFrom.appendChild(option);
   }
   for (let i = 0; i < currentProfile.accounts.length; i++) {
@@ -135,7 +140,73 @@ transferPinBtn.addEventListener('click', function () {
     option.textContent = `${
       currentProfile.accounts[i].accountType
     }----------${currentProfile.accounts[i].accountNumberA.slice(-4)}`;
-    console.log(accountListFrom);
+
     accountListTo.appendChild(option);
+    signOnSection.style.display = 'none';
   }
 });
+
+const selectAccountFrom = document.querySelector('.accountsListFrom');
+const selectAccountTo = document.querySelector('.accountsListTo');
+let selectedAccountNumberFrom = '';
+let selectedAccountNumberTo = '';
+
+selectAccountFrom.addEventListener('change', function (event) {
+  // Get the selected option element
+  const selectedOption = event.target.selectedOptions[0];
+  // Get the account number from the value property of the selected option
+  selectedAccountNumberFrom = selectedOption.value;
+  console.log(selectedAccountNumberFrom);
+  return selectedAccountNumberFrom;
+});
+
+selectAccountTo.addEventListener('change', function (event) {
+  // Get the selected option element
+  const selectedOption = event.target.selectedOptions[0];
+  // Get the account number from the value property of the selected option
+  selectedAccountNumberTo = selectedOption.value;
+  console.log(selectedAccountNumberTo);
+  return selectedAccountNumberTo;
+});
+
+transferButton.addEventListener(
+  'click',
+  function (accountListFrom, accountListTo) {
+    let amount = document.querySelector('.form__input--amount--transfer');
+    // Get the account numbers from the select tags
+    const fromAccountNumber = accountListFrom.value;
+    const toAccountNumber = accountListTo.value;
+
+    // Find the accounts in the accounts array
+    const fromAccount = accounts.find(
+      account => account.accountNumber === fromAccountNumber
+    );
+    const toAccount = accounts.find(
+      account => account.accountNumber === toAccountNumber
+    );
+
+    // Get the transfer amount
+    const transferAmount = parseFloat(amount.value);
+
+    // Subtract the transfer amount from the balance of the from account
+    fromAccount.balance -= transferAmount;
+
+    // Add the transfer amount to the balance of the to account
+    toAccount.balance += transferAmount;
+
+    // Display the updated balances
+    displayBalance(fromAccount);
+    displayBalance(toAccount);
+
+    // Add the transaction to the transaction arrays of both accounts
+    const now = new Date();
+    fromAccount.transactions.push(-transferAmount);
+    fromAccount.movementsDates.push(now.toISOString());
+    toAccount.transactions.push(transferAmount);
+    toAccount.movementsDates.push(now.toISOString());
+
+    // Display the updated transactions
+    displayTransactions(fromAccount);
+    displayTransactions(toAccount);
+  }
+);
