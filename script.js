@@ -1,4 +1,4 @@
-'use strict';
+('use strict');
 
 //example account
 
@@ -121,7 +121,6 @@ createUsername(profiles);
 //SignOn
 
 let currentAccount, timer;
-let currentProfile;
 
 const signOnForm = document.getElementById('signOnForm');
 const loginUser = document.querySelector(`.login__input--user`);
@@ -133,6 +132,7 @@ const mainApp = document.querySelector('.app');
 const lastUpdated = document.querySelector('.updateDate');
 const transActionsDate = document.querySelector('.transactions__date');
 
+let currentProfile;
 let currentTime;
 
 const updateTime = function () {
@@ -145,52 +145,57 @@ const accNumHTML = document.querySelector('.accountNumber');
 
 mainApp.style.opacity = 0;
 // Listen for form submission
-loginButton.addEventListener('click', function (event) {
-  event.preventDefault();
 
-  // Get the value of the input field
-  const loginPIN = document.querySelector('.login__input--pin');
-  const pin = parseInt(loginPIN.value);
+if (loginButton) {
+  loginButton.addEventListener('click', function (event) {
+    event.preventDefault();
 
-  // Find the profile with matching PIN
-  currentProfile = profiles.find(profile => profile.pin === pin);
+    // Get the value of the input field
+    const loginPIN = document.querySelector('.login__input--pin');
+    const pin = parseInt(loginPIN.value);
 
-  if (currentProfile) {
-    // Display welcome message
-    const signOnText = document.querySelector('.signOntext');
-    signOnText.textContent = `Welcome Back ${
-      currentProfile.memberName.split(' ')[0]
-    }`;
+    // Find the profile with matching PIN
+    currentProfile = profiles.find(profile => profile.pin === pin);
 
-    // Hide login form and display main app
-    const formDiv = document.querySelector('.formDiv');
-    const mainApp = document.querySelector('.app');
-    formDiv.style.display = 'none';
-    mainApp.style.opacity = 100;
+    if (currentProfile) {
+      // Display welcome message
+      const signOnText = document.querySelector('.signOntext');
+      signOnText.textContent = `Welcome Back ${
+        currentProfile.memberName.split(' ')[0]
+      }`;
 
-    // Loop through the user's accounts and display the first account's information
-    let currentAccount;
-    for (const account of currentProfile.accounts) {
-      if (account.type === 'Checking') {
-        currentAccount = account;
-        balanceLabel.textContent = `Current balance for: #${account.accountNumber.slice(
-          -4
-        )}`;
-        updateTime();
-        balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
-          currentProfile.locale,
-          options
-        ).format(currentTime)}`;
+      // Hide login form and display main app
+      const formDiv = document.querySelector('.formDiv');
+      const mainApp = document.querySelector('.app');
+      formDiv.style.display = 'none';
+      mainApp.style.opacity = 100;
 
-        break;
+      // Loop through the user's accounts and display the first account's information
+      let currentAccount;
+      for (const account of currentProfile.accounts) {
+        if (account.type === 'Checking') {
+          currentAccount = account;
+          balanceLabel.textContent = `Current balance for: #${account.accountNumber.slice(
+            -4
+          )}`;
+          updateTime();
+
+          balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
+            currentProfile.locale,
+            options
+          ).format(currentTime)}`;
+
+          break;
+        }
       }
+      // Update the UI with the first account's information
+      updateUI(currentAccount);
+    } else {
+      alert('Invalid PIN. Please try again.');
     }
-    // Update the UI with the first account's information
-    updateUI(currentAccount);
-  } else {
-    alert('Invalid PIN. Please try again.');
-  }
-});
+  });
+}
+const transferPageSwitch = document.querySelector('.transferBox');
 
 const balanceValue = document.querySelector('.balance__value');
 const balanceLabel = document.querySelector('.balance__label');
@@ -262,70 +267,100 @@ const accPinSwitch = document.querySelector('.form__input--pin--switch');
 const accBtnSwitch = document.querySelector('.form__btn--switch');
 let listedAccounts = '';
 
-accBtnSwitch.addEventListener('click', function (e) {
-  e.preventDefault();
-  let targetAccount = accNumSwitch.value;
-  let accountToSwitch = currentProfile.accounts.find(
-    account => account.accountNumber.slice(-4) === targetAccount
-  );
+if (accBtnSwitch) {
+  accBtnSwitch.addEventListener('click', function (e) {
+    e.preventDefault();
+    let targetAccount = accNumSwitch.value;
+    let accountToSwitch = currentProfile.accounts.find(
+      account => account.accountNumber.slice(-4) === targetAccount
+    );
 
-  if (accountToSwitch) {
-    balanceLabel.textContent = `Current balance for: #${accountToSwitch.accountNumber.slice(
-      -4
-    )}`;
-    currentAccount = accountToSwitch;
-    accNumSwitch.value = '';
-    accPinSwitch.value = '';
-    updateUI(accountToSwitch);
-    updateTime();
-    balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
-      currentProfile.locale,
-      options
-    ).format(currentTime)}`;
+    if (accountToSwitch) {
+      balanceLabel.textContent = `Current balance for: #${accountToSwitch.accountNumber.slice(
+        -4
+      )}`;
+      currentAccount = accountToSwitch;
+      accNumSwitch.value = '';
+      accPinSwitch.value = '';
+      updateUI(accountToSwitch);
+      updateTime();
+      balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
+        currentProfile.locale,
+        options
+      ).format(currentTime)}`;
 
-    const loanBox = document.querySelector('.operation--loan');
-    if (currentAccount.accountType === 'Savings') {
-      loanBox.style.display = 'none';
-      console.log('savings');
-      console.log(currentAccount);
-    } else if (currentAccount.accountType === 'Checking') {
-      loanBox.style.display = 'inline';
-      console.log('checking');
-    }
-
-    console.log(currentTime);
-  }
-});
-
-requestLoanbtn.addEventListener('click', function (e) {
-  e.preventDefault();
-
-  const amount = Math.floor(loanAmount.value);
-
-  for (const account of currentProfile.accounts) {
-    if (account.type === 'Checking') {
-      currentAccount = account;
-      if (
-        amount > 0 &&
-        currentAccount.transactions.some(mov => mov >= amount * 0.1)
-      ) {
-        setTimeout(function () {
-          // Add movement
-          currentAccount.transactions.push(amount);
-
-          // Add loan date
-          currentAccount.movementsDates.push(new Date().toISOString());
-
-          // Update UI
-          updateUI(currentAccount);
-
-          // Reset timer
-        });
+      const loanBox = document.querySelector('.operation--loan');
+      if (currentAccount.accountType === 'Savings') {
+        loanBox.style.display = 'none';
+        console.log('savings');
+        console.log(currentAccount);
+      } else if (currentAccount.accountType === 'Checking') {
+        loanBox.style.display = 'inline';
+        console.log('checking');
       }
-      loanAmount.value = '';
+
+      console.log(currentTime);
     }
-  }
-});
+  });
+}
+
+if (requestLoanbtn) {
+  requestLoanbtn.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    const amount = Math.floor(loanAmount.value);
+
+    for (const account of currentProfile.accounts) {
+      if (account.type === 'Checking') {
+        currentAccount = account;
+        if (
+          amount > 0 &&
+          currentAccount.transactions.some(mov => mov >= amount * 0.1)
+        ) {
+          setTimeout(function () {
+            // Add movement
+            currentAccount.transactions.push(amount);
+
+            // Add loan date
+            currentAccount.movementsDates.push(new Date().toISOString());
+
+            // Update UI
+            updateUI(currentAccount);
+
+            // Reset timer
+          });
+        }
+        loanAmount.value = '';
+      }
+    }
+  });
+}
+
+const btnClose = document.querySelector('.form__btn--close');
+const userClose = document.querySelector('.form__input--user--close');
+const userClosePin = document.querySelector('.form__input--pin--close');
+const wholeApp = document.querySelector('.wholeApp');
+
+if (btnClose) {
+  btnClose.addEventListener('click', function (e) {
+    e.preventDefault();
+    if (
+      currentAccount &&
+      userClose.value === currentAccount.username &&
+      +userClosePin.value === currentAccount.pin
+    ) {
+      mainApp.style.display = 'none';
+
+      const index = accounts.findIndex(
+        acc => acc.username === currentAccount.username
+      );
+      accounts.splice(index, 1);
+      currentAccount = accounts[0] || profile1.accounts[0]; // switch to the next account or the first account in the list
+      mainApp.style.display = 'inline';
+      updateUI(currentAccount);
+    }
+  });
+}
 
 const transactionContainer = document.querySelector('.transactions');
 
@@ -370,14 +405,14 @@ const options = {
   year: 'numeric',
   // weekday: 'long',
 };
-const displayBalance = function (acc) {
+export const displayBalance = function (acc) {
   acc.balance = acc.transactions.reduce((acc, mov) => acc + mov, 0);
   balanceValue.textContent = formatCur(acc.balance, acc.locale, acc.currency);
 };
 //Display Accounts
 
 //Display Transactions
-const displayTransactions = function (acc, sort = false) {
+export const displayTransactions = function (acc, sort = false) {
   transactionContainer.innerHTML = '';
 
   const movs = sort
@@ -404,7 +439,6 @@ const displayTransactions = function (acc, sort = false) {
     transactionContainer.insertAdjacentHTML('afterbegin', html);
   });
 };
-
 const updateUI = function (acc) {
   // Display movements
 
@@ -416,3 +450,4 @@ const updateUI = function (acc) {
   // Display accounts
   displayAccounts(acc);
 };
+
