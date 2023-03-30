@@ -47,28 +47,31 @@
 
     <h1 class="transfersTitle headings">Transfers</h1>
     <hr />
-    <div class="signOnprompt">
-      <h2 class="signOntext headings">Enter your PIN to continue</h2>
-    </div>
+    <div class="signOnSection">
+      <div class="signOnprompt">
+        <h2 class="signOntext headings">Enter your PIN to continue</h2>
+      </div>
 
-    <div class="signOnForm">
-      <div class="row formDiv">
-        <div class="col pinBox">
-          <input
-            type="text"
-            placeholder="PIN"
-            maxlength="4"
-            class="login__input login__input--pin--transfer signOnGroup"
-          />
+      <div class="signOnForm">
+        <div class="row formDiv">
+          <div class="col pinBox">
+            <input
+              type="text"
+              placeholder="PIN"
+              maxlength="4"
+              class="login__input login__input--pin--transfer signOnGroup"
+            />
+          </div>
+        </div>
+        <div class="row formDiv">
+          <div class="col button">
+            <button class="login__btn--transfer signOnGroup">&rarr;</button>
+          </div>
         </div>
       </div>
-      <div class="row formDiv">
-        <div class="col button">
-          <button class="login__btn--transfer signOnGroup">&rarr;</button>
-        </div>
-      </div>
+
+      <hr />
     </div>
-    <hr />
     <h2 class="headings transfersTitle instructions">
       Select the account you wish to transfer from
     </h2>
@@ -106,7 +109,7 @@
           <div class="col-6 accountsTransferFrom">
             <input
               type="text"
-              class="form__input form__input--user--transfer"
+              class="form__input form__input--amount--transfer"
             />
           </div>
           <div class="col-2 tranferBtn">
