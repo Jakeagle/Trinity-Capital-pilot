@@ -1,453 +1,251 @@
-('use strict');
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trinity Capital</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="/png-transparent-black-artwork-il.png"
+    />
 
-//example account
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
 
-const jfAccount1 = {
-  accountHolder: 'Jakob Ferguson',
-  currency: 'USD',
-  locale: 'en-US',
-  transactions: [550, 1200, -200, 25, 25, 155, 1200, -300],
-  accountType: 'Checking',
-  accountNumber: '4585120945465872',
-  movementsDates: [
-    '2019-11-18T21:31:17.178Z',
-    '2019-12-23T07:42:02.383Z',
-    '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-07-26T17:01:17.194Z',
-    '2020-07-28T23:36:17.929Z',
-    '2020-08-01T10:51:36.790Z',
-  ],
-};
-
-const jfAccount2 = {
-  accountHolder: 'Jakob Ferguson',
-  currency: 'USD',
-  locale: 'en-US',
-  transactions: [700, 100, 2100, 25, 25, 155, -300, 500],
-  accountType: 'Savings',
-  accountNumber: '3112153745644899',
-  movementsDates: [
-    '2019-11-18T21:31:17.178Z',
-    '2019-12-23T07:42:02.383Z',
-    '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-07-26T17:01:17.194Z',
-    '2020-07-28T23:36:17.929Z',
-    '2020-08-12T10:51:36.790Z',
-  ],
-};
-
-const djAccount1 = {
-  accountHolder: 'Darlene Jones',
-  currency: 'USD',
-  locale: 'en-US',
-  transactions: [450, 1900, -100, 55, 5, 105, 1000, -500],
-  accountType: 'Checking',
-  accountNumber: '1247885477086903',
-
-  movementsDates: [
-    '2019-11-01T13:15:33.035Z',
-    '2019-11-30T09:48:16.867Z',
-    '2019-12-25T06:04:23.907Z',
-    '2020-01-25T14:18:46.235Z',
-    '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
-  ],
-};
-
-const profile1 = {
-  memberName: 'Jakob Ferguson',
-  sex: 'male',
-  pin: 4564,
-  numberOfAccounts: 3,
-  accounts: [
-    {
-      ...jfAccount1,
-      type: 'Checking',
-      accountNumberA: '4585120945465872',
-      routingNumber: 141257185,
-      currency: 'USD',
-      locale: 'en-US',
-      created: 12 / 20 / 2001,
-    },
-
-    {
-      ...jfAccount2,
-      type: 'Savings',
-      accountNumberA: '3112153745644899',
-      routingNumber: 141257185,
-      currency: 'USD',
-      locale: 'en-US',
-      created: 12 / 20 / 2018,
-    },
-  ],
-};
-const profile2 = {
-  memberName: 'Darlene Jones',
-  pin: 1231,
-  sex: 'female',
-  numberOfAccounts: 3,
-  accounts: [
-    {
-      ...djAccount1,
-      type: 'Checking',
-      accountNumber: '1247885477086903',
-      routingNumber: 141257185,
-      currency: 'USD',
-      locale: 'en-US',
-    },
-  ],
-};
-
-const accounts = [jfAccount1, jfAccount2, djAccount1];
-const profiles = [profile1, profile2];
-
-const createUsername = function (accs) {
-  accs.forEach(function (acc) {
-    acc.username = acc.memberName
-      .toLowerCase()
-      .split(' ')
-      .map(name => name[0])
-      .join('');
-  });
-};
-createUsername(profiles);
-
-//SignOn
-
-let currentAccount, timer;
-
-const signOnForm = document.getElementById('signOnForm');
-const loginUser = document.querySelector(`.login__input--user`);
-const loginPIN = document.getElementById('.login__input--pin');
-const signOnText = document.getElementById('.signOntext');
-const loginButton = document.querySelector('.login__btn');
-const formDiv = document.getElementById('.formDiv');
-const mainApp = document.querySelector('.app');
-const lastUpdated = document.querySelector('.updateDate');
-const transActionsDate = document.querySelector('.transactions__date');
-
-let currentProfile;
-let currentTime;
-
-const updateTime = function () {
-  currentTime = new Date();
-};
-
-const requestLoanbtn = document.querySelector('.form__btn--loan');
-const loanAmount = document.querySelector('.form__input--loan-amount');
-const accNumHTML = document.querySelector('.accountNumber');
-
-mainApp.style.opacity = 0;
-// Listen for form submission
-
-if (loginButton) {
-  loginButton.addEventListener('click', function (event) {
-    event.preventDefault();
-
-    // Get the value of the input field
-    const loginPIN = document.querySelector('.login__input--pin');
-    const pin = parseInt(loginPIN.value);
-
-    // Find the profile with matching PIN
-    currentProfile = profiles.find(profile => profile.pin === pin);
-
-    if (currentProfile) {
-      // Display welcome message
-      const signOnText = document.querySelector('.signOntext');
-      signOnText.textContent = `Welcome Back ${
-        currentProfile.memberName.split(' ')[0]
-      }`;
-
-      // Hide login form and display main app
-      const formDiv = document.querySelector('.formDiv');
-      const mainApp = document.querySelector('.app');
-      formDiv.style.display = 'none';
-      mainApp.style.opacity = 100;
-
-      // Loop through the user's accounts and display the first account's information
-      let currentAccount;
-      for (const account of currentProfile.accounts) {
-        if (account.type === 'Checking') {
-          currentAccount = account;
-          balanceLabel.textContent = `Current balance for: #${account.accountNumber.slice(
-            -4
-          )}`;
-          updateTime();
-
-          balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
-            currentProfile.locale,
-            options
-          ).format(currentTime)}`;
-
-          break;
-        }
-      }
-      // Update the UI with the first account's information
-      updateUI(currentAccount);
-    } else {
-      alert('Invalid PIN. Please try again.');
-    }
-  });
-}
-const transferPageSwitch = document.querySelector('.transferBox');
-
-const balanceValue = document.querySelector('.balance__value');
-const balanceLabel = document.querySelector('.balance__label');
-
-const displayAccounts = function () {
-  const accountContainer = document.querySelector('.accountContainer');
-  accountContainer.innerHTML = '';
-
-  // add the code here
-  if (currentProfile.accounts.length === 0) {
-    const html = `
-      <div class="row">
-        <p>No accounts found.</p>
-      </div>
-    `;
-    accountContainer.insertAdjacentHTML('afterend', html);
-    return;
-  }
-
-  currentProfile.accounts.sort((a, b) => {
-    // First, sort by account type
-    if (a.accountType < b.accountType) return -1;
-    if (a.accountType > b.accountType) return 1;
-
-    // If account types are the same, sort by creation date
-    const aDates = a.movementsDates || [];
-    const bDates = b.movementsDates || [];
-    if (aDates.length === 0 && bDates.length === 0) return 0;
-    if (aDates.length === 0) return -1;
-    if (bDates.length === 0) return 1;
-    const aDate = new Date(aDates[0]);
-    const bDate = new Date(bDates[0]);
-    if (aDate < bDate) return -1;
-    if (aDate > bDate) return 1;
-
-    return 0;
-  });
-
-  currentProfile.accounts.forEach(function (accnt) {
-    let totalMovements = accnt.transactions.reduce(
-      (sum, curr) => sum + curr,
-      0
-    );
-
-    let balance = formatCur(
-      currentProfile.locale,
-
-      currentProfile.currency
-    );
-
-    let lastTransactionDate = new Date(
-      accnt.movementsDates[accnt.movementsDates.length - 1]
-    ).toLocaleDateString(currentProfile.locale);
-
-    const html = `
-      <div class="row accountsRow">
-        <div class="col accountType">${accnt.accountType}</div>
-        <div class="col accountNumber">${accnt.accountNumber.slice(-4)}</div>
-        <div class="col updateDate">${lastTransactionDate}</div>
-      </div>
-    `;
-
-    accountContainer.insertAdjacentHTML('beforeEnd', html);
-  });
-};
-
-const accNumSwitch = document.querySelector('.form__input--user--switch');
-const accPinSwitch = document.querySelector('.form__input--pin--switch');
-const accBtnSwitch = document.querySelector('.form__btn--switch');
-let listedAccounts = '';
-
-if (accBtnSwitch) {
-  accBtnSwitch.addEventListener('click', function (e) {
-    e.preventDefault();
-    let targetAccount = accNumSwitch.value;
-    let accountToSwitch = currentProfile.accounts.find(
-      account => account.accountNumber.slice(-4) === targetAccount
-    );
-
-    if (accountToSwitch) {
-      balanceLabel.textContent = `Current balance for: #${accountToSwitch.accountNumber.slice(
-        -4
-      )}`;
-      currentAccount = accountToSwitch;
-      accNumSwitch.value = '';
-      accPinSwitch.value = '';
-      updateUI(accountToSwitch);
-      updateTime();
-      balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
-        currentProfile.locale,
-        options
-      ).format(currentTime)}`;
-
-      const loanBox = document.querySelector('.operation--loan');
-      if (currentAccount.accountType === 'Savings') {
-        loanBox.style.display = 'none';
-        console.log('savings');
-        console.log(currentAccount);
-      } else if (currentAccount.accountType === 'Checking') {
-        loanBox.style.display = 'inline';
-        console.log('checking');
-      }
-
-      console.log(currentTime);
-    }
-  });
-}
-
-if (requestLoanbtn) {
-  requestLoanbtn.addEventListener('click', function (e) {
-    e.preventDefault();
-
-    const amount = Math.floor(loanAmount.value);
-
-    for (const account of currentProfile.accounts) {
-      if (account.type === 'Checking') {
-        currentAccount = account;
-        if (
-          amount > 0 &&
-          currentAccount.transactions.some(mov => mov >= amount * 0.1)
-        ) {
-          setTimeout(function () {
-            // Add movement
-            currentAccount.transactions.push(amount);
-
-            // Add loan date
-            currentAccount.movementsDates.push(new Date().toISOString());
-
-            // Update UI
-            updateUI(currentAccount);
-
-            // Reset timer
-          });
-        }
-        loanAmount.value = '';
-      }
-    }
-  });
-}
-
-const btnClose = document.querySelector('.form__btn--close');
-const userClose = document.querySelector('.form__input--user--close');
-const userClosePin = document.querySelector('.form__input--pin--close');
-const wholeApp = document.querySelector('.wholeApp');
-
-if (btnClose) {
-  btnClose.addEventListener('click', function (e) {
-    e.preventDefault();
-    if (
-      currentAccount &&
-      userClose.value === currentAccount.username &&
-      +userClosePin.value === currentAccount.pin
-    ) {
-      mainApp.style.display = 'none';
-
-      const index = accounts.findIndex(
-        acc => acc.username === currentAccount.username
+    <!-----<script>
+      alert(
+        'THIS IS A MARKUP TEST. This website has no functionality and is only live to test the responsiveness, and to allow others to see what the site looks like'
       );
-      accounts.splice(index, 1);
-      currentAccount = accounts[0] || profile1.accounts[0]; // switch to the next account or the first account in the list
-      mainApp.style.display = 'inline';
-      updateUI(currentAccount);
-    }
-  });
-}
+    </script> -->
 
-const transactionContainer = document.querySelector('.transactions');
+    <script
+      src="https://kit.fontawesome.com/60a3862749.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <!----Customer login section----->
 
-const formatMovementDate = function (date, locale) {
-  const calcDaysPassed = (date1, date2) =>
-    Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
-
-  const daysPassed = calcDaysPassed(new Date(), date);
-
-  if (daysPassed === 0) return 'Today';
-  if (daysPassed === 1) return 'Yesterday';
-  if (daysPassed <= 7) return `${daysPassed} days ago`;
-
-  // const day = `${date.getDate()}`.padStart(2, 0);
-  // const month = `${date.getMonth() + 1}`.padStart(2, 0);
-  // const year = date.getFullYear();
-  // return `${day}/${month}/${year}`;
-  return new Intl.DateTimeFormat(locale).format(date);
-};
-
-const currencyCodeMap = {
-  840: 'USD',
-  978: 'EUR',
-  // add more currency codes here as needed
-};
-
-function formatCur(value, currency, locale) {
-  const currencyCode = currencyCodeMap[currency] || 'USD'; // default to USD if code not found
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency: currencyCode,
-  }).format(value);
-}
-
-const balanceDate = document.querySelector(`.balance__date`);
-const now = new Date();
-const options = {
-  hour: 'numeric',
-  minute: 'numeric',
-  day: 'numeric',
-  month: 'numeric',
-  year: 'numeric',
-  // weekday: 'long',
-};
-export const displayBalance = function (acc) {
-  acc.balance = acc.transactions.reduce((acc, mov) => acc + mov, 0);
-  balanceValue.textContent = formatCur(acc.balance, acc.locale, acc.currency);
-};
-//Display Accounts
-
-//Display Transactions
-export const displayTransactions = function (acc, sort = false) {
-  transactionContainer.innerHTML = '';
-
-  const movs = sort
-    ? acc.transactions.slice().sort((a, b) => a - b)
-    : acc.transactions;
-  movs.forEach(function (mov, i) {
-    const type = mov > 0 ? 'deposit' : 'withdrawal';
-
-    const date = new Date(acc.movementsDates[i]);
-    const displayDate = formatMovementDate(date, acc.locale);
-
-    const formattedMov = formatCur(mov, acc.locale, acc.currency);
-
-    const html = `
-      <div class="transactions__row">
-        <div class="transactions__type transactions__type--${type}">${
-      i + 1
-    } ${type}</div>
-        <div class="transactions__date">${displayDate}</div>
-        <div class="transactions__value">${formattedMov}</div>
+    <div class="header">
+      <div class="row headerRow">
+        <div class="col title-div">
+          <h1 class="title1">Trinity</h1>
+        </div>
+        <div class="col image-div">
+          <img
+            src="png-transparent-black-artwork-il.png"
+            alt="Logo"
+            class="logo"
+          />
+        </div>
+        <div class="col title-div-2">
+          <h1 class="title2">Capital</h1>
+        </div>
       </div>
-    `;
+    </div>
 
-    transactionContainer.insertAdjacentHTML('afterbegin', html);
-  });
-};
-const updateUI = function (acc) {
-  // Display movements
+    <hr />
+    <div class="signOnprompt">
+      <h2 class="signOntext headings">Sign in to view Accounts</h2>
+    </div>
 
-  displayTransactions(acc);
+    <div class="signOnForm">
+      <div class="row formDiv">
+        <div class="col-lg-4 col-md-4 col-sm-6 usernameBox">
+          <input
+            type="text"
+            placeholder="user"
+            class="login__input login__input--user signOnGroup"
+          />
+        </div>
 
-  // Display balance
-  displayBalance(acc);
+        <div class="col-lg-4 col-md-4 col-sm-6 pinBox">
+          <input
+            type="text"
+            placeholder="PIN"
+            maxlength="4"
+            class="login__input login__input--pin signOnGroup"
+          />
+        </div>
 
-  // Display accounts
-  displayAccounts(acc);
-};
+        <div class="col-lg-4 col-md-4 col-sm-6 button">
+          <button class="login__btn signOnGroup">&rarr;</button>
+        </div>
+      </div>
+    </div>
 
+    <hr />
+
+    <div class="app">
+      <!--Banking tools-->
+      <div class="banking">
+        <h2 class="headings bankingTitle">Banking</h2>
+
+        <div class="row">
+          <div class="col transferBox">
+            <p class="bankingText">
+              <a href="transfer.html"
+                ><i class="fa-solid fa-money-bill-transfer bankingImg"></i
+              ></a>
+            </p>
+            <p class="transfer bankingText">Transfer</p>
+          </div>
+          <div class="col payBills">
+            <p class="bankingText">
+              <a href="billandpayments.html"
+                ><i class="fa-solid fa-file-invoice-dollar bankingImg"></i
+              ></a>
+            </p>
+            <p class="payBillsText bankingText">Bills & Paychecks</p>
+          </div>
+          <div class="col deposit">
+            <p class="bankingText">
+              <a href="deposit.html"
+                ><i class="fa-solid fa-money-check bankingImg"></i>
+              </a>
+            </p>
+            <p class="payBillsText bankingText">Deposit</p>
+          </div>
+          <div class="col zelle">
+            <p class="bankingText">
+              <a href="scelle.html"
+                ><i class="fa-solid fa-dollar-sign bankingImg"></i
+              ></a>
+            </p>
+            <p class="payBillsText bankingText">Scelle</p>
+          </div>
+        </div>
+      </div>
+
+      <!--Balance Div-->
+      <div class="balance">
+        <div>
+          <p class="balance__label">Current balance for: #4872</p>
+          <p class="balance__date">As of <span class="date"></span></p>
+        </div>
+        <p class="balance__value">13000</p>
+      </div>
+
+      <!--Main Content-->
+      <div class="wholeApp">
+        <div class="row">
+          <!--Acounts Section-->
+          <div class="col-lg-4 col-md-4 col-sm-12 accounts">
+            <div class="row accountsTitle">
+              <h3 class="col accountsTitle headings">Accounts</h3>
+              <h3 class="col accountsTitle headings">Number</h3>
+              <h3 class="col accountsTitle lastUpdated headings heading-R">
+                Last Updated
+              </h3>
+            </div>
+            <div class="accountContainer">
+              <div class="row accountsRow">
+                <div class="col accountType">Checking</div>
+                <div class="col accountNumber">4872</div>
+                <div class="col updateDate">3/21/23</div>
+              </div>
+
+              <div class="row accountsRow">
+                <div class="col accountType">Savings</div>
+                <div class="col accountNumber">5327</div>
+                <div class="col updateDate">3/02/23</div>
+              </div>
+
+              <div class="row accountsRow">
+                <div class="col accountType">Donations</div>
+                <div class="col accountNumber">6712</div>
+                <div class="col updateDate">12/25/22</div>
+              </div>
+            </div>
+
+            <div class="operation operation--switch">
+              <h2>Switch account</h2>
+              <form class="form form--close">
+                <input
+                  type="text"
+                  class="form__input form__input--user--switch"
+                />
+                <input
+                  type="password"
+                  maxlength="6"
+                  class="form__input form__input--pin--switch"
+                />
+                <button class="form__btn form__btn--switch">&rarr;</button>
+                <label class="form__label">Account Number</label>
+                <label class="form__label">Confirm PIN</label>
+              </form>
+            </div>
+          </div>
+          <!--transactions-->
+          <div class="col-lg-8 col-md-8 col-sm-12 transactions">
+            <h3 class="transactionsTitle headings">Transactions</h3>
+            <div class="transactions__row">
+              <div class="transactions__type transactions__type--deposit">
+                2 deposit
+              </div>
+              <div class="transactions__date">3 days ago</div>
+              <div class="transactions__value">$600</div>
+            </div>
+            <div class="transactions__row">
+              <div class="transactions__type transactions__type--withdrawal">
+                1 withdrawal
+              </div>
+              <div class="transactions__date">24/01/2037</div>
+              <div class="transactions__value">-$100</div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <h2 class="toolsTitle headings">Tools</h2>
+        <!--Account tools-->
+        <div class="row tools">
+          <div class="row">
+            <!--Loan Div-->
+            <div class="col operation operation--loan">
+              <h2>Request loan</h2>
+              <form class="form form--loan">
+                <input
+                  type="number"
+                  class="form__input form__input--loan-amount"
+                />
+                <button class="form__btn form__btn--loan">&rarr;</button>
+                <label class="form__label form__label--loan">Amount</label>
+              </form>
+            </div>
+            <!--Close Account-->
+
+            <!--Donate-->
+            <div class="col operation operation--donate">
+              <h2>Donate</h2>
+              <form class="form donateForm">
+                <input type="text" class="form__input form__input--user" />
+                <input
+                  type="password"
+                  maxlength="6"
+                  class="form__input form__input--pin"
+                />
+                <button class="form__btn form__btn--close">&rarr;</button>
+                <label class="form__label">Amount</label>
+                <label class="form__label">Confirm PIN</label>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" type="module"></script>
+    <script src="transfer.js" type="module"></script>
+  </body>
+</html>
