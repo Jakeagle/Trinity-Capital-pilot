@@ -153,6 +153,9 @@ const userClosePin = document.querySelector('.form__input--pin--close');
 const transactionContainer = document.querySelector('.transactions');
 const requestLoanbtn = document.querySelector('.form__btn--loan');
 const loanAmount = document.querySelector('.form__input--loan-amount');
+const donateBtn = document.querySelector('.form__btn--donate');
+const donateAmount = document.querySelector('.form__input--donate--amount');
+const donatePin = document.querySelector('.form__input--pin--donate');
 const accNumHTML = document.querySelector('.accountNumber');
 const balanceDate = document.querySelector(`.balance__date`);
 const now = new Date();
@@ -306,6 +309,59 @@ if (requestLoanbtn) {
     }
   });
 }
+
+//Donating money
+
+donateBtn.addEventListener('click', function (e) {
+  e.preventDefault();
+  //How much a user donates
+  let donationAmount = Number(donateAmount.value);
+  //User Pin
+  const pin = parseInt(donatePin.value);
+  //Total Balance
+  //Sets the current account
+  for (const account of currentProfile.accounts) {
+    if (account.type === 'Checking') {
+      currentAccount = account;
+      break;
+    }
+  }
+
+  //Sets the saved transactions in local storage
+  const savedTransactions = JSON.parse(
+    localStorage.getItem(
+      `transactions_${currentAccount.accountHolder} ${currentAccount.accountType}`
+    )
+  );
+
+  //Check to see if there are saved transactions and adds the sum accordingly
+
+  //Reduces the amount by the donation amount and updates the UI.
+  if (pin === currentProfile.pin) {
+    currentAccount.transactions.push(-donationAmount);
+
+    // Add loan date
+
+    currentAccount.movementsDates.push(new Date().toISOString());
+
+    //Update UI
+
+    // console.log(currentAccount.transactions);
+    //console.log(currentAccount.movementsDates);
+    const newTransactions = localStorage.setItem(
+      `transactions_${currentAccount.accountHolder} ${currentAccount.accountType}`,
+      JSON.stringify(currentAccount.transactions)
+    );
+    const newTransactionsDate = localStorage.setItem(
+      `transactionsDates_${currentAccount.accountHolder} ${currentAccount.accountType}`,
+      JSON.stringify(currentAccount.movementsDates)
+    );
+    updateUI(currentAccount);
+
+    donatePin.value = '';
+    donateAmount.value = '';
+  }
+});
 
 /********************************************Functions *********************************************/
 mainApp.style.opacity = 0;
