@@ -108,7 +108,7 @@
                 ><i class="fa-solid fa-file-invoice-dollar bankingImg"></i
               ></a>
             </p>
-            <p class="payBillsText bankingText">Bills & Pay Checks</p>
+            <p class="payBillsText bankingText">Bills & Paychecks</p>
           </div>
           <div class="col deposit">
             <p class="bankingText">
@@ -135,7 +135,7 @@
           <p class="balance__label">Current balance for: #4872</p>
           <p class="balance__date">As of <span class="date"></span></p>
         </div>
-        <p class="balance__value">13000</p>
+        <p class="balance__value">ERROR</p>
       </div>
 
       <!--Main Content-->
@@ -230,13 +230,16 @@
             <div class="col operation operation--donate">
               <h2>Donate</h2>
               <form class="form donateForm">
-                <input type="text" class="form__input form__input--user" />
+                <input
+                  type="text"
+                  class="form__input form__input--donate--amount"
+                />
                 <input
                   type="password"
                   maxlength="6"
-                  class="form__input form__input--pin"
+                  class="form__input form__input--pin--donate"
                 />
-                <button class="form__btn form__btn--close">&rarr;</button>
+                <button class="form__btn form__btn--donate">&rarr;</button>
                 <label class="form__label">Amount</label>
                 <label class="form__label">Confirm PIN</label>
               </form>
