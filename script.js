@@ -1,8 +1,9 @@
-('use strict');
+'use strict';
 
-//example account
+/***************************************************Objects*********************************************************/
 
 const jfAccount1 = {
+  id: 1,
   accountHolder: 'Jakob Ferguson',
   currency: 'USD',
   locale: 'en-US',
@@ -22,6 +23,7 @@ const jfAccount1 = {
 };
 
 const jfAccount2 = {
+  id: 2,
   accountHolder: 'Jakob Ferguson',
   currency: 'USD',
   locale: 'en-US',
@@ -41,6 +43,7 @@ const jfAccount2 = {
 };
 
 const djAccount1 = {
+  id: 3,
   accountHolder: 'Darlene Jones',
   currency: 'USD',
   locale: 'en-US',
@@ -73,7 +76,7 @@ const profile1 = {
       routingNumber: 141257185,
       currency: 'USD',
       locale: 'en-US',
-      created: 12 / 20 / 2001,
+      created: '12 / 20 / 2001',
     },
 
     {
@@ -83,7 +86,7 @@ const profile1 = {
       routingNumber: 141257185,
       currency: 'USD',
       locale: 'en-US',
-      created: 12 / 20 / 2018,
+      created: '12 / 20 / 2018',
     },
   ],
 };
@@ -104,48 +107,67 @@ const profile2 = {
   ],
 };
 
-const accounts = [jfAccount1, jfAccount2, djAccount1];
-const profiles = [profile1, profile2];
+/**************************************** JSON Variables **********************************************/
 
-const createUsername = function (accs) {
-  accs.forEach(function (acc) {
-    acc.username = acc.memberName
-      .toLowerCase()
-      .split(' ')
-      .map(name => name[0])
-      .join('');
-  });
-};
-createUsername(profiles);
+let profilesJsonRetrieve = localStorage.getItem('profiles');
+if (!profilesJsonRetrieve) {
+  const profilesRaw = [profile1, profile2];
+  const profilesJson = JSON.stringify(profilesRaw);
+  localStorage.setItem('profiles', profilesJson);
+  profilesJsonRetrieve = localStorage.getItem('profiles');
+}
 
-//SignOn
+const profiles = JSON.parse(profilesJsonRetrieve);
+// log accounts to see if it is an array of objects
 
-let currentAccount, timer;
+/******************************************Variables ***************************************************/
 
-const signOnForm = document.getElementById('signOnForm');
-const loginUser = document.querySelector(`.login__input--user`);
-const loginPIN = document.getElementById('.login__input--pin');
-const signOnText = document.getElementById('.signOntext');
-const loginButton = document.querySelector('.login__btn');
-const formDiv = document.getElementById('.formDiv');
-const mainApp = document.querySelector('.app');
-const lastUpdated = document.querySelector('.updateDate');
-const transActionsDate = document.querySelector('.transactions__date');
-
+let currentAccount;
 let currentProfile;
 let currentTime;
 
-const updateTime = function () {
-  currentTime = new Date();
+const currencyCodeMap = {
+  840: 'USD',
+  978: 'EUR',
+  // add more currency codes here as needed
 };
 
+const signOnForm = document.querySelector('signOnForm');
+const loginUser = document.querySelector(`.login__input--user`);
+const loginPIN = document.querySelector('.login__input--pin');
+const signOnText = document.querySelector('.signOntext');
+const loginButton = document.querySelector('.login__btn');
+const formDiv = document.querySelector('.formDiv');
+const mainApp = document.querySelector('.app');
+const lastUpdated = document.querySelector('.updateDate');
+const transActionsDate = document.querySelector('.transactions__date');
+const balanceValue = document.querySelector('.balance__value');
+const balanceLabel = document.querySelector('.balance__label');
+const accNumSwitch = document.querySelector('.form__input--user--switch');
+const accPinSwitch = document.querySelector('.form__input--pin--switch');
+const accBtnSwitch = document.querySelector('.form__btn--switch');
+let listedAccounts = '';
+const btnClose = document.querySelector('.form__btn--close');
+const userClose = document.querySelector('.form__input--user--close');
+const userClosePin = document.querySelector('.form__input--pin--close');
+const transactionContainer = document.querySelector('.transactions');
 const requestLoanbtn = document.querySelector('.form__btn--loan');
 const loanAmount = document.querySelector('.form__input--loan-amount');
 const accNumHTML = document.querySelector('.accountNumber');
+const balanceDate = document.querySelector(`.balance__date`);
+const now = new Date();
+const options = {
+  hour: 'numeric',
+  minute: 'numeric',
+  day: 'numeric',
+  month: 'numeric',
+  year: 'numeric',
+  // weekday: 'long',
+};
 
-mainApp.style.opacity = 0;
-// Listen for form submission
+/*****************************************Event Listeners ******************************************/
 
+//login event listener
 if (loginButton) {
   loginButton.addEventListener('click', function (event) {
     event.preventDefault();
@@ -158,6 +180,15 @@ if (loginButton) {
     currentProfile = profiles.find(profile => profile.pin === pin);
 
     if (currentProfile) {
+      // Retrieve saved transactions for current account
+      let currentAccount;
+      for (const account of currentProfile.accounts) {
+        if (account.type === 'Checking') {
+          currentAccount = account;
+          break;
+        }
+      }
+
       // Display welcome message
       const signOnText = document.querySelector('.signOntext');
       signOnText.textContent = `Welcome Back ${
@@ -170,103 +201,33 @@ if (loginButton) {
       formDiv.style.display = 'none';
       mainApp.style.opacity = 100;
 
-      // Loop through the user's accounts and display the first account's information
-      let currentAccount;
-      for (const account of currentProfile.accounts) {
-        if (account.type === 'Checking') {
-          currentAccount = account;
-          balanceLabel.textContent = `Current balance for: #${account.accountNumber.slice(
-            -4
-          )}`;
-          updateTime();
+      if (currentAccount) {
+        console.log(currentAccount);
+        //Add currentAccount here
+        // Update the UI with the first account's information
 
-          balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
-            currentProfile.locale,
-            options
-          ).format(currentTime)}`;
+        updateUI(currentAccount);
+        balanceLabel.textContent = `Current balance for: #${currentAccount.accountNumber.slice(
+          -4
+        )}`;
+        updateTime();
+        balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
+          currentProfile.locale,
+          options
+        ).format(currentTime)}`;
+        //Display saved transactions for current account
 
-          break;
-        }
+        displayTransactions(currentAccount);
+      } else {
+        alert('No checking account found. Please contact customer service.');
       }
-      // Update the UI with the first account's information
-      updateUI(currentAccount);
     } else {
       alert('Invalid PIN. Please try again.');
     }
   });
 }
-const transferPageSwitch = document.querySelector('.transferBox');
 
-const balanceValue = document.querySelector('.balance__value');
-const balanceLabel = document.querySelector('.balance__label');
-
-const displayAccounts = function () {
-  const accountContainer = document.querySelector('.accountContainer');
-  accountContainer.innerHTML = '';
-
-  // add the code here
-  if (currentProfile.accounts.length === 0) {
-    const html = `
-      <div class="row">
-        <p>No accounts found.</p>
-      </div>
-    `;
-    accountContainer.insertAdjacentHTML('afterend', html);
-    return;
-  }
-
-  currentProfile.accounts.sort((a, b) => {
-    // First, sort by account type
-    if (a.accountType < b.accountType) return -1;
-    if (a.accountType > b.accountType) return 1;
-
-    // If account types are the same, sort by creation date
-    const aDates = a.movementsDates || [];
-    const bDates = b.movementsDates || [];
-    if (aDates.length === 0 && bDates.length === 0) return 0;
-    if (aDates.length === 0) return -1;
-    if (bDates.length === 0) return 1;
-    const aDate = new Date(aDates[0]);
-    const bDate = new Date(bDates[0]);
-    if (aDate < bDate) return -1;
-    if (aDate > bDate) return 1;
-
-    return 0;
-  });
-
-  currentProfile.accounts.forEach(function (accnt) {
-    let totalMovements = accnt.transactions.reduce(
-      (sum, curr) => sum + curr,
-      0
-    );
-
-    let balance = formatCur(
-      currentProfile.locale,
-
-      currentProfile.currency
-    );
-
-    let lastTransactionDate = new Date(
-      accnt.movementsDates[accnt.movementsDates.length - 1]
-    ).toLocaleDateString(currentProfile.locale);
-
-    const html = `
-      <div class="row accountsRow">
-        <div class="col accountType">${accnt.accountType}</div>
-        <div class="col accountNumber">${accnt.accountNumber.slice(-4)}</div>
-        <div class="col updateDate">${lastTransactionDate}</div>
-      </div>
-    `;
-
-    accountContainer.insertAdjacentHTML('beforeEnd', html);
-  });
-};
-
-const accNumSwitch = document.querySelector('.form__input--user--switch');
-const accPinSwitch = document.querySelector('.form__input--pin--switch');
-const accBtnSwitch = document.querySelector('.form__btn--switch');
-let listedAccounts = '';
-
+//Switch accounts
 if (accBtnSwitch) {
   accBtnSwitch.addEventListener('click', function (e) {
     e.preventDefault();
@@ -304,6 +265,7 @@ if (accBtnSwitch) {
   });
 }
 
+//requesting loans
 if (requestLoanbtn) {
   requestLoanbtn.addEventListener('click', function (e) {
     e.preventDefault();
@@ -317,18 +279,27 @@ if (requestLoanbtn) {
           amount > 0 &&
           currentAccount.transactions.some(mov => mov >= amount * 0.1)
         ) {
-          setTimeout(function () {
-            // Add movement
-            currentAccount.transactions.push(amount);
+          // Add movement
+          currentAccount.transactions.push(amount);
 
-            // Add loan date
-            currentAccount.movementsDates.push(new Date().toISOString());
+          // Add loan date
 
-            // Update UI
-            updateUI(currentAccount);
+          currentAccount.movementsDates.push(new Date().toISOString());
+          console.log(currentAccount.movementsDates);
 
-            // Reset timer
-          });
+          //Update UI
+
+          // console.log(currentAccount.transactions);
+          //console.log(currentAccount.movementsDates);
+          const newTransactions = localStorage.setItem(
+            `transactions_${currentAccount.accountHolder} ${currentAccount.accountType}`,
+            JSON.stringify(currentAccount.transactions)
+          );
+          const newTransactionsDate = localStorage.setItem(
+            `transactionsDates_${currentAccount.accountHolder} ${currentAccount.accountType}`,
+            JSON.stringify(currentAccount.movementsDates)
+          );
+          updateUI(currentAccount);
         }
         loanAmount.value = '';
       }
@@ -336,96 +307,146 @@ if (requestLoanbtn) {
   });
 }
 
-const btnClose = document.querySelector('.form__btn--close');
-const userClose = document.querySelector('.form__input--user--close');
-const userClosePin = document.querySelector('.form__input--pin--close');
-const wholeApp = document.querySelector('.wholeApp');
+/********************************************Functions *********************************************/
+mainApp.style.opacity = 0;
 
-if (btnClose) {
-  btnClose.addEventListener('click', function (e) {
-    e.preventDefault();
-    if (
-      currentAccount &&
-      userClose.value === currentAccount.username &&
-      +userClosePin.value === currentAccount.pin
-    ) {
-      mainApp.style.display = 'none';
-
-      const index = accounts.findIndex(
-        acc => acc.username === currentAccount.username
-      );
-      accounts.splice(index, 1);
-      currentAccount = accounts[0] || profile1.accounts[0]; // switch to the next account or the first account in the list
-      mainApp.style.display = 'inline';
-      updateUI(currentAccount);
-    }
+//Creates Usernames using the first letters of the first and last name of the user
+const createUsername = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.memberName
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
   });
-}
+};
+createUsername(profiles);
 
-const transactionContainer = document.querySelector('.transactions');
-
-const formatMovementDate = function (date, locale) {
-  const calcDaysPassed = (date1, date2) =>
-    Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
-
-  const daysPassed = calcDaysPassed(new Date(), date);
-
-  if (daysPassed === 0) return 'Today';
-  if (daysPassed === 1) return 'Yesterday';
-  if (daysPassed <= 7) return `${daysPassed} days ago`;
-
-  // const day = `${date.getDate()}`.padStart(2, 0);
-  // const month = `${date.getMonth() + 1}`.padStart(2, 0);
-  // const year = date.getFullYear();
-  // return `${day}/${month}/${year}`;
-  return new Intl.DateTimeFormat(locale).format(date);
+//updates current time
+const updateTime = function () {
+  currentTime = new Date();
 };
 
-const currencyCodeMap = {
-  840: 'USD',
-  978: 'EUR',
-  // add more currency codes here as needed
-};
+//Pulls transactions out of local storage
 
-function formatCur(value, currency, locale) {
-  const currencyCode = currencyCodeMap[currency] || 'USD'; // default to USD if code not found
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency: currencyCode,
-  }).format(value);
-}
+//Displays Currently Logged in profile's accounts sorted in order of checking first, then in order of most recently created.
+const displayAccounts = function (currentAccount) {
+  const accountContainer = document.querySelector('.accountContainer');
+  accountContainer.innerHTML = '';
 
-const balanceDate = document.querySelector(`.balance__date`);
-const now = new Date();
-const options = {
-  hour: 'numeric',
-  minute: 'numeric',
-  day: 'numeric',
-  month: 'numeric',
-  year: 'numeric',
-  // weekday: 'long',
+  // add the code here
+  if (currentProfile.accounts.length === 0) {
+    const html = `
+      <div class="row">
+        <p>No accounts found.</p>
+      </div>
+    `;
+    accountContainer.insertAdjacentHTML('afterend', html);
+    return;
+  }
+
+  currentProfile.accounts.sort((a, b) => {
+    // First, sort by account type
+    if (a.accountType < b.accountType) return -1;
+    if (a.accountType > b.accountType) return 1;
+
+    // If account types are the same, sort by creation date
+    const aDates = a.movementsDates || [];
+    const bDates = b.movementsDates || [];
+    if (aDates.length === 0 && bDates.length === 0) return 0;
+    if (aDates.length === 0) return -1;
+    if (bDates.length === 0) return 1;
+    const aDate = new Date(aDates[0]);
+    const bDate = new Date(bDates[0]);
+    if (aDate < bDate) return -1;
+    if (aDate > bDate) return 1;
+
+    return 0;
+  });
+
+  //Then format the date and display accounts
+  currentProfile.accounts.forEach(function (accnt) {
+    let totalMovements = accnt.transactions.reduce(
+      (sum, curr) => sum + curr,
+      0
+    );
+
+    let balance = formatCur(
+      currentProfile.locale,
+
+      currentProfile.currency
+    );
+
+    let lastTransactionDate = new Date(
+      accnt.movementsDates[accnt.movementsDates.length - 1]
+    ).toLocaleDateString(currentProfile.locale);
+
+    const html = `
+      <div class="row accountsRow">
+        <div class="col accountType">${accnt.accountType}</div>
+        <div class="col accountNumber">${accnt.accountNumber.slice(-4)}</div>
+        <div class="col updateDate">${lastTransactionDate}</div>
+      </div>
+    `;
+
+    accountContainer.insertAdjacentHTML('beforeEnd', html);
+  });
 };
-export const displayBalance = function (acc) {
-  acc.balance = acc.transactions.reduce((acc, mov) => acc + mov, 0);
-  balanceValue.textContent = formatCur(acc.balance, acc.locale, acc.currency);
-};
-//Display Accounts
 
 //Display Transactions
-export const displayTransactions = function (acc, sort = false) {
+export const displayTransactions = function (currentAccount) {
+  let movs;
+  console.log(currentAccount);
+
+  //selects the transactions HTML element
+  const transactionContainer = document.querySelector('.transactions');
   transactionContainer.innerHTML = '';
 
-  const movs = sort
-    ? acc.transactions.slice().sort((a, b) => a - b)
-    : acc.transactions;
+  //Variable set for the transactions themselves
+  const savedTransactions = JSON.parse(
+    localStorage.getItem(
+      `transactions_${currentAccount.accountHolder} ${currentAccount.accountType}`
+    )
+  );
+
+  if (!savedTransactions) {
+    movs = currentAccount.transactions;
+  } else {
+    movs = savedTransactions;
+  }
+
+  //const movs = currentAccount.transactions;
+  console.log(movs);
+
+  //A loop that runs through each transaction in the current account object
   movs.forEach(function (mov, i) {
+    //Sets each transaction to local storage
+
+    //ternerary to determine whether a transaction is a deposit or withdrawal
     const type = mov > 0 ? 'deposit' : 'withdrawal';
+    let date;
+    let newDates = JSON.parse(
+      localStorage.getItem(
+        `transactionsDates_${currentAccount.accountHolder} ${currentAccount.accountType}`
+      )
+    );
+    //Sets the date for each transaction according to the date set in the current Account object
+    if (!savedTransactions) {
+      date = new Date(currentAccount.movementsDates[i]);
+    } else {
+      date = new Date(newDates[i]);
+      console.log(newDates[i]);
+    }
 
-    const date = new Date(acc.movementsDates[i]);
-    const displayDate = formatMovementDate(date, acc.locale);
-
-    const formattedMov = formatCur(mov, acc.locale, acc.currency);
-
+    //displays date next to transactions
+    const displayDate = formatMovementDate(date, currentAccount.locale);
+    //Formats transactions for user locale
+    const formattedMov = formatCur(
+      mov,
+      currentAccount.locale,
+      currentAccount.currency
+    );
+    //HTML for transactions
     const html = `
       <div class="transactions__row">
         <div class="transactions__type transactions__type--${type}">${
@@ -435,13 +456,50 @@ export const displayTransactions = function (acc, sort = false) {
         <div class="transactions__value">${formattedMov}</div>
       </div>
     `;
-
+    //Inserts HTML with required data
     transactionContainer.insertAdjacentHTML('afterbegin', html);
   });
 };
-const updateUI = function (acc) {
-  // Display movements
 
+//Takes the current transaction date and formats it to mm/dd/yyyy
+const formatMovementDate = function (date, locale) {
+  // const calcDaysPassed = (date1, date2) =>
+  //   Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
+
+  // const daysPassed = calcDaysPassed(new Date(), dateStr);
+
+  // if (daysPassed === 0) return 'Today';
+  // if (daysPassed === 1) return 'Yesterday';
+  // if (daysPassed <= 7) return `${daysPassed} days ago`;
+
+  return new Intl.DateTimeFormat(locale).format(date);
+};
+//formats customer Currency to whatever location they are in
+function formatCur(value, currency, locale) {
+  const currencyCode = currencyCodeMap[currency] || 'USD'; // default to USD if code not found
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currencyCode,
+  }).format(value);
+}
+
+//displays a formatted balance
+export const displayBalance = function (acc) {
+  const savedTransactions = JSON.parse(
+    localStorage.getItem(`transactions_${acc.accountHolder} ${acc.accountType}`)
+  );
+  if (!savedTransactions) {
+    acc.balance = acc.transactions.reduce((acc, mov) => acc + mov, 0);
+  } else {
+    acc.balance = savedTransactions.reduce((acc, mov) => acc + mov, 0);
+  }
+
+  balanceValue.textContent = formatCur(acc.balance, acc.locale, acc.currency);
+};
+
+//calls display functions to update user UI
+const updateUI = function (acc) {
+  // Display Transactions
   displayTransactions(acc);
 
   // Display balance
@@ -450,4 +508,3 @@ const updateUI = function (acc) {
   // Display accounts
   displayAccounts(acc);
 };
-
