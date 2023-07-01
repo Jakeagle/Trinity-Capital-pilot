@@ -171,21 +171,27 @@
             </div>
 
             <div class="operation operation--switch">
-              <h2>Switch account</h2>
-              <form class="form form--close">
-                <input
-                  type="text"
-                  class="form__input form__input--user--switch"
-                />
-                <input
-                  type="password"
-                  maxlength="6"
-                  class="form__input form__input--pin--switch"
-                />
-                <button class="form__btn form__btn--switch">&rarr;</button>
-                <label class="form__label">Account Number</label>
-                <label class="form__label">Confirm PIN</label>
-              </form>
+              <h2 class="switchTitle">Switch account</h2>
+              <div class="formCloseDiv">
+                <form class="form form--close">
+                  <input
+                    type="text"
+                    class="form__input form__input--user--switch"
+                  />
+                  <input
+                    type="password"
+                    maxlength="6"
+                    class="form__input form__input--pin--switch"
+                  />
+                  <button class="form__btn form__btn--switch">&rarr;</button>
+                  <label class="form__label">
+                    <p class="switchLabel">Account Number</p>
+                  </label>
+                  <label class="form__label">
+                    <p class="switchLabel">Confirm PIN</p></label
+                  >
+                </form>
+              </div>
             </div>
           </div>
           <!--transactions-->
