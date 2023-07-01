@@ -291,17 +291,7 @@ if (requestLoanbtn) {
           console.log(currentAccount.movementsDates);
 
           //Update UI
-
-          // console.log(currentAccount.transactions);
-          //console.log(currentAccount.movementsDates);
-          const newTransactions = localStorage.setItem(
-            `transactions_${currentAccount.accountHolder} ${currentAccount.accountType}`,
-            JSON.stringify(currentAccount.transactions)
-          );
-          const newTransactionsDate = localStorage.setItem(
-            `transactionsDates_${currentAccount.accountHolder} ${currentAccount.accountType}`,
-            JSON.stringify(currentAccount.movementsDates)
-          );
+          transactionsPush();
           updateUI(currentAccount);
         }
         loanAmount.value = '';
@@ -328,11 +318,6 @@ donateBtn.addEventListener('click', function (e) {
   }
 
   //Sets the saved transactions in local storage
-  const savedTransactions = JSON.parse(
-    localStorage.getItem(
-      `transactions_${currentAccount.accountHolder} ${currentAccount.accountType}`
-    )
-  );
 
   //Check to see if there are saved transactions and adds the sum accordingly
 
@@ -348,14 +333,7 @@ donateBtn.addEventListener('click', function (e) {
 
     // console.log(currentAccount.transactions);
     //console.log(currentAccount.movementsDates);
-    const newTransactions = localStorage.setItem(
-      `transactions_${currentAccount.accountHolder} ${currentAccount.accountType}`,
-      JSON.stringify(currentAccount.transactions)
-    );
-    const newTransactionsDate = localStorage.setItem(
-      `transactionsDates_${currentAccount.accountHolder} ${currentAccount.accountType}`,
-      JSON.stringify(currentAccount.movementsDates)
-    );
+    transactionsPush();
     updateUI(currentAccount);
 
     donatePin.value = '';
@@ -383,7 +361,10 @@ const updateTime = function () {
   currentTime = new Date();
 };
 
-//Pulls transactions out of local storage
+//Pushes transactions to profiles objects
+const transactionsPush = function () {
+  localStorage.setItem('profiles', JSON.stringify(profiles));
+};
 
 //Displays Currently Logged in profile's accounts sorted in order of checking first, then in order of most recently created.
 const displayAccounts = function (currentAccount) {
@@ -459,17 +440,8 @@ export const displayTransactions = function (currentAccount) {
   transactionContainer.innerHTML = '';
 
   //Variable set for the transactions themselves
-  const savedTransactions = JSON.parse(
-    localStorage.getItem(
-      `transactions_${currentAccount.accountHolder} ${currentAccount.accountType}`
-    )
-  );
 
-  if (!savedTransactions) {
-    movs = currentAccount.transactions;
-  } else {
-    movs = savedTransactions;
-  }
+  movs = currentAccount.transactions;
 
   //const movs = currentAccount.transactions;
   console.log(movs);
@@ -487,12 +459,8 @@ export const displayTransactions = function (currentAccount) {
       )
     );
     //Sets the date for each transaction according to the date set in the current Account object
-    if (!savedTransactions) {
-      date = new Date(currentAccount.movementsDates[i]);
-    } else {
-      date = new Date(newDates[i]);
-      console.log(newDates[i]);
-    }
+
+    date = new Date(currentAccount.movementsDates[i]);
 
     //displays date next to transactions
     const displayDate = formatMovementDate(date, currentAccount.locale);
