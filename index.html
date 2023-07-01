@@ -191,19 +191,21 @@
           <!--transactions-->
           <div class="col-lg-8 col-md-8 col-sm-12 transactions">
             <h3 class="transactionsTitle headings">Transactions</h3>
-            <div class="transactions__row">
-              <div class="transactions__type transactions__type--deposit">
-                2 deposit
+            <div class="transactions__row row">
+              <div class="transactions__type transactions__type--deposit col-4">
+                <div class="transactionsTypeText">2 deposit</div>
               </div>
-              <div class="transactions__date">3 days ago</div>
-              <div class="transactions__value">$600</div>
+              <div class="transactions__date col-4">3 days ago</div>
+              <div class="transactions__value col-4">$600</div>
             </div>
-            <div class="transactions__row">
-              <div class="transactions__type transactions__type--withdrawal">
-                1 withdrawal
+            <div class="transactions__row row">
+              <div
+                class="transactions__type transactions__type--withdrawal col-4"
+              >
+                <div class="transactionsTypeText">1 withdrawal</div>
               </div>
-              <div class="transactions__date">24/01/2037</div>
-              <div class="transactions__value">-$100</div>
+              <div class="transactions__date col-4">24/01/2037</div>
+              <div class="transactions__value col-4">-$100</div>
             </div>
           </div>
         </div>
@@ -248,7 +250,7 @@
         </div>
       </div>
     </div>
-    <script src="index.js" type="module"></script>
+    <script src="script.js" type="module"></script>
     <script src="transfer.js" type="module"></script>
   </body>
 </html>
