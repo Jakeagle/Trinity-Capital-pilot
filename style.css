@@ -129,6 +129,10 @@ a:hover {
   overflow: scroll;
 }
 
+.accountContainer {
+  margin-bottom: 1rem;
+}
+
 .accountsTitle {
   font-size: 90%;
 }
@@ -221,7 +225,7 @@ a:hover {
   font-family: 'Montserrat', sans-serif;
   border-radius: 1rem;
   padding: 3rem 4rem;
-  margin: 1rem;
+  margin: auto;
   color: #333;
 }
 
@@ -230,6 +234,7 @@ a:hover {
 }
 .operation--loan {
   background-image: linear-gradient(to top left, #7d7d7a, #8e8d8d);
+  margin: 1rem;
 }
 
 .operation--close {
@@ -239,11 +244,21 @@ a:hover {
 
 .operation--donate {
   background-image: linear-gradient(to top left, #ae8626, #f7ef8a);
+  margin: 1rem;
 }
 
 .operation--switch {
   background-image: linear-gradient(to top left, #ae8626, #f7ef8a);
-  padding: 1rem 1rem;
+  padding: 1rem 2rem;
+  width: 95%;
+}
+
+.switchTitle {
+  font-size: 1.3rem;
+}
+
+.switchLabel {
+  font-size: 1rem;
 }
 
 .form {
@@ -252,6 +267,18 @@ a:hover {
   grid-template-rows: auto auto;
   gap: 0.4rem 1rem;
 }
+
+.form--close {
+  display: grid;
+  grid-template-columns: 2.5fr 2.5fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.1rem 1rem;
+}
+
+.formCloseDiv {
+  padding-right: 100rem;
+}
+
 .donateForm {
   display: grid;
   grid-template-columns: 2.5fr 2.5fr 1fr;
