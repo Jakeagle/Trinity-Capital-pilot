@@ -467,11 +467,12 @@ export const displayTransactions = function (currentAccount) {
     //HTML for transactions
     const html = `
       <div class="transactions__row">
-        <div class="transactions__type transactions__type--${type}">${
-      i + 1
-    } ${type}</div>
-        <div class="transactions__date">${displayDate}</div>
-        <div class="transactions__value">${formattedMov}</div>
+        <div class="transactions__type transactions__type--${type} col-4">
+        <div class="transactionsTypeText"> 
+        ${i + 1} ${type}</div>
+    </div>
+        <div class="transactions__date col-4">${displayDate}</div>
+        <div class="transactions__value col-4">${formattedMov}</div>
       </div>
     `;
     //Inserts HTML with required data
