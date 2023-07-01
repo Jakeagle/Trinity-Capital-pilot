@@ -310,12 +310,6 @@ donateBtn.addEventListener('click', function (e) {
   const pin = parseInt(donatePin.value);
   //Total Balance
   //Sets the current account
-  for (const account of currentProfile.accounts) {
-    if (account.type === 'Checking') {
-      currentAccount = account;
-      break;
-    }
-  }
 
   //Sets the saved transactions in local storage
 
