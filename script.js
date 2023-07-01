@@ -509,14 +509,7 @@ function formatCur(value, currency, locale) {
 
 //displays a formatted balance
 export const displayBalance = function (acc) {
-  const savedTransactions = JSON.parse(
-    localStorage.getItem(`transactions_${acc.accountHolder} ${acc.accountType}`)
-  );
-  if (!savedTransactions) {
-    acc.balance = acc.transactions.reduce((acc, mov) => acc + mov, 0);
-  } else {
-    acc.balance = savedTransactions.reduce((acc, mov) => acc + mov, 0);
-  }
+  acc.balance = acc.transactions.reduce((acc, mov) => acc + mov, 0);
 
   balanceValue.textContent = formatCur(acc.balance, acc.locale, acc.currency);
 };
