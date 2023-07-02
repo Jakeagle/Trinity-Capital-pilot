@@ -365,15 +365,61 @@ a:hover {
 }
 
 .fromTitle {
-  margin-top: 1%;
-  font-size: 2.5rem;
+  text-align: center;
+  margin: auto;
+  font-size: 1.5rem;
+}
+
+.amountTitle {
+  text-align: center;
+  margin: auto;
+  font-size: 1.1rem;
 }
 
 .accountsTitle {
   font-size: 1.3rem;
 }
 
+.chooseAccountLabel {
+  text-align: center;
+
+  margin-bottom: 1rem;
+}
+
+.chooseAccountLabelToo {
+  text-align: center;
+  margin: 0 1.7rem;
+  width: 100%;
+}
+
+.accountsTransferFrom {
+  margin: auto;
+}
+
+.selectBox {
+  text-align: center;
+  justify-content: center;
+  margin: 0 1rem;
+}
 .fromBoxDiv {
+  font-family: 'Montserrat', sans-serif;
+  border-radius: 1rem;
+  padding: 0.5rem 4rem;
+  margin: 1rem;
+  color: #333;
+  background-image: linear-gradient(to top left, #ae8626, #f7ef8a);
+}
+
+.amountBoxDiv {
+  font-family: 'Montserrat', sans-serif;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  margin: 1rem;
+  color: #333;
+  background-image: linear-gradient(to top left, #ae8626, #f7ef8a);
+}
+
+.tooBoxDiv {
   font-family: 'Montserrat', sans-serif;
   border-radius: 1rem;
   padding: 0.5rem 4rem;
