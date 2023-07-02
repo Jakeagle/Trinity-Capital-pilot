@@ -1,7 +1,7 @@
 'use strict';
 
 //import profiles object from App.js
-import { profiles } from './app.js';
+import { profiles } from './script.js';
 
 //Variables
 const inputPIN = document.querySelector('.login__input--pin--transfer');
