@@ -117,7 +117,7 @@ if (!profilesJsonRetrieve) {
   profilesJsonRetrieve = localStorage.getItem('profiles');
 }
 
-const profiles = JSON.parse(profilesJsonRetrieve);
+export const profiles = JSON.parse(profilesJsonRetrieve);
 // log accounts to see if it is an array of objects
 
 /******************************************Variables ***************************************************/
