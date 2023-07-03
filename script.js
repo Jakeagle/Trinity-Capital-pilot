@@ -63,6 +63,27 @@ const djAccount1 = {
   ],
 };
 
+const djAccount2 = {
+  id: 4,
+  accountHolder: 'Darlene Jones',
+  currency: 'USD',
+  locale: 'en-US',
+  transactions: [450, 1900, -100, 780, 55, 150, 10, -1000],
+  accountType: 'Savings',
+  accountNumber: '1247885477085708',
+
+  movementsDates: [
+    '2019-11-01T13:15:33.035Z',
+    '2019-11-30T09:48:16.867Z',
+    '2019-12-25T06:04:23.907Z',
+    '2020-01-25T14:18:46.235Z',
+    '2020-02-05T16:33:06.386Z',
+    '2020-04-10T14:43:26.374Z',
+    '2020-06-25T18:49:59.371Z',
+    '2020-07-26T12:01:20.894Z',
+  ],
+};
+
 const profile1 = {
   memberName: 'Jakob Ferguson',
   sex: 'male',
@@ -99,7 +120,15 @@ const profile2 = {
     {
       ...djAccount1,
       type: 'Checking',
-      accountNumber: '1247885477086903',
+      accountNumberA: '1247885477086903',
+      routingNumber: 141257185,
+      currency: 'USD',
+      locale: 'en-US',
+    },
+    {
+      ...djAccount2,
+      type: 'Savings',
+      accountNumberA: '1247885477085708',
       routingNumber: 141257185,
       currency: 'USD',
       locale: 'en-US',
@@ -301,39 +330,40 @@ if (requestLoanbtn) {
 }
 
 //Donating money
+if (donateBtn) {
+  donateBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    //How much a user donates
+    let donationAmount = Number(donateAmount.value);
+    //User Pin
+    const pin = parseInt(donatePin.value);
+    //Total Balance
+    //Sets the current account
 
-donateBtn.addEventListener('click', function (e) {
-  e.preventDefault();
-  //How much a user donates
-  let donationAmount = Number(donateAmount.value);
-  //User Pin
-  const pin = parseInt(donatePin.value);
-  //Total Balance
-  //Sets the current account
+    //Sets the saved transactions in local storage
 
-  //Sets the saved transactions in local storage
+    //Check to see if there are saved transactions and adds the sum accordingly
 
-  //Check to see if there are saved transactions and adds the sum accordingly
+    //Reduces the amount by the donation amount and updates the UI.
+    if (pin === currentProfile.pin) {
+      currentAccount.transactions.push(-donationAmount);
 
-  //Reduces the amount by the donation amount and updates the UI.
-  if (pin === currentProfile.pin) {
-    currentAccount.transactions.push(-donationAmount);
+      // Add loan date
 
-    // Add loan date
+      currentAccount.movementsDates.push(new Date().toISOString());
 
-    currentAccount.movementsDates.push(new Date().toISOString());
+      //Update UI
 
-    //Update UI
+      // console.log(currentAccount.transactions);
+      //console.log(currentAccount.movementsDates);
+      transactionsPush();
+      updateUI(currentAccount);
 
-    // console.log(currentAccount.transactions);
-    //console.log(currentAccount.movementsDates);
-    transactionsPush();
-    updateUI(currentAccount);
-
-    donatePin.value = '';
-    donateAmount.value = '';
-  }
-});
+      donatePin.value = '';
+      donateAmount.value = '';
+    }
+  });
+}
 
 /********************************************Functions *********************************************/
 mainApp.style.opacity = 0;
