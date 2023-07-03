@@ -2,6 +2,7 @@
 
 //import profiles object from App.js
 import { profiles } from './script.js';
+import { formatMovementDate } from './script.js';
 
 /************************************************Variables*************************************************/
 
@@ -71,6 +72,7 @@ const transferFunds = function (accounts) {
       return;
     } else if ((accountSend = account.accountNumber)) {
       account.transactions.push(-amount);
+      account.movementsDates.push(new Date().toISOString());
       console.log(account.transactions);
     }
   });
@@ -81,12 +83,16 @@ const transferFunds = function (accounts) {
       return;
     } else if ((accountRecieve = account.accountNumber)) {
       account.transactions.push(amount);
-      new Date();
+      account.movementsDates.push(new Date().toISOString());
+
       console.log(account.transactions);
     }
   });
 
   localStorage.setItem('profiles', JSON.stringify(profiles));
+
+  alert('Transfer Succesfull');
+  location.replace('index.html');
 };
 
 //transferFunds();
@@ -116,4 +122,5 @@ accountListToo.addEventListener('change', function (event) {
 
 btnAmount.addEventListener('click', function () {
   transferFunds(currentProfile.accounts);
+  amountInput.textContent = '';
 });
