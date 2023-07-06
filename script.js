@@ -8,6 +8,8 @@ const jfAccount1 = {
   currency: 'USD',
   locale: 'en-US',
   transactions: [550, 1200, -200, 25, 25, 155, 1200, -300],
+  bills: [],
+  payments: [],
   accountType: 'Checking',
   accountNumber: '4585120945465872',
   movementsDates: [
@@ -48,6 +50,8 @@ const djAccount1 = {
   currency: 'USD',
   locale: 'en-US',
   transactions: [450, 1900, -100, 55, 5, 105, 1000, -500],
+  bills: [],
+  payments: [],
   accountType: 'Checking',
   accountNumber: '1247885477086903',
 
@@ -234,7 +238,6 @@ if (loginButton) {
       mainApp.style.opacity = 100;
 
       if (currentAccount) {
-        console.log(currentAccount);
         //Add currentAccount here
         // Update the UI with the first account's information
 
@@ -366,7 +369,9 @@ if (donateBtn) {
 }
 
 /********************************************Functions *********************************************/
-mainApp.style.opacity = 0;
+if (mainApp) {
+  mainApp.style.opacity = 0;
+}
 
 //Creates Usernames using the first letters of the first and last name of the user
 const createUsername = function (accs) {
@@ -457,7 +462,6 @@ const displayAccounts = function (currentAccount) {
 //Display Transactions
 export const displayTransactions = function (currentAccount) {
   let movs;
-  console.log(currentAccount);
 
   //selects the transactions HTML element
   const transactionContainer = document.querySelector('.transactions');
@@ -468,7 +472,6 @@ export const displayTransactions = function (currentAccount) {
   movs = currentAccount.transactions;
 
   //const movs = currentAccount.transactions;
-  console.log(movs);
 
   //A loop that runs through each transaction in the current account object
   movs.forEach(function (mov, i) {
@@ -510,17 +513,73 @@ export const displayTransactions = function (currentAccount) {
   });
 };
 
+export const displayBills = function (currentAccount) {
+  let movs;
+  let interval;
+
+  //selects the transactions HTML element
+  const transactionContainer = document.querySelector('.transactions');
+  if (transactionContainer) {
+    transactionContainer.innerHTML = '';
+  }
+
+  //Variable set for the transactions themselves
+  console.log(currentAccount.bills[0]);
+  movs = currentAccount.bills;
+
+  //const movs = currentAccount.transactions;
+
+  //A loop that runs through each transaction in the current account object
+  movs.forEach(function (mov, i) {
+    if ((currentAccount.bills[i].length = 7)) {
+      interval = 7000;
+    } else if ((currentAccount.bills[i].length = 14)) {
+      interval = 14000;
+    } else if ((currentAccount.bills[i].length = 30)) {
+      interval = 30000;
+    }
+
+    setInterval(function () {
+      console.log(currentAccount.bills[i]);
+      const type = mov > 0 ? 'deposit' : 'withdrawal';
+      let date;
+      let newDate;
+      //Sets the date for each transaction according to the date set in the current Account object
+
+      console.log(currentAccount.movementsDates);
+      date = new Date(currentAccount.movementsDates[i]);
+      //date = currentAccount.movementsDates.push(new Date().toISOString());
+
+      //displays date next to transactions
+      const displayDate = formatMovementDate(date, currentAccount.locale);
+      //Formats transactions for user locale
+      const formattedMov = formatCur(
+        mov,
+        currentAccount.locale,
+        currentAccount.currency
+      );
+      //HTML for transactions
+      const html = `
+          <div class="transactions__row">
+            <div class="transactions__type transactions__type--${type} col-4">
+            <div class="transactionsTypeText"> 
+            ${i + 1} ${type}</div>
+        </div>
+            <div class="transactions__date col-4">${displayDate}</div>
+            <div class="transactions__value col-4">${formattedMov}</div>
+          </div>
+        `;
+      //Inserts HTML with required data
+      transactionContainer.insertAdjacentHTML('afterbegin', html);
+    }, interval);
+    //Sets each transaction to local storage
+
+    //ternerary to determine whether a transaction is a deposit or withdrawal
+  });
+};
+
 //Takes the current transaction date and formats it to mm/dd/yyyy
 export const formatMovementDate = function (date, locale) {
-  // const calcDaysPassed = (date1, date2) =>
-  //   Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
-
-  // const daysPassed = calcDaysPassed(new Date(), dateStr);
-
-  // if (daysPassed === 0) return 'Today';
-  // if (daysPassed === 1) return 'Yesterday';
-  // if (daysPassed <= 7) return `${daysPassed} days ago`;
-
   return new Intl.DateTimeFormat(locale).format(date);
 };
 //formats customer Currency to whatever location they are in
@@ -540,13 +599,16 @@ export const displayBalance = function (acc) {
 };
 
 //calls display functions to update user UI
-const updateUI = function (acc) {
+export const updateUI = function (acc) {
   // Display Transactions
   displayTransactions(acc);
 
-  // Display balance
   displayBalance(acc);
 
+  //Display Bills
+  displayBills(acc);
+
   // Display accounts
+
   displayAccounts(acc);
 };
