@@ -1,0 +1,33 @@
+.billsAndPaymentsTitle {
+  margin: 2rem 0 2rem 0;
+}
+
+.billHeading {
+  margin-top: 1rem;
+}
+
+.boxes {
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  border-radius: 1rem;
+  padding: 0.5rem 4rem;
+  margin: 1rem;
+  color: #333;
+  background-image: linear-gradient(to top left, #ae8626, #f7ef8a);
+}
+
+.billForm {
+  margin-bottom: 3rem;
+}
+
+.frequencyList {
+  text-align: center;
+  width: 80%;
+  font-family: 'Montserrat', sans-serif;
+  color: black;
+  background-color: #f3f3f3;
+  border-radius: 2rem;
+  border-color: #7d7d7a;
+  border-width: 0.2rem;
+  margin-left: 5%;
+}
