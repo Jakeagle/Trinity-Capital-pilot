@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bills and Payments</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="billsAndPayments.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://kit.fontawesome.com/60a3862749.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="header">
+      <div class="row headerRow">
+        <div class="col title-div">
+          <h1 class="title1">Trinity</h1>
+        </div>
+        <div class="col image-div">
+          <img
+            src="png-transparent-black-artwork-il.png"
+            alt="Logo"
+            class="logo"
+          />
+        </div>
+        <div class="col title-div-2">
+          <h1 class="title2">Capital</h1>
+        </div>
+      </div>
+    </div>
+    <hr />
+
+    <h1 class="billsAndPaymentsTitle headings">Bills and Payments</h1>
+    <hr />
+
+    <div class="signOnSection">
+      <div class="signOnprompt">
+        <h2 class="signOntext headings">Enter your PIN to continue</h2>
+      </div>
+
+      <div class="signOnForm">
+        <div class="row formDiv">
+          <div class="col pinBox">
+            <input
+              type="text"
+              placeholder="PIN"
+              maxlength="4"
+              class="login__input login__input--pin--bp signOnGroup"
+            />
+          </div>
+        </div>
+        <div class="row formDiv">
+          <div class="col button">
+            <button class="login__btn--bp signOnGroup">&rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mainApp">
+      <div class="billsSection">
+        <div class="boxes">
+          <h1 class="headings billHeading">Bills</h1>
+          <hr />
+          <div class="row billsRow">
+            <div class="col-6 billAmount">
+              <h2 class="headings">Amount</h2>
+              <input
+                type="text"
+                class="form__input form__input--amount--bills"
+              />
+            </div>
+            <div class="col-6 billFrequency">
+              <form class="billForm" action="">
+                <h2 class="headings">Frequency</h2>
+                <select
+                  name="Frequency"
+                  class="frequencyList frequencyListBills col-6"
+                >
+                  <option value="choosePay">choose Interval</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="bi-weekly">Bi-Weekly</option>
+                  <option value="monthly">Monthly</option>
+                </select>
+              </form>
+            </div>
+            <h3 class="headings">Submit</h3>
+            <button class="form__btn form__btn--bills">&rarr;</button>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+      <div class="boxes">
+        <h1 class="headings billHeading">Payments</h1>
+        <hr />
+        <div class="row billsRow">
+          <div class="col-6 billAmount">
+            <h2 class="headings">Amount</h2>
+            <input
+              type="text"
+              class="form__input form__input--amount--payments"
+            />
+          </div>
+          <div class="col-6 billFrequency">
+            <form class="billForm" action="">
+              <h2 class="headings">Frequency</h2>
+              <select
+                name="Frequency"
+                class="frequencyList frequencyListPayments col-6"
+              >
+                <option value="choosePay">choose Interval</option>
+                <option value="weekly">Weekly</option>
+                <option value="bi-weekly">Bi-Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </form>
+          </div>
+          <h3 class="headings">Submit</h3>
+          <button class="form__btn form__btn--payments">&rarr;</button>
+        </div>
+      </div>
+    </div>
+    <script src="billsAndPayments.js" type="module"></script>
+  </body>
+</html>
