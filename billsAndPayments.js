@@ -1,6 +1,6 @@
 'use strict';
 
-import { profiles } from './app.js';
+import { profiles } from './script.js';
 
 /**********************************************Variables***********************************************/
 
