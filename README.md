@@ -1,13 +1,24 @@
 # Trinity-Capital
-A simulated banking site that users can access and use to simulate live banking with other users. 
+A simulated banking app designed for the Education market to teach students how to bank, manage their finances, and use banking software.
 
+The first upload of files (3/23/2023) is merely a markup test. Used to test the website's responsiveness and allow actual users to see it in real-time. Upon the site loading, you will see an alert describing what I've said here. 
 
-The first upload of files (3/23/2023) is meerly a markup test. Used to test the responsiveness of the website, and to allow real users to see it in real time. Upon the site loading, you will see an alert describing what ive seen here. 
+As of 07/08/2023, the website now has the following features:
+1: Loans (You can now request a loan to be added to your account)
+2: Donations (You can now donate funds to the bank itself)
+3: Transfers (You can now transfer funds between your accounts)
+4: Bill and Payments (You can now set up your bills and paychecks to occur at intervals of seconds meant to represent days (i.e. 7 seconds representing a week, or 7 days) 
 
-I plan to have this website fully functional, having the following features: 
+**THIS WEBSITE IS A DEMO VERSION ONLY AND USES LOCAL STORAGE WITH JSON FOR DATA STORAGE.** 
 
-Interconnectivity to users: When you create an account for this simulated bank, your data will be saved to your local computer device, allowing you to access your account whenever, and your account info remain the same. This will also allow users to interact with eachother as they use the app. 
+The production website will include backend and serverside programming that will include the following features: 
 
-Transfers, loans, and other money moving features: I plan on making a system where you can request loans, and money from other users, and have those funds actually be transferred using the app features. I also plan on having a payment system set up to simulate users incomes. 
+1: Backend donation system (This is a system where the donations users make are split among users, rewarding those who donate more) 
+2: Live bill and paycheck dates (Instead of having seconds represent bill and check intervals, there will be a system for actual time intervals for these to occur) 
+3: Sending funds to other users (This system will be put in place so that users can send funds to other users at any time and those funds be handled immediately. 
+4: A loan payback system (When you request a loan, this system will be put in place, requiring users to pay back the loan after a certain amount of time, and penalize users for not keeping up with loans. 
 
-Special unannounced features: Stay tuned for more. 
+DISCLAIMER: As stated before, this website is an educational banking *simulator* and not a live bank. No real-life funds are being transferred, nor can this app be used to purchase real-life items or surfaces. 
+
+If you have any questions you can reach out to jakeagleofficial01@gmail.com for more information
+
