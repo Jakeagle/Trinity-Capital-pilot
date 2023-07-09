@@ -2,7 +2,7 @@
 
 **WARNING**
 
-If you have used the app to any capacity before 7/8/23, you may encounter errors when using the latest version of the application. 
+If you have used the app to any capacity before 7/8/23, you may encounter an error where your balance will show as NaN, and your transactions will be blank when using the latest version of the application. 
 This is due to a new value being added to a certain object that wasn't previously stored in local storage. 
 To fix this issue, please **clear local storage if you are on PC***, or **clear site data if you are on mobile** 
 This will solve this issue and return the site to normal functionality 
