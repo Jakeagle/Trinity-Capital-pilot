@@ -26,7 +26,7 @@ The production website will include backend and serverside programming that will
 3: Sending funds to other users (This system will be put in place so that users can send funds to other users at any time and those funds be handled immediately. 
 4: A loan payback system (When you request a loan, this system will be put in place, requiring users to pay back the loan after a certain amount of time, and penalize users for not keeping up with loans. 
 
-DISCLAIMER: As stated before, this website is an educational banking *simulator* and not a live bank. No real-life funds are being transferred, nor can this app be used to purchase real-life items or surfaces. 
+DISCLAIMER: As stated before, this website is an educational banking *simulator* and not a live bank. No real-life funds are being transferred, nor can this app be used to purchase real-life items or services. 
 
 If you have any questions you can reach out to jakeagleofficial01@gmail.com for more information
 
