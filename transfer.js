@@ -90,7 +90,7 @@ const transferFunds = function (accounts) {
   localStorage.setItem('profiles', JSON.stringify(profiles));
 
   alert('Transfer Succesfull');
-  location.replace('app.html');
+  location.replace('index.html');
 };
 
 //transferFunds();
