@@ -179,7 +179,6 @@ const balanceLabel = document.querySelector('.balance__label');
 const accNumSwitch = document.querySelector('.form__input--user--switch');
 const accPinSwitch = document.querySelector('.form__input--pin--switch');
 const accBtnSwitch = document.querySelector('.form__btn--switch');
-let listedAccounts = '';
 const btnClose = document.querySelector('.form__btn--close');
 const userClose = document.querySelector('.form__input--user--close');
 const userClosePin = document.querySelector('.form__input--pin--close');
@@ -481,11 +480,7 @@ export const displayTransactions = function (currentAccount) {
     //ternerary to determine whether a transaction is a deposit or withdrawal
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     let date;
-    let newDates = JSON.parse(
-      localStorage.getItem(
-        `transactionsDates_${currentAccount.accountHolder} ${currentAccount.accountType}`
-      )
-    );
+
     //Sets the date for each transaction according to the date set in the current Account object
 
     date = new Date(currentAccount.movementsDates[i]);
@@ -520,29 +515,31 @@ export const displayBills = function (currentAccount) {
     transactionContainer.innerHTML = '';
   }
 
-  currentAccount.bills.forEach(function (movs) {
-    movs.forEach(function (bill, i) {
-      let interval;
+  if (currentAccount.type === 'Checking' && currentAccount.bills.length >= 1) {
+    currentAccount.bills.forEach(function (movs) {
+      movs.forEach(function (bill, i) {
+        //displayTransactions(currentAccount);
+        let interval;
 
-      if (movs.length === 7) {
-        interval = 7000;
-      } else if (movs.length === 14) {
-        interval = 14000;
-      } else if (movs.length === 30) {
-        interval = 30000;
-      }
+        if (movs.length === 7) {
+          interval = 7000;
+        } else if (movs.length === 14) {
+          interval = 14000;
+        } else if (movs.length === 30) {
+          interval = 30000;
+        }
 
-      setInterval(function () {
-        const type = bill > 0 ? 'deposit' : 'withdrawal';
-        const date = new Date();
-        const displayDate = formatMovementDate(date, currentAccount.locale);
-        const formattedBill = formatCur(
-          bill,
-          currentAccount.locale,
-          currentAccount.currency
-        );
+        setInterval(function () {
+          const type = bill > 0 ? 'deposit' : 'withdrawal';
+          const date = new Date();
+          const displayDate = formatMovementDate(date, currentAccount.locale);
+          const formattedBill = formatCur(
+            bill,
+            currentAccount.locale,
+            currentAccount.currency
+          );
 
-        const html = `
+          const html = `
           <div class="transactions__row">
             <div class="transactions__type transactions__type--${type} col-4">
               <div class="transactionsTypeText">${i + 1} ${type}</div>
@@ -552,18 +549,24 @@ export const displayBills = function (currentAccount) {
           </div>
         `;
 
-        transactionContainer.insertAdjacentHTML('afterbegin', html);
+          currentAccount.transactions.push(bill);
+          currentAccount.movementsDates.push(new Date().toISOString());
+          displayBalance(currentAccount);
+          console.log(currentAccount.transactions);
+          transactionsPush();
 
-        // Update the bills balance whenever a new bill is displayed
-        currentAccount.billsBalance += bill; // Add the bill amount to the bills balance
-        //updateBalance(currentAccount); // Update the balance after each bill is displayed
-      }, interval * (i + 1));
-      console.log(interval);
+          transactionContainer.insertAdjacentHTML('afterbegin', html);
+
+          // Update the bills balance whenever a new bill is displayed
+          // Add the bill amount to the bills balance
+          // Update the balance after each bill is displayed
+        }, interval * (i + 1));
+      });
     });
-  });
-
+  } else {
+    displayTransactions(currentAccount);
+  }
   // Call updateBalance once after all the bills have been displayed
-  updateBalance(currentAccount);
 };
 
 export const displayPayments = function (currentAccount) {
@@ -572,29 +575,42 @@ export const displayPayments = function (currentAccount) {
     transactionContainer.innerHTML = '';
   }
 
-  currentAccount.payments.forEach(function (movs) {
-    movs.forEach(function (payment, i) {
-      let interval;
+  if (
+    currentAccount.type === 'Checking' &&
+    currentAccount.payments.length >= 1
+  ) {
+    currentAccount.payments.forEach(function (movs) {
+      if (
+        currentAccount.type !== 'Checking' ||
+        currentAccount.type === 'Savings'
+      ) {
+        console.log(currentAccount.type);
+        displayTransactions(currentAccount);
+        return;
+      } else if (currentAccount.type === 'Checking') {
+        movs.forEach(function (payment, i) {
+          displayTransactions(currentAccount);
+          let interval;
 
-      if (movs.length === 7) {
-        interval = 7000;
-      } else if (movs.length === 14) {
-        interval = 14000;
-      } else if (movs.length === 30) {
-        interval = 30000;
-      }
+          if (movs.length === 7) {
+            interval = 7000;
+          } else if (movs.length === 14) {
+            interval = 14000;
+          } else if (movs.length === 30) {
+            interval = 30000;
+          }
 
-      setInterval(function () {
-        const type = payment > 0 ? 'deposit' : 'withdrawal';
-        const date = new Date();
-        const displayDate = formatMovementDate(date, currentAccount.locale);
-        const formattedPayment = formatCur(
-          payment,
-          currentAccount.locale,
-          currentAccount.currency
-        );
+          setInterval(function () {
+            const type = payment > 0 ? 'deposit' : 'withdrawal';
+            const date = new Date();
+            const displayDate = formatMovementDate(date, currentAccount.locale);
+            const formattedPayment = formatCur(
+              payment,
+              currentAccount.locale,
+              currentAccount.currency
+            );
 
-        const html = `
+            const html = `
           <div class="transactions__row">
             <div class="transactions__type transactions__type--${type} col-4">
               <div class="transactionsTypeText">${i + 1} ${type}</div>
@@ -604,18 +620,25 @@ export const displayPayments = function (currentAccount) {
           </div>
         `;
 
-        transactionContainer.insertAdjacentHTML('afterbegin', html);
+            currentAccount.transactions.push(payment);
+            currentAccount.movementsDates.push(new Date().toISOString());
+            displayBalance(currentAccount);
+            console.log(currentAccount.transactions);
+            transactionsPush();
 
-        // Update the bills balance whenever a new bill is displayed
-        currentAccount.paymentsBalance += payment; // Add the bill amount to the bills balance
-        updateBalance(currentAccount); // Update the balance after each bill is displayed
-      }, interval * (i + 1));
-      console.log(interval);
+            transactionContainer.insertAdjacentHTML('afterbegin', html);
+
+            // Update the bills balance whenever a new bill is displayed
+            // Add the bill amount to the bills balance
+            // Update the balance after each bill is displayed
+          }, interval * (i + 1));
+        });
+      }
     });
-  });
-
+  } else {
+    displayTransactions(currentAccount);
+  }
   // Call updateBalance once after all the bills have been displayed
-  updateBalance(currentAccount);
 };
 
 //Takes the current transaction date and formats it to mm/dd/yyyy
@@ -642,34 +665,20 @@ function formatCur(value, currency, locale) {
 // };
 
 export const displayBalance = function (acc) {
-  acc.transBalance = acc.transactions.reduce((acc, mov) => acc + mov, 0);
-  acc.balance = acc.transBalance + acc.billsBalance;
+  acc.balance = acc.transactions.reduce((acc, mov) => acc + mov, 0);
 
   balanceValue.textContent = formatCur(acc.balance, acc.locale, acc.currency);
 };
 
-export const updateBalance = function (acc) {
-  acc.billsBalance = acc.bills.reduce((acc, billArray) => {
-    const billAmount = billArray.reduce((acc, bill) => acc + bill, 0);
-    return acc + billAmount;
-  }, 0);
-
-  displayBalance(acc);
-};
-
 //calls display functions to update user UI
 export const updateUI = function (acc) {
-  // Display Transactions
   displayTransactions(acc);
 
   displayBalance(acc);
 
-  //Display Bills
   displayBills(acc);
 
   displayPayments(acc);
-
-  // Display accounts
 
   displayAccounts(acc);
 };
