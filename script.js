@@ -515,29 +515,31 @@ export const displayBills = function (currentAccount) {
     transactionContainer.innerHTML = '';
   }
 
-  currentAccount.bills.forEach(function (movs) {
-    movs.forEach(function (bill, i) {
-      let interval;
+  if (currentAccount.type === 'Checking' && currentAccount.bills.length >= 1) {
+    currentAccount.bills.forEach(function (movs) {
+      movs.forEach(function (bill, i) {
+        //displayTransactions(currentAccount);
+        let interval;
 
-      if (movs.length === 7) {
-        interval = 7000;
-      } else if (movs.length === 14) {
-        interval = 14000;
-      } else if (movs.length === 30) {
-        interval = 30000;
-      }
+        if (movs.length === 7) {
+          interval = 7000;
+        } else if (movs.length === 14) {
+          interval = 14000;
+        } else if (movs.length === 30) {
+          interval = 30000;
+        }
 
-      setInterval(function () {
-        const type = bill > 0 ? 'deposit' : 'withdrawal';
-        const date = new Date();
-        const displayDate = formatMovementDate(date, currentAccount.locale);
-        const formattedBill = formatCur(
-          bill,
-          currentAccount.locale,
-          currentAccount.currency
-        );
+        setInterval(function () {
+          const type = bill > 0 ? 'deposit' : 'withdrawal';
+          const date = new Date();
+          const displayDate = formatMovementDate(date, currentAccount.locale);
+          const formattedBill = formatCur(
+            bill,
+            currentAccount.locale,
+            currentAccount.currency
+          );
 
-        const html = `
+          const html = `
           <div class="transactions__row">
             <div class="transactions__type transactions__type--${type} col-4">
               <div class="transactionsTypeText">${i + 1} ${type}</div>
@@ -547,21 +549,23 @@ export const displayBills = function (currentAccount) {
           </div>
         `;
 
-        currentAccount.transactions.push(bill);
-        currentAccount.movementsDates.push(new Date().toISOString());
-        console.log(currentAccount.transactions);
-        displayBalance(currentAccount);
-        transactionsPush();
+          currentAccount.transactions.push(bill);
+          currentAccount.movementsDates.push(new Date().toISOString());
+          displayBalance(currentAccount);
+          console.log(currentAccount.transactions);
+          transactionsPush();
 
-        transactionContainer.insertAdjacentHTML('afterbegin', html);
+          transactionContainer.insertAdjacentHTML('afterbegin', html);
 
-        // Update the bills balance whenever a new bill is displayed
-        currentAccount.billsBalance += bill; // Add the bill amount to the bills balance
-        //updateBalance(currentAccount); // Update the balance after each bill is displayed
-      }, interval * (i + 1));
+          // Update the bills balance whenever a new bill is displayed
+          // Add the bill amount to the bills balance
+          // Update the balance after each bill is displayed
+        }, interval * (i + 1));
+      });
     });
-  });
-
+  } else {
+    displayTransactions(currentAccount);
+  }
   // Call updateBalance once after all the bills have been displayed
 };
 
@@ -571,29 +575,42 @@ export const displayPayments = function (currentAccount) {
     transactionContainer.innerHTML = '';
   }
 
-  currentAccount.payments.forEach(function (movs) {
-    movs.forEach(function (payment, i) {
-      let interval;
+  if (
+    currentAccount.type === 'Checking' &&
+    currentAccount.payments.length >= 1
+  ) {
+    currentAccount.payments.forEach(function (movs) {
+      if (
+        currentAccount.type !== 'Checking' ||
+        currentAccount.type === 'Savings'
+      ) {
+        console.log(currentAccount.type);
+        displayTransactions(currentAccount);
+        return;
+      } else if (currentAccount.type === 'Checking') {
+        movs.forEach(function (payment, i) {
+          displayTransactions(currentAccount);
+          let interval;
 
-      if (movs.length === 7) {
-        interval = 7000;
-      } else if (movs.length === 14) {
-        interval = 14000;
-      } else if (movs.length === 30) {
-        interval = 30000;
-      }
+          if (movs.length === 7) {
+            interval = 7000;
+          } else if (movs.length === 14) {
+            interval = 14000;
+          } else if (movs.length === 30) {
+            interval = 30000;
+          }
 
-      setInterval(function () {
-        const type = payment > 0 ? 'deposit' : 'withdrawal';
-        const date = new Date();
-        const displayDate = formatMovementDate(date, currentAccount.locale);
-        const formattedPayment = formatCur(
-          payment,
-          currentAccount.locale,
-          currentAccount.currency
-        );
+          setInterval(function () {
+            const type = payment > 0 ? 'deposit' : 'withdrawal';
+            const date = new Date();
+            const displayDate = formatMovementDate(date, currentAccount.locale);
+            const formattedPayment = formatCur(
+              payment,
+              currentAccount.locale,
+              currentAccount.currency
+            );
 
-        const html = `
+            const html = `
           <div class="transactions__row">
             <div class="transactions__type transactions__type--${type} col-4">
               <div class="transactionsTypeText">${i + 1} ${type}</div>
@@ -603,22 +620,24 @@ export const displayPayments = function (currentAccount) {
           </div>
         `;
 
-        currentAccount.transactions.push(payment);
-        currentAccount.movementsDates.push(new Date().toISOString());
-        displayBalance(currentAccount);
-        console.log(currentAccount.transactions);
-        transactionsPush();
+            currentAccount.transactions.push(payment);
+            currentAccount.movementsDates.push(new Date().toISOString());
+            displayBalance(currentAccount);
+            console.log(currentAccount.transactions);
+            transactionsPush();
 
-        transactionContainer.insertAdjacentHTML('afterbegin', html);
+            transactionContainer.insertAdjacentHTML('afterbegin', html);
 
-        // Update the bills balance whenever a new bill is displayed
-        currentAccount.paymentsBalance += payment; // Add the bill amount to the bills balance
-        // Update the balance after each bill is displayed
-      }, interval * (i + 1));
-      console.log(interval);
+            // Update the bills balance whenever a new bill is displayed
+            // Add the bill amount to the bills balance
+            // Update the balance after each bill is displayed
+          }, interval * (i + 1));
+        });
+      }
     });
-  });
-
+  } else {
+    displayTransactions(currentAccount);
+  }
   // Call updateBalance once after all the bills have been displayed
 };
 
