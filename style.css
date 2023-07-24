@@ -8,6 +8,10 @@ body {
   height: 100vh;
 }
 
+ol {
+  font-family: 'Montserrat', sans-serif;
+}
+
 p {
   font-family: 'Montserrat', sans-serif;
   font-size: 1.3rem;
@@ -21,6 +25,12 @@ hr {
 .headings {
   font-family: 'Montserrat', sans-serif;
   text-align: center;
+}
+
+.issuesEmail {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 3rem 0 3rem 0;
 }
 
 .heading-R {
