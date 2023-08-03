@@ -517,10 +517,7 @@ export const displayBills = function (currentAccount) {
   }
 
   if (currentAccount.type === 'Checking' && currentAccount.bills.length >= 1) {
-    currentAccount.bills.forEach(async function (movs, index) {
-      console.log('-> movs'); //added
-      console.log(movs, index); // added
-
+    currentAccount.bills.forEach(function (movs) {
       let interval;
       if (movs.length === 7) {
         interval = 7000;
@@ -529,32 +526,20 @@ export const displayBills = function (currentAccount) {
       } else if (movs.length === 30) {
         interval = 30000;
       }
-      console.log(interval); // added
-
-      // my new code here
-      function nameItCuzIdk(bill, interval, i) {
-        return new Promise((resolve, reject) => {
-          setInterval(function () {
-            currentAccount.transactions.push(bill);
-            console.log(currentAccount.transactions);
-            currentAccount.movementsDates.push(new Date().toISOString());
-
-            transactionsPush();
-
-            updateUI(currentAccount);
-            console.log(interval);
-            console.log(i);
-            resolve();
-          }, interval * (i + 1));
-        });
-      }
-
-      await movs.forEach(async function (bill, i) {
-        console.log('-> movs bill'); // added
-        console.log(bill, i); // added
+      movs.forEach(function (bill, i) {
         //displayTransactions(currentAccount);
 
-        await nameItCuzIdk(currentAccount, bill, interval, i);
+        setInterval(function () {
+          currentAccount.transactions.push(bill);
+          console.log(currentAccount.transactions);
+          currentAccount.movementsDates.push(new Date().toISOString());
+
+          transactionsPush();
+
+          updateUI(currentAccount);
+          console.log(interval);
+          console.log(i);
+        }, interval * (i + 1));
       });
     });
   } else if ((currentAccount.type = 'savings')) {
@@ -562,6 +547,7 @@ export const displayBills = function (currentAccount) {
   }
   // Call updateBalance once after all the bills have been displayed
 };
+
 export const displayPayments = function (currentAccount) {
   const transactionContainer = document.querySelector('.transactions');
   if (transactionContainer) {
@@ -572,7 +558,7 @@ export const displayPayments = function (currentAccount) {
     currentAccount.type === 'Checking' &&
     currentAccount.payments.length >= 1
   ) {
-    currentAccount.bills.forEach(function (movs) {
+    currentAccount.payments.forEach(function (movs) {
       let interval;
       if (movs.length === 7) {
         interval = 7000;
