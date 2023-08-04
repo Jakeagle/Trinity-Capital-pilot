@@ -105,7 +105,7 @@ const transferFunds = function (accounts) {
   //Tells user of succesful transaction
   alert('Transfer Succesfull');
   //send user back to main page
-  location.replace('app.html');
+  location.replace('index.html');
 };
 
 /************************************************Event Listeners*************************************************/
