@@ -148,12 +148,17 @@ const profile2 = {
 
 let profilesJsonRetrieve = localStorage.getItem('profiles');
 if (!profilesJsonRetrieve) {
+  //Sets up profiles to be set to local storage
   const profilesRaw = [profile1, profile2];
+  //Sets up profiles as JSON
   const profilesJson = JSON.stringify(profilesRaw);
+  //Pushes profiles to Local Storage
   localStorage.setItem('profiles', profilesJson);
+  //Pulls profiles out of LS for use
   profilesJsonRetrieve = localStorage.getItem('profiles');
 }
 
+//Exports profiles for use in other scripts
 export const profiles = JSON.parse(profilesJsonRetrieve);
 // log accounts to see if it is an array of objects
 
@@ -163,6 +168,7 @@ let currentAccount;
 let currentProfile;
 let currentTime;
 
+//Currency codes for formatting
 const currencyCodeMap = {
   840: 'USD',
   978: 'EUR',
@@ -195,6 +201,8 @@ const donatePin = document.querySelector('.form__input--pin--donate');
 const accNumHTML = document.querySelector('.accountNumber');
 const balanceDate = document.querySelector(`.balance__date`);
 const now = new Date();
+
+//Used for formatting dates
 const options = {
   hour: 'numeric',
   minute: 'numeric',
@@ -206,8 +214,7 @@ const options = {
 
 /*****************************************Event Listeners ******************************************/
 
-//login event listener
-
+//login event listener (used to login to the app)
 if (loginButton) {
   loginButton.addEventListener('click', function (event) {
     event.preventDefault();
@@ -245,20 +252,24 @@ if (loginButton) {
       if (currentAccount) {
         //Add currentAccount here
         // Update the UI with the first account's information
-
         updateUI(currentAccount);
+        //Starts loop function that displays the current Accounts bills
         displayBills(currentAccount);
+        //Starts loop function that displays the current Accounts paychecks
         displayPayments(currentAccount);
+
+        //Displays the "Current Balanace for "x" string
         balanceLabel.textContent = `Current balance for: #${currentAccount.accountNumber.slice(
           -4
         )}`;
+
+        //Displays the "As of" portion with the current date
         updateTime();
         balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
           currentProfile.locale,
           options
         ).format(currentTime)}`;
         //Display saved transactions for current account
-
         displayTransactions(currentAccount);
       } else {
         alert('No checking account found. Please contact customer service.');
@@ -341,14 +352,7 @@ if (donateBtn) {
     let donationAmount = Number(donateAmount.value);
     //User Pin
     const pin = parseInt(donatePin.value);
-    //Total Balance
-    //Sets the current account
-
-    //Sets the saved transactions in local storage
-
-    //Check to see if there are saved transactions and adds the sum accordingly
-
-    //Reduces the amount by the donation amount and updates the UI.
+    //Checks account and pushes donation
     if (pin === currentProfile.pin) {
       currentAccount.transactions.push(-donationAmount);
 
@@ -356,11 +360,9 @@ if (donateBtn) {
 
       currentAccount.movementsDates.push(new Date().toISOString());
 
-      //Update UI
-
-      // console.log(currentAccount.transactions);
-      //console.log(currentAccount.movementsDates);
+      //Updates local storage
       transactionsPush();
+      //Update UI
       updateUI(currentAccount);
 
       donatePin.value = '';
@@ -391,7 +393,7 @@ const updateTime = function () {
   currentTime = new Date();
 };
 
-//Pushes transactions to profiles objects
+//This function updates local storage with any new data (Mainly transactions)
 const transactionsPush = function () {
   localStorage.setItem('profiles', JSON.stringify(profiles));
 };
@@ -401,7 +403,7 @@ const displayAccounts = function (currentAccount) {
   const accountContainer = document.querySelector('.accountContainer');
   accountContainer.innerHTML = '';
 
-  // add the code here
+  //Shows no accounts if there are no accounts int the current profile
   if (currentProfile.accounts.length === 0) {
     const html = `
       <div class="row">
@@ -412,6 +414,7 @@ const displayAccounts = function (currentAccount) {
     return;
   }
 
+  //Sort the accounts by type (checking first) and creation date
   currentProfile.accounts.sort((a, b) => {
     // First, sort by account type
     if (a.accountType < b.accountType) return -1;
@@ -431,7 +434,7 @@ const displayAccounts = function (currentAccount) {
     return 0;
   });
 
-  //Then format the date and display accounts
+  //Formats the date and display accounts
   currentProfile.accounts.forEach(function (accnt) {
     let totalMovements = accnt.transactions.reduce(
       (sum, curr) => sum + curr,
@@ -472,18 +475,15 @@ export const displayTransactions = function (currentAccount) {
 
   movs = currentAccount.transactions;
 
-  //const movs = currentAccount.transactions;
-
   //A loop that runs through each transaction in the current account object
   movs.forEach(function (mov, i) {
-    //Sets each transaction to local storage
-
     //ternerary to determine whether a transaction is a deposit or withdrawal
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     let date;
 
     //Sets the date for each transaction according to the date set in the current Account object
 
+    //Sets up the date variable for the transactions
     date = new Date(currentAccount.movementsDates[i]);
 
     //displays date next to transactions
@@ -510,78 +510,102 @@ export const displayTransactions = function (currentAccount) {
   });
 };
 
+//Displays all of the bills a user has set up
 export const displayBills = function (currentAccount) {
+  //Simulated time for bills to appear
   let interval;
+  //How much the bill actually is
   let amount;
   const transactionContainer = document.querySelector('.transactions');
   if (transactionContainer) {
     transactionContainer.innerHTML = '';
   }
 
+  //Runs through each bill object in the bills array
   for (let i = 0; i < currentAccount.bills.length; i++) {
+    //Sets interval to the value set in the current bill object
     interval = currentAccount.bills[i].frequency;
+    //Sets amount to the value set in the current bill object
     amount = currentAccount.bills[i].amount;
-    console.log(interval);
-    console.log(amount);
+
+    //Displays the bills using the amount, every interval set above
     setInterval(function () {
+      //Pushes amount to the transactions array
       currentAccount.transactions.push(amount);
-      console.log(currentAccount.transactions);
+      //creates a new date for the transaction above
       currentAccount.movementsDates.push(new Date().toISOString());
 
+      //Updates Local Storage with new data
       transactionsPush();
 
+      //Displays new data on the webpage
       updateUI(currentAccount);
     }, interval);
   }
 };
 
+//Displays all of the payments a user has set up
 export const displayPayments = function (currentAccount) {
+  //Simulated time for payments to appear
   let interval;
+  //How much the bill actually is
   let amount;
   const transactionContainer = document.querySelector('.transactions');
   if (transactionContainer) {
     transactionContainer.innerHTML = '';
   }
 
+  //Runs through each payment object in the payments array
   for (let i = 0; i < currentAccount.payments.length; i++) {
+    //Sets interval to the value set in the current payment object
     interval = currentAccount.payments[i].frequency;
+    //Sets amount to the value set in the current payment object
     amount = currentAccount.payments[i].amount;
-    console.log(interval);
-    console.log(amount);
+
+    //Displays the payments using the amount, every interval set above
     setInterval(function () {
+      //Pushes amount to the transactions array
       currentAccount.transactions.push(amount);
-      console.log(currentAccount.transactions);
+      //creates a new date for the transaction above
       currentAccount.movementsDates.push(new Date().toISOString());
-
+      //Updates Local Storage with new data
       transactionsPush();
-
+      //Displays new data on the webpage
       updateUI(currentAccount);
     }, interval);
   }
 };
 
+//formats the transactions dates to the users locale
 export const formatMovementDate = function (date, locale) {
+  //international time format based on the date given in this fuction
   return new Intl.DateTimeFormat(locale).format(date);
 };
+//formats currency based on user locale
 function formatCur(value, currency, locale) {
-  const currencyCode = currencyCodeMap[currency] || 'USD'; // default to USD if code not found
+  //Sets currency based on locale currency code. (Defaults to USD if no locale can be found)
+  const currencyCode = currencyCodeMap[currency] || 'USD';
+  //Sets style and code, and formats the transaction
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currencyCode,
   }).format(value);
 }
 
+//Displays the current balance based on the transactions array
 export const displayBalance = function (acc) {
+  //calculates the balance based on the transaction array
   acc.balance = acc.transactions.reduce((acc, mov) => acc + mov, 0);
-
+  //displays balance
   balanceValue.textContent = formatCur(acc.balance, acc.locale, acc.currency);
 };
 
-//calls display functions to update user UI
+//Updates the webpage UI with all of the needed data
 export const updateUI = function (acc) {
+  //Displays the Transactions data
   displayTransactions(acc);
-
+  //Displays the balance with correct data
   displayBalance(acc);
-
+  //Displays the users accounts
   displayAccounts(acc);
 };
