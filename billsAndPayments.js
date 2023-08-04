@@ -1,6 +1,6 @@
 'use strict';
 
-import { profiles } from './script.js';
+import { displayBills, profiles } from './script.js';
 
 /**********************************************Variables***********************************************/
 
@@ -79,47 +79,32 @@ const setTime = function (interval) {
 const setTransaction = function (acc, time) {
   billAmount = parseInt(billInput.value);
   paymentAmount = parseInt(paymentInput.value);
-  let totalValue;
-  let truncTime = time / 1000;
-  let newBill;
-  let newPayment;
 
   if (chosenSelect === billFrequency) {
     const newBillFunc = function () {
-      newBill = acc.bills['bill'] = [];
+      let amount = parseInt(-billInput.value);
+      console.log(amount);
+      let newBill = { amount: amount, frequency: time };
       acc.bills.push(newBill);
       console.log(acc.bills);
     };
-    newBillFunc();
 
-    totalValue = (billAmount * time) / 1000;
-    console.log(totalValue);
-    for (let i = 0; i < time / 1000; i++) {
-      acc.bills.bill.push(-totalValue / truncTime);
-      console.log(newBill);
-      console.log(acc);
-    }
+    newBillFunc(time);
 
     chosenSelect === '';
   } else if (chosenSelect === paymentFrequency) {
     const newPayFunc = function () {
-      newPayment = acc.payments['payment'] = [];
+      let amount = parseInt(paymentInput.value);
+      console.log(amount);
+      let newPayment = { amount: amount, frequency: time };
       acc.payments.push(newPayment);
+      console.log(acc.payments);
     };
-    newPayFunc();
+    newPayFunc(time);
 
-    totalValue = (paymentAmount * time) / 1000;
-    console.log(totalValue);
-    for (let i = 0; i < time / 1000; i++) {
-      acc.payments.payment.push(totalValue / truncTime);
-      console.log(newBill);
-      console.log(acc);
-    }
     chosenSelect === '';
   }
   localStorage.setItem('profiles', JSON.stringify(profiles));
-
-  console.log(acc.newBill, acc.newPay);
 };
 
 /**********************************************Event Listeners***********************************************/
