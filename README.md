@@ -28,5 +28,7 @@ The production website will include backend and serverside programming that will
 
 DISCLAIMER: As stated before, this website is an educational banking *simulator* and not a live bank. No real-life funds are being transferred, nor can this app be used to purchase real-life items or services. 
 
+This website includes PDFs for official Documentation in the code files. There you will find a Tutorial with an in-depth guide on using the app, and a developer handbook with detailed code explanations for each feature. 
+
 If you have any questions you can reach out to jakeagleofficial01@gmail.com for more information
 
