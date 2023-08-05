@@ -114,8 +114,10 @@ const setTransaction = function (acc, time) {
       console.log(amount);
       //Creates the new bill object in the bills array with the amiunt and frequency
       let newBill = { amount: amount, frequency: time };
+      
       //pushes object to the bills array
       acc.bills.push(newBill);
+      console.log(acc.bills);
     };
 
     //calls function
@@ -129,6 +131,7 @@ const setTransaction = function (acc, time) {
       let amount = parseInt(paymentInput.value);
       console.log(amount);
       let newPayment = { amount: amount, frequency: time };
+      
       acc.payments.push(newPayment);
       console.log(acc.payments);
     };
