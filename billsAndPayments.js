@@ -1,6 +1,6 @@
 'use strict';
 
-import { displayBills, profiles } from './app.js';
+import { displayBills, profiles } from './script.js';
 
 /**********************************************Variables***********************************************/
 
