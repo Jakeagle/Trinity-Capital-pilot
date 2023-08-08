@@ -176,8 +176,6 @@ const currencyCodeMap = {
 };
 
 const signOnForm = document.querySelector('signOnForm');
-const loginUser = document.querySelector(`.login__input--user`);
-const loginPIN = document.querySelector('.login__input--pin');
 const signOnText = document.querySelector('.signOntext');
 const loginButton = document.querySelector('.login__btn');
 const formDiv = document.querySelector('.formDiv');
@@ -228,7 +226,7 @@ if (loginButton) {
 
     if (currentProfile) {
       // Retrieve saved transactions for current account
-      let currentAccount;
+
       for (const account of currentProfile.accounts) {
         if (account.type === 'Checking') {
           currentAccount = account;
@@ -250,13 +248,16 @@ if (loginButton) {
       mainApp.style.opacity = 100;
 
       if (currentAccount) {
-        //Add currentAccount here
-        // Update the UI with the first account's information
-        updateUI(currentAccount);
-        //Starts loop function that displays the current Accounts bills
-        displayBills(currentAccount);
-        //Starts loop function that displays the current Accounts paychecks
-        displayPayments(currentAccount);
+        if (currentAccount.accountType === 'Checking') {
+          console.log('Running');
+          //Add currentAccount here
+          // Update the UI with the first account's information
+          updateUI(currentAccount);
+          //Starts loop function that displays the current Accounts bills
+          displayBills();
+          //Starts loop function that displays the current Accounts paychecks
+          displayPayments();
+        }
 
         //Displays the "Current Balanace for "x" string
         balanceLabel.textContent = `Current balance for: #${currentAccount.accountNumber.slice(
@@ -284,60 +285,84 @@ if (loginButton) {
 if (accBtnSwitch) {
   accBtnSwitch.addEventListener('click', function (e) {
     e.preventDefault();
+    //The value for the account you want to switch too
     let targetAccount = accNumSwitch.value;
+    //Variable that matches the above with the matching account number
     let accountToSwitch = currentProfile.accounts.find(
+      //Matches the last for of the account with the targetAccount entry
       account => account.accountNumber.slice(-4) === targetAccount
     );
 
     if (accountToSwitch) {
+      //Updates UI for current balance with switched account
       balanceLabel.textContent = `Current balance for: #${accountToSwitch.accountNumber.slice(
         -4
       )}`;
+      //sets current account to the switched account
       currentAccount = accountToSwitch;
+      //empties text field
       accNumSwitch.value = '';
+      //empties text field
       accPinSwitch.value = '';
+      //Updates main site with switched account
       updateUI(accountToSwitch);
+
+      //Updates to the current time
       updateTime();
+      //Updates the as of field
       balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
         currentProfile.locale,
         options
       ).format(currentTime)}`;
 
+      //Variable for the loan section
       const loanBox = document.querySelector('.operation--loan');
-      if (currentAccount.accountType === 'Savings') {
-        loanBox.style.display = 'none';
-      } else if (currentAccount.accountType === 'Checking') {
-        loanBox.style.display = 'inline';
-      }
+      //checks for savings accounr
+
+      //takes away loans if savings
+      loanBox.style.display = 'none';
+      //checks for Checking
+
+      //Shows loan box
+      loanBox.style.display = 'inline';
     }
   });
 }
 
 //requesting loans
+
+//checks if button exists
 if (requestLoanbtn) {
   requestLoanbtn.addEventListener('click', function (e) {
+    //prevents default action
     e.preventDefault();
 
+    //Declares the amount as the user entered amount.
     const amount = Math.floor(loanAmount.value);
 
+    //Loops through the accounts
     for (const account of currentProfile.accounts) {
+      //checks if the account type is a checking account
       if (account.type === 'Checking') {
+        //sets current account to the checking account
         currentAccount = account;
+        //checks to see if the amount is greater than 0 and greater than 10% of the last loan
         if (
           amount > 0 &&
           currentAccount.transactions.some(mov => mov >= amount * 0.1)
         ) {
-          // Add movement
+          //pushes loan to the transactions array
           currentAccount.transactions.push(amount);
 
-          // Add loan date
-
+          //Creates a new date for the new transaction
           currentAccount.movementsDates.push(new Date().toISOString());
 
-          //Update UI
+          //Pushes new data to local storage
           transactionsPush();
+          //updates UI with the new value
           updateUI(currentAccount);
         }
+        //clears the input text
         loanAmount.value = '';
       }
     }
@@ -511,7 +536,8 @@ export const displayTransactions = function (currentAccount) {
 };
 
 //Displays all of the bills a user has set up
-export const displayBills = function (currentAccount) {
+export const displayBills = function () {
+  console.log(currentAccount.accountType);
   //Simulated time for bills to appear
   let interval;
   //How much the bill actually is
@@ -522,31 +548,41 @@ export const displayBills = function (currentAccount) {
   }
 
   //Runs through each bill object in the bills array
-  for (let i = 0; i < currentAccount.bills.length; i++) {
-    //Sets interval to the value set in the current bill object
-    interval = currentAccount.bills[i].frequency;
-    //Sets amount to the value set in the current bill object
-    amount = currentAccount.bills[i].amount;
+  if (currentAccount.bills) {
+    for (let i = 0; i < currentAccount.bills.length; i++) {
+      //Sets interval to the value set in the current bill object
+      interval = currentAccount.bills[i].frequency;
+      //Sets amount to the value set in the current bill object
+      amount = currentAccount.bills[i].amount;
 
-    //Displays the bills using the amount, every interval set above
-    setInterval(function () {
-      //Pushes amount to the transactions array
-      currentAccount.transactions.push(amount);
-      //creates a new date for the transaction above
-      currentAccount.movementsDates.push(new Date().toISOString());
+      //Displays the bills using the amount, every interval set above
 
-      //Updates Local Storage with new data
-      transactionsPush();
+      setInterval(function () {
+        //Pushes amount to the transactions array
+        currentProfile.accounts[0].transactions.push(amount);
+        //creates a new date for the transaction above
+        currentProfile.accounts[0].movementsDates.push(
+          new Date().toISOString()
+        );
 
-      //Displays new data on the webpage
+        //Updates Local Storage with new data
+        transactionsPush();
+
+        //Displays new data on the webpage
+        updateUI(currentAccount);
+      }, interval);
+
+      console.log(currentAccount.accountType);
       updateUI(currentAccount);
-    }, interval);
+      return;
+    }
   }
 };
 
 //Displays all of the payments a user has set up
-export const displayPayments = function (currentAccount) {
-  //Simulated time for payments to appear
+export const displayPayments = function () {
+  console.log(currentAccount.accountType);
+  //Simulated time for bills to appear
   let interval;
   //How much the bill actually is
   let amount;
@@ -555,24 +591,35 @@ export const displayPayments = function (currentAccount) {
     transactionContainer.innerHTML = '';
   }
 
-  //Runs through each payment object in the payments array
-  for (let i = 0; i < currentAccount.payments.length; i++) {
-    //Sets interval to the value set in the current payment object
-    interval = currentAccount.payments[i].frequency;
-    //Sets amount to the value set in the current payment object
-    amount = currentAccount.payments[i].amount;
+  //Runs through each bill object in the bills array
+  if (currentAccount.payments) {
+    for (let i = 0; i < currentAccount.bills.length; i++) {
+      //Sets interval to the value set in the current bill object
+      interval = currentAccount.payments[i].frequency;
+      //Sets amount to the value set in the current bill object
+      amount = currentAccount.payments[i].amount;
 
-    //Displays the payments using the amount, every interval set above
-    setInterval(function () {
-      //Pushes amount to the transactions array
-      currentAccount.transactions.push(amount);
-      //creates a new date for the transaction above
-      currentAccount.movementsDates.push(new Date().toISOString());
-      //Updates Local Storage with new data
-      transactionsPush();
-      //Displays new data on the webpage
+      //Displays the bills using the amount, every interval set above
+
+      setInterval(function () {
+        //Pushes amount to the transactions array
+        currentProfile.accounts[0].transactions.push(amount);
+        //creates a new date for the transaction above
+        currentProfile.accounts[0].movementsDates.push(
+          new Date().toISOString()
+        );
+
+        //Updates Local Storage with new data
+        transactionsPush();
+
+        //Displays new data on the webpage
+        updateUI(currentAccount);
+      }, interval);
+
+      console.log(currentAccount.accountType);
       updateUI(currentAccount);
-    }, interval);
+      return;
+    }
   }
 };
 
@@ -609,3 +656,5 @@ export const updateUI = function (acc) {
   //Displays the users accounts
   displayAccounts(acc);
 };
+
+const accountCheck = function (type) {};
