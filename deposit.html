@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>transer.trinitycapitalsim.com</title>
+    <title>Deposits</title>
 
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
@@ -13,6 +13,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="deposit.css" />
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
@@ -41,6 +42,133 @@
           <h1 class="title2">Capital</h1>
         </div>
       </div>
+      <hr />
+
+      <h1 class="depositTitle headings">Deposit</h1>
+      <hr />
     </div>
+    <div class="signOnSection">
+      <div class="signOnprompt">
+        <h2 class="signOntext headings">Enter your PIN to continue</h2>
+      </div>
+
+      <div class="signOnForm">
+        <div class="row formDiv">
+          <div class="col pinBox">
+            <input
+              type="text"
+              placeholder="PIN"
+              maxlength="4"
+              class="login__input login__input--pin--bp signOnGroup"
+            />
+          </div>
+        </div>
+        <div class="row formDiv">
+          <div class="col button">
+            <button class="login__btn--bp signOnGroup">&rarr;</button>
+          </div>
+        </div>
+      </div>
+      <hr />
+    </div>
+
+    <div class="mainApp">
+      <div class="checkExample">
+        <h1 class="headings checkExampleHeading">Check Example</h1>
+        <img
+          class="checkExampleImg"
+          src="—Pngtree—blue and concise mock bank_6656040.png"
+          alt="checkExample"
+        />
+      </div>
+      <br />
+      <br />
+      <br />
+      <hr />
+
+      <div class="instructions">
+        <h2 class="headings depositTitle">How to write a check for deposit</h2>
+
+        <p class="instructionsParagraph">How to submit a check</p>
+        <ol class="instructionsList">
+          <li>Write your name in the "Pay to the order of" section</li>
+          <li>
+            In the dollar section next to "Pay to the order of" section, write
+            the amount for the check
+          </li>
+          <li>Write the date in the date section formatted in mm/dd/yyyy</li>
+          <li>
+            In the section below the "Pay to the order of" section, write out
+            your check amount in words (i.e. Five-hundred)
+          </li>
+          <li>in the authorized Signature section, write your signature.</li>
+        </ol>
+      </div>
+      <hr />
+      <div class="depositEntry">
+        <form action="" class="depositForm">
+          <h1 class="headings">Enter your deposit details here</h1>
+          <div class="row nameForm">
+            <label for="Name" class="col-4">Pay to the order of</label>
+            <p class="col-4">----------------------------------</p>
+            <input
+              type="text"
+              name="Name"
+              id="Name"
+              class="col-4 nameInput"
+              required
+            />
+          </div>
+          <br />
+          <div class="row amountForm">
+            <label for="Amount" class="col-4">Amount</label>
+            <p class="col-4">----------------------------------</p>
+            <input type="number" class="col-4 amountInput" required />
+          </div>
+          <br />
+          <div class="row Date">
+            <label for="Date" class="col-4">Date</label>
+            <p class="col-4">----------------------------------</p>
+            <input
+              type="date"
+              name="Date"
+              id="Date"
+              class="col-4 dateInput"
+              required
+            />
+          </div>
+          <br />
+          <div class="row wordedAmount">
+            <label for="wordAmount" class="col-4">Amount in words</label>
+            <p class="col-4">----------------------------------</p>
+            <input
+              type="text"
+              name="WordAmount"
+              id="WordAmount"
+              class="col-4 wordedAmountInput"
+              required
+            />
+          </div>
+          <br />
+          <div class="row signature">
+            <label for="signature" class="col-4">Signature</label>
+            <p class="col-4">----------------------------------</p>
+            <input type="text" class="col-4 sigInput" required />
+          </div>
+          <div class="submit"><input type="submit" class="submitBtn" /></div>
+        </form>
+        <hr />
+      </div>
+
+      <div class="issues issuesEmail">
+        <a
+          href="mailto:jakeagleofficial01@gmail.com"
+          class="issuesEmail headings"
+          >Bugs, suggestions, and feedback</a
+        >
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="deposit.js" type="module"></script>
   </body>
 </html>
