@@ -1,7 +1,7 @@
 'use strict';
 
-import { profiles } from './script.js';
-import { transactionsPush } from './script.js';
+import { profiles } from './app.js';
+import { transactionsPush } from './app.js';
 
 /**************************************************Variables ***********************************************/
 
@@ -90,13 +90,13 @@ const checkAll = function () {
   } else if (userSig === currentProfile.sig) {
     sigComplete = true;
   }
-  if (userAmount >= 10000) {
-    alert('Loans must be less than 10000 dollars');
-  } else if (userAmount < 10000) {
+  if (userAmount > 10000) {
+    alert('The Maximum deposit amount per day is $10000');
+  } else if (userAmount <= 10000) {
     amountComplete = true;
   }
 
-  if ((nameComplete, sigComplete, dateComplete, amountComplete)) {
+  if (nameComplete && sigComplete && dateComplete && amountComplete) {
     loanAdd();
   }
 };
@@ -111,5 +111,5 @@ const loanAdd = function () {
   console.log('complete', userLoan);
   alert(' Succesfull');
   //send user back to main page
-  location.replace('index.html');
+  location.replace('app.html');
 };
