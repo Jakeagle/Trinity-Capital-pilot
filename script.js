@@ -593,7 +593,7 @@ export const displayPayments = function () {
 
   //Runs through each bill object in the bills array
   if (currentAccount.payments) {
-    for (let i = 0; i < currentAccount.bills.length; i++) {
+    for (let i = 0; i < currentAccount.payments.length; i++) {
       //Sets interval to the value set in the current bill object
       interval = currentAccount.payments[i].frequency;
       //Sets amount to the value set in the current bill object
