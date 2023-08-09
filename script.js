@@ -548,34 +548,28 @@ export const displayBills = function () {
   }
 
   //Runs through each bill object in the bills array
-  if (currentAccount.bills) {
-    for (let i = 0; i < currentAccount.bills.length; i++) {
-      //Sets interval to the value set in the current bill object
-      interval = currentAccount.bills[i].frequency;
-      //Sets amount to the value set in the current bill object
-      amount = currentAccount.bills[i].amount;
 
-      //Displays the bills using the amount, every interval set above
+  for (let i = 0; i < currentAccount.bills.length; i++) {
+    //Sets interval to the value set in the current bill object
+    interval = currentAccount.bills[i].frequency;
+    //Sets amount to the value set in the current bill object
+    amount = currentAccount.bills[i].amount;
 
-      setInterval(function () {
-        //Pushes amount to the transactions array
-        currentProfile.accounts[0].transactions.push(amount);
-        //creates a new date for the transaction above
-        currentProfile.accounts[0].movementsDates.push(
-          new Date().toISOString()
-        );
+    //Displays the bills using the amount, every interval set above
 
-        //Updates Local Storage with new data
-        transactionsPush();
+    setInterval(function () {
+      //Pushes amount to the transactions array
+      console.log(currentAccount.bills[i]);
+      currentProfile.accounts[0].transactions.push(amount);
+      //creates a new date for the transaction above
+      currentProfile.accounts[0].movementsDates.push(new Date().toISOString());
 
-        //Displays new data on the webpage
-        updateUI(currentAccount);
-      }, interval);
+      //Updates Local Storage with new data
+      transactionsPush();
 
-      console.log(currentAccount.accountType);
+      //Displays new data on the webpage
       updateUI(currentAccount);
-      return;
-    }
+    }, interval);
   }
 };
 
@@ -592,34 +586,28 @@ export const displayPayments = function () {
   }
 
   //Runs through each bill object in the bills array
-  if (currentAccount.payments) {
-    for (let i = 0; i < currentAccount.payments.length; i++) {
-      //Sets interval to the value set in the current bill object
-      interval = currentAccount.payments[i].frequency;
-      //Sets amount to the value set in the current bill object
-      amount = currentAccount.payments[i].amount;
 
-      //Displays the bills using the amount, every interval set above
+  for (let i = 0; i < currentAccount.payments.length; i++) {
+    //Sets interval to the value set in the current bill object
+    interval = currentAccount.payments[i].frequency;
+    //Sets amount to the value set in the current bill object
+    amount = currentAccount.payments[i].amount;
 
-      setInterval(function () {
-        //Pushes amount to the transactions array
-        currentProfile.accounts[0].transactions.push(amount);
-        //creates a new date for the transaction above
-        currentProfile.accounts[0].movementsDates.push(
-          new Date().toISOString()
-        );
+    //Displays the bills using the amount, every interval set above
 
-        //Updates Local Storage with new data
-        transactionsPush();
+    setInterval(function () {
+      console.log(currentAccount.payments[i]);
+      //Pushes amount to the transactions array
+      currentProfile.accounts[0].transactions.push(amount);
+      //creates a new date for the transaction above
+      currentProfile.accounts[0].movementsDates.push(new Date().toISOString());
 
-        //Displays new data on the webpage
-        updateUI(currentAccount);
-      }, interval);
+      //Updates Local Storage with new data
+      transactionsPush();
 
-      console.log(currentAccount.accountType);
+      //Displays new data on the webpage
       updateUI(currentAccount);
-      return;
-    }
+    }, interval);
   }
 };
 
