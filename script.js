@@ -419,7 +419,7 @@ const updateTime = function () {
 };
 
 //This function updates local storage with any new data (Mainly transactions)
-const transactionsPush = function () {
+export const transactionsPush = function () {
   localStorage.setItem('profiles', JSON.stringify(profiles));
 };
 
