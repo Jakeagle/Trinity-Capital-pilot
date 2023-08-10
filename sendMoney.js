@@ -1,6 +1,6 @@
-import { profiles } from './script.js';
-import { transactionsPush } from './script.js';
-import { balance } from './script.js';
+import { profiles } from './app.js';
+import { transactionsPush } from './app.js';
+import { balance } from './app.js';
 
 /**********************************************Variables****************************************/
 let currentProfile;
@@ -76,6 +76,9 @@ const sendFunds = function () {
       currentProfile.accounts[0].transactions.push(-amount);
       currentProfile.accounts[0].movementsDates.push(new Date().toISOString());
       transactionsPush();
+
+      alert('Money sent sucesfully');
+      location.replace('index.html');
     }
 
     console.log(amount, profileSend.accounts[0].transactions);
