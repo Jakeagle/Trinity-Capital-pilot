@@ -1,7 +1,7 @@
 'use strict';
 
-import { profiles } from './app.js';
-import { transactionsPush } from './app.js';
+import { profiles } from './script.js';
+import { transactionsPush } from './script.js';
 
 /**************************************************Variables ***********************************************/
 
