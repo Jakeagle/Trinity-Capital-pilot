@@ -1,6 +1,6 @@
 import { profiles } from './script.js';
 import { transactionsPush } from './script.js';
-import { balance } from './script.js';
+
 
 /**********************************************Variables****************************************/
 let currentProfile;
@@ -62,12 +62,12 @@ const sendFunds = function () {
   console.log(currentProfile.memberName === profileSend.memberName);
 
   if (currentProfile.memberName === profileSend.memberName) {
-    console.log('this is working');
+   
     alert('You cannot send funds to yourself');
   } else {
     let amount = parseInt(inputAmount.value);
 
-    if (amount > profileSend.accounts[0].balanceTotal) {
+    if (amount > currentProfile.accounts[0].balanceTotal) {
       alert('Insufficient funds');
     } else if (amount <= profileSend.accounts[0].balanceTotal) {
       console.log(profileSend.accounts[0].balanceTotal);
