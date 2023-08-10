@@ -12,6 +12,7 @@ const jfAccount1 = {
   currency: 'USD',
   locale: 'en-US',
   transactions: [550, 1200, -200, 25, 25, 155, 1200, -300],
+  balanceTotal: 0,
   bills: [],
   payments: [],
   accountType: 'Checking',
@@ -34,6 +35,7 @@ const jfAccount2 = {
   currency: 'USD',
   locale: 'en-US',
   transactions: [700, 100, 2100, 25, 25, 155, -300, 500],
+  balanceTotal: 0,
   accountType: 'Savings',
   accountNumber: '3112153745644899',
   movementsDates: [
@@ -54,6 +56,7 @@ const djAccount1 = {
   currency: 'USD',
   locale: 'en-US',
   transactions: [450, 1900, -100, 55, 5, 105, 1000, -500],
+  balanceTotal: 0,
   bills: [],
   payments: [],
   accountType: 'Checking',
@@ -77,6 +80,7 @@ const djAccount2 = {
   currency: 'USD',
   locale: 'en-US',
   transactions: [450, 1900, -100, 780, 55, 150, 10, -1000],
+  balanceTotal: 0,
   accountType: 'Savings',
   accountNumber: '1247885477085708',
 
@@ -162,6 +166,18 @@ if (!profilesJsonRetrieve) {
 export const profiles = JSON.parse(profilesJsonRetrieve);
 // log accounts to see if it is an array of objects
 
+const balanceCalc = function (arr) {
+  for (let i = 0; i < arr.length; i++) {
+    let newBalance = arr[i].accounts[0].transactions.reduce(
+      (acc, mov) => acc + mov,
+      0
+    );
+    arr[i].accounts[0].balanceTotal = newBalance;
+    console.log(arr[i].accounts[0].balanceTotal);
+  }
+};
+
+balanceCalc(profiles);
 /******************************************Variables ***************************************************/
 
 let currentAccount;
@@ -179,6 +195,7 @@ const signOnForm = document.querySelector('signOnForm');
 const signOnText = document.querySelector('.signOntext');
 const loginButton = document.querySelector('.login__btn');
 const formDiv = document.querySelector('.formDiv');
+export let balance;
 
 const lastUpdated = document.querySelector('.updateDate');
 const transActionsDate = document.querySelector('.transactions__date');
@@ -631,6 +648,10 @@ function formatCur(value, currency, locale) {
 export const displayBalance = function (acc) {
   //calculates the balance based on the transaction array
   acc.balance = acc.transactions.reduce((acc, mov) => acc + mov, 0);
+  acc.balanceTotal = acc.balance;
+  transactionsPush();
+  console.log(acc.balanceTotal);
+
   //displays balance
   balanceValue.textContent = formatCur(acc.balance, acc.locale, acc.currency);
 };
@@ -644,5 +665,3 @@ export const updateUI = function (acc) {
   //Displays the users accounts
   displayAccounts(acc);
 };
-
-const accountCheck = function (type) {};
