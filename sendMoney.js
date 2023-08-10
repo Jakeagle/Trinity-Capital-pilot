@@ -1,6 +1,6 @@
-import { profiles } from './app.js';
-import { transactionsPush } from './app.js';
-import { balance } from './app.js';
+import { profiles } from './script.js';
+import { transactionsPush } from './script.js';
+import { balance } from './script.js';
 
 /**********************************************Variables****************************************/
 let currentProfile;
