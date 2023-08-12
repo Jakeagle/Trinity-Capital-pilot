@@ -2,6 +2,7 @@
 
 //import profiles object from App.js
 import { profiles } from './script.js';
+import { transactionsPush } from './script.js';
 
 /************************************************Variables*************************************************/
 
@@ -19,6 +20,8 @@ const amountInput = document.querySelector('.form__input--amount--transfer');
 
 const btnAmount = document.querySelector('.form__btn--transfer');
 
+const mainApp = document.querySelector('.mainSection');
+
 let accountSend;
 
 let accountRecieve;
@@ -29,8 +32,10 @@ let amount;
 
 /************************************************Functions*************************************************/
 
+mainApp.style.display = 'none';
 //Logs into the page
 const login = function () {
+  mainApp.style.display = 'block';
   //gets the pin from the user typed value;
   let pin = parseInt(inputPIN.value);
   //Checks the profile against the User entered pin
@@ -75,33 +80,42 @@ const transferFunds = function (accounts) {
   //Loops through all of the accounts
   currentProfile.accounts.forEach(account => {
     //Checks to see if the account numbers are the same for the user selected account and the accounts in the profile
-    if (accountSend != account.accountNumber) {
-      return;
-    } else if ((accountSend = account.accountNumber)) {
-      //removes amount from send account
-      account.transactions.push(-amount);
-      //add new date for transaction
-      account.movementsDates.push(new Date().toISOString());
-    }
-  });
-
-  //Loops through all of the accounts
-  currentProfile.accounts.forEach(account => {
-    //Checks to see if the account numbers are the same for the user selected account and the accounts in the profile
-    console.log(accountRecieve);
-    if (accountRecieve != account.accountNumber) {
-      return;
-    } else if ((accountRecieve = account.accountNumber)) {
-      //pushes amount to receiving account
-      account.transactions.push(amount);
-      //adds new date for transaction
-      account.movementsDates.push(new Date().toISOString());
+    if (accountSend === account.accountNumber) {
+      if (amount > account.balanceTotal) {
+        alert('insufficient funds');
+        return;
+      } else if (amount <= account.balanceTotal) {
+        console.log(account);
+        //removes amount from send account
+        account.transactions.push(-amount);
+        //add new date for transaction
+        account.movementsDates.push(new Date().toISOString());
+        currentProfile.accounts.forEach(account => {
+          if (accountRecieve === account.accountNumber) {
+            console.log(account);
+            //pushes amount to receiving account
+            account.transactions.push(amount);
+            //adds new date for transaction
+            account.movementsDates.push(new Date().toISOString());
+          }
+        });
+      }
+      console.log(accountSend, accountRecieve);
+      if (accountSend === accountRecieve) {
+        alert('Cant use the same account');
+        amountInput.value = '';
+      } else if (accountSend !== accountRecieve) {
+        transPush();
+      }
     }
   });
 
   //Updates local Storage with new transactions
-  localStorage.setItem('profiles', JSON.stringify(profiles));
+};
 
+const transPush = function () {
+  transactionsPush();
+  amountInput.value = '';
   //Tells user of succesful transaction
   alert('Transfer Succesfull');
   //send user back to main page
