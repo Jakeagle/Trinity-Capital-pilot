@@ -22,6 +22,8 @@ const btnAmount = document.querySelector('.form__btn--transfer');
 
 const mainApp = document.querySelector('.mainSection');
 
+const backBTN = document.querySelector('.backBtn');
+
 let accountSend;
 
 let accountRecieve;
@@ -129,6 +131,10 @@ const transPush = function () {
 };
 
 /************************************************Event Listeners*************************************************/
+
+backBTN.addEventListener('click', function () {
+  location.replace('index.html');
+});
 
 //Button that handles user login
 btnPIN.addEventListener('click', function () {
