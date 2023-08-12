@@ -62,26 +62,32 @@ const sendFunds = function () {
   console.log(currentProfile.memberName === profileSend.memberName);
 
   if (currentProfile.memberName === profileSend.memberName) {
-   
     alert('You cannot send funds to yourself');
   } else {
     let amount = parseInt(inputAmount.value);
 
-    if (amount > currentProfile.accounts[0].balanceTotal) {
-      alert('Insufficient funds');
-    } else if (amount <= profileSend.accounts[0].balanceTotal) {
-      console.log(profileSend.accounts[0].balanceTotal);
-      profileSend.accounts[0].transactions.push(amount);
-      profileSend.accounts[0].movementsDates.push(new Date().toISOString());
-      currentProfile.accounts[0].transactions.push(-amount);
-      currentProfile.accounts[0].movementsDates.push(new Date().toISOString());
-      transactionsPush();
+    if (amount <= 0) {
+      alert('Cannot use negative number');
+    } else if (amount > 0) {
+      if (amount > currentProfile.accounts[0].balanceTotal) {
+        alert('Insufficient funds');
+      } else if (amount <= profileSend.accounts[0].balanceTotal) {
+        console.log(profileSend.accounts[0].balanceTotal);
+        profileSend.accounts[0].transactions.push(amount);
+        profileSend.accounts[0].movementsDates.push(new Date().toISOString());
+        currentProfile.accounts[0].transactions.push(-amount);
+        currentProfile.accounts[0].movementsDates.push(
+          new Date().toISOString()
+        );
+        transactionsPush();
 
-      alert('Money sent sucesfully');
-      location.replace('index.html');
+        alert('Money sent sucesfully');
+        location.replace('index.html');
+      }
+
+      console.log(amount, profileSend.accounts[0].transactions);
+      console.log(amount, currentProfile.accounts[0].transactions);
     }
-
-    console.log(amount, profileSend.accounts[0].transactions);
-    console.log(amount, currentProfile.accounts[0].transactions);
   }
 };
+
