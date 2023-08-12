@@ -1,6 +1,6 @@
 'use strict';
 
-import { displayBills, profiles } from './script.js';
+import { profiles } from './script.js';
 import { transactionsPush } from './script.js';
 
 /**********************************************Variables***********************************************/
@@ -119,6 +119,7 @@ const setTransaction = function (acc, time) {
         console.log(amount);
         //Creates the new bill object in the bills array with the amiunt and frequency
         let newBill = { amount: amount, frequency: time };
+        console.log(newBill);
         //pushes object to the bills array
         acc.bills.push(newBill);
       }
