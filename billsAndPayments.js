@@ -1,6 +1,7 @@
 'use strict';
 
 import { displayBills, profiles } from './script.js';
+import { transactionsPush } from './script.js';
 
 /**********************************************Variables***********************************************/
 
