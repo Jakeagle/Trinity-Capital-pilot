@@ -14,11 +14,14 @@ const loginBTN = document.querySelector('.login__btn--bp');
 const inputAmount = document.querySelector('.form__input--amount--bills');
 const inputMember = document.querySelector('.frequencyListBills');
 const inputBTN = document.querySelector('.form__btn--bills');
+const backBTN = document.querySelector('.backBtn');
 
 mainApp.style.display = 'none';
 
 /***********************************************Event LIsteners ********************************/
-
+backBTN.addEventListener('click', function () {
+  location.replace('index.html');
+});
 loginBTN.addEventListener('click', function () {
   let pin = parseInt(loginPIN.value);
   currentProfile = profiles.find(profile => profile.pin === pin);
@@ -82,7 +85,7 @@ const sendFunds = function () {
         transactionsPush();
 
         alert('Money sent sucesfully');
-        location.replace('index.html');
+        location.replace('app.html');
       }
 
       console.log(amount, profileSend.accounts[0].transactions);
@@ -90,4 +93,3 @@ const sendFunds = function () {
     }
   }
 };
-
