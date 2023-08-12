@@ -115,7 +115,7 @@ const setTransaction = function (acc, time) {
       if (billAmount <= 0) {
         alert('Cannot use negative amount');
         billInput.value = '';
-      } else if (amount > 0) {
+      } else if (billAmount > 0) {
         console.log(amount);
         //Creates the new bill object in the bills array with the amiunt and frequency
         let newBill = { amount: amount, frequency: time };
@@ -136,7 +136,7 @@ const setTransaction = function (acc, time) {
       if (paymentAmount <= 0) {
         alert('Cannot use negative amount');
         billInput.value = '';
-      } else if (amount > 0) {
+      } else if (paymentAmount > 0) {
         console.log(amount);
         let newPayment = { amount: amount, frequency: time };
         acc.payments.push(newPayment);
