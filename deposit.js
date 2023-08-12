@@ -105,11 +105,15 @@ const loanAdd = function () {
   console.log('Ran');
 
   let userLoan = parseInt(amount.val());
-  currentProfile.accounts[0].transactions.push(userLoan);
-  currentProfile.accounts[0].movementsDates.push(new Date().toISOString());
-  transactionsPush();
-  console.log('complete', userLoan);
-  alert(' Succesfull');
-  //send user back to main page
-  location.replace('index.html');
+  if (userLoan <= 0) {
+    alert('Cannot use negative amount');
+  } else if (userLoan > 0) {
+    currentProfile.accounts[0].transactions.push(userLoan);
+    currentProfile.accounts[0].movementsDates.push(new Date().toISOString());
+    transactionsPush();
+    console.log('complete', userLoan);
+    alert(' Succesfull');
+    //send user back to main page
+    location.replace('index.html');
+  }
 };
