@@ -76,16 +76,18 @@ const login = function () {
 const transferFunds = function (accounts) {
   //gets the amount from HTML element
   amount = parseInt(amountInput.value);
-
+  console.log(-amount, amount);
   //Loops through all of the accounts
   currentProfile.accounts.forEach(account => {
     //Checks to see if the account numbers are the same for the user selected account and the accounts in the profile
     if (accountSend === account.accountNumber) {
       if (amount > account.balanceTotal) {
+        console.log(account.balanceTotal);
         alert('insufficient funds');
+        console.log(amount);
         return;
       } else if (amount <= account.balanceTotal) {
-        console.log(account);
+        console.log(account.balanceTotal);
         //removes amount from send account
         account.transactions.push(-amount);
         //add new date for transaction
@@ -104,7 +106,10 @@ const transferFunds = function (accounts) {
       if (accountSend === accountRecieve) {
         alert('Cant use the same account');
         amountInput.value = '';
-      } else if (accountSend !== accountRecieve) {
+      } else if (amount < 0) {
+        alert('Cannot use negative amount');
+        console.log(amount);
+      } else if (amount > 0) {
         transPush();
       }
     }
@@ -114,12 +119,13 @@ const transferFunds = function (accounts) {
 };
 
 const transPush = function () {
+  console.log(parseInt(amountInput.value));
   transactionsPush();
   amountInput.value = '';
   //Tells user of succesful transaction
   alert('Transfer Succesfull');
   //send user back to main page
-  location.replace('index.html');
+  location.replace('app.html');
 };
 
 /************************************************Event Listeners*************************************************/
