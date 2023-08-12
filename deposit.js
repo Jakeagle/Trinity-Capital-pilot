@@ -120,6 +120,6 @@ const loanAdd = function () {
     console.log('complete', userLoan);
     alert(' Succesfull');
     //send user back to main page
-    location.replace('app.html');
+    location.replace('index.html');
   }
 };
