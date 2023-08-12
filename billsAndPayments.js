@@ -111,13 +111,16 @@ const setTransaction = function (acc, time) {
     //Creates the bill object
     const newBillFunc = function () {
       let amount = parseInt(-billInput.value);
-      console.log(amount);
-      //Creates the new bill object in the bills array with the amiunt and frequency
-      let newBill = { amount: amount, frequency: time };
-      
-      //pushes object to the bills array
-      acc.bills.push(newBill);
-      console.log(acc.bills);
+      if (billAmount <= 0) {
+        alert('Cannot use negative amount');
+        billInput.value = '';
+      } else if (amount > 0) {
+        console.log(amount);
+        //Creates the new bill object in the bills array with the amiunt and frequency
+        let newBill = { amount: amount, frequency: time };
+        //pushes object to the bills array
+        acc.bills.push(newBill);
+      }
     };
 
     //calls function
@@ -129,18 +132,22 @@ const setTransaction = function (acc, time) {
   } else if (chosenSelect === paymentFrequency) {
     const newPayFunc = function () {
       let amount = parseInt(paymentInput.value);
-      console.log(amount);
-      let newPayment = { amount: amount, frequency: time };
-      
-      acc.payments.push(newPayment);
-      console.log(acc.payments);
+      if (paymentAmount <= 0) {
+        alert('Cannot use negative amount');
+        billInput.value = '';
+      } else if (amount > 0) {
+        console.log(amount);
+        let newPayment = { amount: amount, frequency: time };
+        acc.payments.push(newPayment);
+        console.log(acc.payments);
+      }
     };
     newPayFunc(time);
 
     chosenSelect === '';
   }
   //updates local storage with new data
-  localStorage.setItem('profiles', JSON.stringify(profiles));
+  transactionsPush();
 };
 
 /**********************************************Event Listeners***********************************************/
