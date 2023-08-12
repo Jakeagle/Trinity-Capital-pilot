@@ -85,7 +85,7 @@ const sendFunds = function () {
         transactionsPush();
 
         alert('Money sent sucesfully');
-        location.replace('app.html');
+        location.replace('index.html');
       }
 
       console.log(amount, profileSend.accounts[0].transactions);
