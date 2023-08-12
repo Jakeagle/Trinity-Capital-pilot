@@ -27,11 +27,17 @@ const inputPIN = $('.login__input--pin--bp');
 
 const inputBTN = $('.login__btn--bp');
 
+const backBTN = $('.backBtn');
+
 let currentProfile;
 
 mainApp.css('display', 'none');
 
 /******************************************************Event listeners **************************************/
+backBTN.click(function () {
+  location.replace('index.html');
+});
+
 submit.click(function (e) {
   e.preventDefault();
   checkAll(currentProfile);
@@ -114,6 +120,6 @@ const loanAdd = function () {
     console.log('complete', userLoan);
     alert(' Succesfull');
     //send user back to main page
-    location.replace('index.html');
+    location.replace('app.html');
   }
 };
