@@ -9,6 +9,7 @@ if (mainApp) mainApp.style.display = 'none';
 const jfAccount1 = {
   id: 1,
   accountHolder: 'Jakob Ferguson',
+  username: '',
   currency: 'USD',
   locale: 'en-US',
   transactions: [550, 1200, -200, 25, 25, 155, 1200, -300],
@@ -32,6 +33,7 @@ const jfAccount1 = {
 const jfAccount2 = {
   id: 2,
   accountHolder: 'Jakob Ferguson',
+  username: '',
   currency: 'USD',
   locale: 'en-US',
   transactions: [700, 100, 2100, 25, 25, 155, -300, 500],
@@ -53,6 +55,7 @@ const jfAccount2 = {
 const djAccount1 = {
   id: 3,
   accountHolder: 'Darlene Jones',
+  username: '',
   currency: 'USD',
   locale: 'en-US',
   transactions: [450, 1900, -100, 55, 5, 105, 1000, -500],
@@ -77,6 +80,7 @@ const djAccount1 = {
 const djAccount2 = {
   id: 4,
   accountHolder: 'Darlene Jones',
+  username: '',
   currency: 'USD',
   locale: 'en-US',
   transactions: [450, 1900, -100, 780, 55, 150, 10, -1000],
@@ -165,6 +169,9 @@ if (!profilesJsonRetrieve) {
 //Exports profiles for use in other scripts
 export const profiles = JSON.parse(profilesJsonRetrieve);
 // log accounts to see if it is an array of objects
+export const transactionsPush = function () {
+  localStorage.setItem('profiles', JSON.stringify(profiles));
+};
 
 const balanceCalc = function (arr) {
   for (let i = 0; i < arr.length; i++) {
@@ -173,17 +180,21 @@ const balanceCalc = function (arr) {
       0
     );
     arr[i].accounts[0].balanceTotal = newBalance;
-    console.log(arr[i].accounts[0].balanceTotal);
+
+    transactionsPush();
   }
+  console.log(profiles[0].accounts[0].balanceTotal);
 };
 
 balanceCalc(profiles);
+console.log(profiles);
 /******************************************Variables ***************************************************/
 
 let currentAccount;
 let currentProfile;
 let currentTime;
-
+let accPIN;
+let accUser;
 //Currency codes for formatting
 const currencyCodeMap = {
   840: 'USD',
@@ -194,6 +205,7 @@ const currencyCodeMap = {
 const signOnForm = document.querySelector('signOnForm');
 const signOnText = document.querySelector('.signOntext');
 const loginButton = document.querySelector('.login__btn');
+const loginText = document.querySelector('.login__input--user');
 const formDiv = document.querySelector('.formDiv');
 export let balance;
 
@@ -238,8 +250,22 @@ if (loginButton) {
     const loginPIN = document.querySelector('.login__input--pin');
     const pin = parseInt(loginPIN.value);
 
-    // Find the profile with matching PIN
-    currentProfile = profiles.find(profile => profile.pin === pin);
+    for (let i = 0; i < profiles.length; i++) {
+      console.log(profiles[i].userName);
+      if (loginText.value === profiles[i].userName && pin === profiles[i].pin) {
+        currentProfile = profiles[i];
+      } else if (
+        loginText.value === profiles[i].userName &&
+        pin !== profiles[i].pin
+      ) {
+        alert('incorrect PIN');
+      } else if (
+        loginText.value !== profiles[i].userName &&
+        pin === profiles[i].pin
+      ) {
+        alert('incorrect Username');
+      }
+    }
 
     if (currentProfile) {
       // Retrieve saved transactions for current account
@@ -292,8 +318,6 @@ if (loginButton) {
       } else {
         alert('No checking account found. Please contact customer service.');
       }
-    } else {
-      alert('Invalid PIN. Please try again.');
     }
   });
 }
@@ -310,38 +334,45 @@ if (accBtnSwitch) {
       account => account.accountNumber.slice(-4) === targetAccount
     );
 
-    if (accountToSwitch) {
-      //Updates UI for current balance with switched account
-      balanceLabel.textContent = `Current balance for: #${accountToSwitch.accountNumber.slice(
-        -4
-      )}`;
-      //sets current account to the switched account
-      currentAccount = accountToSwitch;
-      //empties text field
-      accNumSwitch.value = '';
-      //empties text field
-      accPinSwitch.value = '';
-      //Updates main site with switched account
-      updateUI(accountToSwitch);
+    accPIN = parseInt(accPinSwitch.value);
+    if (!accountToSwitch) {
+      alert('Incorrect account number');
+    } else {
+      if (accPIN === currentProfile.pin) {
+        //Updates UI for current balance with switched account
+        balanceLabel.textContent = `Current balance for: #${accountToSwitch.accountNumber.slice(
+          -4
+        )}`;
+        //sets current account to the switched account
+        currentAccount = accountToSwitch;
+        //empties text field
+        accNumSwitch.value = '';
+        //empties text field
+        accPinSwitch.value = '';
+        //Updates main site with switched account
+        updateUI(accountToSwitch);
 
-      //Updates to the current time
-      updateTime();
-      //Updates the as of field
-      balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
-        currentProfile.locale,
-        options
-      ).format(currentTime)}`;
+        //Updates to the current time
+        updateTime();
+        //Updates the as of field
+        balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
+          currentProfile.locale,
+          options
+        ).format(currentTime)}`;
 
-      //Variable for the loan section
-      const loanBox = document.querySelector('.operation--loan');
-      //checks for savings accounr
+        //Variable for the loan section
+        const loanBox = document.querySelector('.operation--loan');
+        //checks for savings accounr
 
-      //takes away loans if savings
-      loanBox.style.display = 'none';
-      //checks for Checking
+        //takes away loans if savings
+        loanBox.style.display = 'none';
+        //checks for Checking
 
-      //Shows loan box
-      loanBox.style.display = 'inline';
+        //Shows loan box
+        loanBox.style.display = 'inline';
+      } else {
+        alert('Incorrect PIN');
+      }
     }
   });
 }
@@ -419,26 +450,38 @@ if (mainApp) {
 }
 
 //Creates Usernames using the first letters of the first and last name of the user
-const createUsername = function (accs) {
-  accs.forEach(function (acc) {
-    acc.username = acc.memberName
+// const createUsername = function (accs) {
+//   accs.forEach(function (acc) {
+//     acc.username = acc.memberName
+//       .toLowerCase()
+//       .split(' ')
+//       .map(name => name[0])
+//       .join('');
+//     transactionsPush();
+//   });
+// };
+
+const createUsername = function (prfs) {
+  for (let i = 0; i < prfs.length; i++) {
+    console.log(prfs[i].memberName);
+    prfs[i].userName = prfs[i].memberName
       .toLowerCase()
       .split(' ')
       .map(name => name[0])
       .join('');
-  });
+  }
+
+  transactionsPush();
 };
 createUsername(profiles);
 
+//createUsername(profiles);
 //updates current time
 const updateTime = function () {
   currentTime = new Date();
 };
 
 //This function updates local storage with any new data (Mainly transactions)
-export const transactionsPush = function () {
-  localStorage.setItem('profiles', JSON.stringify(profiles));
-};
 
 //Displays Currently Logged in profile's accounts sorted in order of checking first, then in order of most recently created.
 const displayAccounts = function (currentAccount) {
