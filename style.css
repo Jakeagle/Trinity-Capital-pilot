@@ -362,3 +362,15 @@ a:hover {
 .header {
   text-align: center;
 }
+
+.backBtn {
+  text-align: center;
+}
+.boxes {
+  font-family: 'Montserrat', sans-serif;
+  border-radius: 1rem;
+  padding: 0.5rem 4rem;
+  margin: 1rem;
+  color: #333;
+  background-image: linear-gradient(to top left, #ae8626, #f7ef8a);
+}
