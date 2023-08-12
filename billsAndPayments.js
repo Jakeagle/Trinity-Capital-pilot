@@ -15,6 +15,7 @@ const loginBTN = document.querySelector('.login__btn--bp');
 const signOnSection = document.querySelector('.signOnSection');
 const billsBTN = document.querySelector('.form__btn--bills');
 const paymentsBTN = document.querySelector('.form__btn--payments');
+const backBTN = document.querySelector('.backBtn');
 
 export let billInterval;
 export let payInterval;
@@ -153,7 +154,9 @@ const setTransaction = function (acc, time) {
 };
 
 /**********************************************Event Listeners***********************************************/
-
+backBTN.addEventListener('click', function () {
+  location.replace('index.html');
+});
 //Handles login
 loginBTN.addEventListener('click', function () {
   login();
