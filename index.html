@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trinity Capital</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="/png-transparent-black-artwork-il.png"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- <script>
+      alert(
+        'WEBSITE STILL IN DEVELOPEMENT: This launch is a developement launch designed for testing and showcase. Some features may not be implemented, and theyre still might be issues and bugs that havent been discovered'
+      );
+    </script> -->
+
+    <script
+      src="https://kit.fontawesome.com/60a3862749.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <!----Customer login section----->
+
+    <div class="header">
+      <div class="row headerRow">
+        <div class="col title-div">
+          <h1 class="title1">Trinity</h1>
+        </div>
+        <div class="col image-div">
+          <img
+            src="png-transparent-black-artwork-il.png"
+            alt="Logo"
+            class="logo"
+          />
+        </div>
+        <div class="col title-div-2">
+          <h1 class="title2">Capital</h1>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+    <div class="signOnprompt">
+      <h2 class="signOntext headings">Sign in to view Accounts</h2>
+    </div>
+
+    <div class="signOnForm">
+      <div class="row formDiv">
+        <div class="col-lg-4 col-md-4 col-sm-6 usernameBox">
+          <input
+            type="text"
+            placeholder="user"
+            class="login__input login__input--user signOnGroup"
+          />
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-6 pinBox">
+          <input
+            type="text"
+            placeholder="PIN"
+            maxlength="4"
+            class="login__input login__input--pin signOnGroup"
+          />
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-6 button">
+          <button class="login__btn signOnGroup">&rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="app">
+      <h1 class="headings lessonTitle">Lessons</h1>
+      <div class="row tutorial">
+        <div class="col lessonBtn tutorialBtn lBox">
+          <h1 class="lesson headings">Tutorial</h1>
+        </div>
+      </div>
+      <div class="row buttonRow">
+        <div class="col lessonBtn lesson1Btn lBox">
+          <h1 class="lesson headings">1</h1>
+        </div>
+        <div class="col lessonBtn lesson2Btn lBox">
+          <h1 class="lesson headings">2</h1>
+        </div>
+        <div class="col lessonBtn lesson3Btn lBox">
+          <h1 class="lesson headings">3</h1>
+        </div>
+        <div class="col lessonBtn lesson4Btn lBox">
+          <h1 class="lesson headings">4</h1>
+        </div>
+      </div>
+
+      <hr class="lessonSeperator" />
+
+      <!--Banking tools-->
+      <div class="banking">
+        <h2 class="headings bankingTitle">Banking</h2>
+
+        <div class="row">
+          <div class="col-3 transferBox">
+            <p class="bankingText">
+              <a href="transfer.html"
+                ><i class="fa-solid fa-money-bill-transfer bankingImg"></i
+              ></a>
+            </p>
+            <p class="transfer bankingText">Transfer</p>
+          </div>
+          <div class="col-3 payBills">
+            <p class="bankingText">
+              <a href="billandpayments.html"
+                ><i class="fa-solid fa-file-invoice-dollar bankingImg"></i
+              ></a>
+            </p>
+            <p class="payBillsText bankingText">Bills & Paychecks</p>
+          </div>
+          <div class="col-3 deposit">
+            <p class="bankingText">
+              <a href="deposit.html"
+                ><i class="fa-solid fa-money-check bankingImg"></i>
+              </a>
+            </p>
+            <p class="payBillsText bankingText">Deposit</p>
+          </div>
+          <div class="col-3 zelle">
+            <p class="bankingText">
+              <a href="sendMoney.html"
+                ><i class="fa-solid fa-dollar-sign bankingImg"></i
+              ></a>
+            </p>
+            <p class="payBillsText bankingText">Send Money</p>
+          </div>
+        </div>
+      </div>
+
+      <!--Balance Div-->
+      <div class="balance">
+        <div>
+          <p class="balance__label">Current balance for: #4872</p>
+          <p class="balance__date">As of <span class="date"></span></p>
+        </div>
+        <p class="balance__value">ERROR</p>
+      </div>
+
+      <!--Main Content-->
+      <div class="wholeApp">
+        <div class="row">
+          <!--Acounts Section-->
+          <div class="col-lg-4 col-md-4 col-sm-12 accounts">
+            <div class="row accountsTitle">
+              <h3 class="col accountsTitle headings">Accounts</h3>
+              <h3 class="col accountsTitle headings">Number</h3>
+              <h3 class="col accountsTitle lastUpdated headings heading-R">
+                Last Updated
+              </h3>
+            </div>
+            <div class="accountContainer">
+              <div class="row accountsRow">
+                <div class="col accountType">Checking</div>
+                <div class="col accountNumber">4872</div>
+                <div class="col updateDate">3/21/23</div>
+              </div>
+
+              <div class="row accountsRow">
+                <div class="col accountType">Savings</div>
+                <div class="col accountNumber">5327</div>
+                <div class="col updateDate">3/02/23</div>
+              </div>
+
+              <div class="row accountsRow">
+                <div class="col accountType">Donations</div>
+                <div class="col accountNumber">6712</div>
+                <div class="col updateDate">12/25/22</div>
+              </div>
+            </div>
+
+            <div class="operation operation--switch">
+              <h2 class="switchTitle">Switch account</h2>
+              <div class="formCloseDiv">
+                <form class="form form--close">
+                  <input
+                    type="text"
+                    class="form__input form__input--user--switch"
+                  />
+                  <input
+                    type="password"
+                    maxlength="6"
+                    class="form__input form__input--pin--switch"
+                  />
+                  <button class="form__btn form__btn--switch">&rarr;</button>
+                  <label class="form__label">
+                    <p class="switchLabel">Account Number</p>
+                  </label>
+                  <label class="form__label">
+                    <p class="switchLabel">Confirm PIN</p></label
+                  >
+                </form>
+              </div>
+            </div>
+          </div>
+          <!--transactions-->
+          <div class="col-lg-8 col-md-8 col-sm-12 transactions">
+            <h3 class="transactionsTitle headings">Transactions</h3>
+            <div class="transactions__row row">
+              <div class="transactions__type transactions__type--deposit col-4">
+                <div class="transactionsTypeText">2 deposit</div>
+              </div>
+              <div class="transactions__date col-4">3 days ago</div>
+              <div class="transactions__value col-4">$600</div>
+            </div>
+            <div class="transactions__row row">
+              <div
+                class="transactions__type transactions__type--withdrawal col-4"
+              >
+                <div class="transactionsTypeText">1 withdrawal</div>
+              </div>
+              <div class="transactions__date col-4">24/01/2037</div>
+              <div class="transactions__value col-4">-$100</div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <h2 class="toolsTitle headings">Tools</h2>
+        <!--Account tools-->
+        <div class="row tools">
+          <div class="row">
+            <!--Loan Div-->
+            <div class="col operation operation--loan">
+              <h2>Request loan</h2>
+              <form class="form form--loan">
+                <input
+                  type="number"
+                  class="form__input form__input--loan-amount"
+                />
+                <button class="form__btn form__btn--loan">&rarr;</button>
+                <label class="form__label form__label--loan">Amount</label>
+              </form>
+            </div>
+            <!--Close Account-->
+
+            <!--Donate-->
+            <div class="col operation operation--donate">
+              <h2>Donate</h2>
+              <form class="form donateForm">
+                <input
+                  type="text"
+                  class="form__input form__input--donate--amount"
+                />
+                <input
+                  type="password"
+                  maxlength="6"
+                  class="form__input form__input--pin--donate"
+                />
+                <button class="form__btn form__btn--donate">&rarr;</button>
+                <label class="form__label">Amount</label>
+                <label class="form__label">Confirm PIN</label>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="issues issuesEmail">
+        <a
+          href="mailto:jakeagleofficial01@gmail.com"
+          class="issuesEmail headings"
+          >Bugs, suggestions, and feedback</a
+        >
+      </div>
+    </div>
+
+    <dialog class="T1">
+      <h1 class="headings">Tutorial</h1>
+      <div
+        id="carouselExampleControls"
+        class="carousel slide"
+        data-ride="false"
+      >
+        <div class="carousel-inner">
+          <div class="carousel-item active container-fluid">
+            <video class="L1Vid" width="440" height="280" controls>
+              <source src="TrinCapL1.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="carousel-item container-fluid">
+            <h1 class="headings noteHead">Note</h1>
+
+            <h2 class="note">
+              This version of Trinity Capital is a Pilot intended for showcase
+              and developement
+            </h2>
+            <h2 class="note">
+              Due to this, the features of the application are minimal and only
+              designed to show off the functionality, and provide students and
+              staff with an idea of how the application could work
+            </h2>
+
+            <h2 class="note">
+              If you have any ideas for things such as lesson content,
+              functionality, or any ways that you, the student, feel would make
+              this application a better learning tool, please use the feedback
+              form at the end of the final lesson
+            </h2>
+
+            <h2 class="note">
+              Bugs should be reported using the Bugs and feedback link. That
+              link is designed for issues with the application.
+            </h2>
+
+            <h2 class="note">
+              Thank you so much for piloting this app and happy banking!
+            </h2>
+          </div>
+          <div class="carousel-item container-fluid">
+            <video class="L1Vid" width="440" height="280" controls>
+              <source src="TrinCapL1-2.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="carousel-item container-fluid">
+            <video class="L1Vid" width="440" height="280" controls>
+              <source src="L1-3.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="carousel-item container-fluid">
+            <h1 class="headings noteHead">Note</h1>
+
+            <h2 class="note">
+              In the full version of the Application, students will be able to
+              open an unlimited number of varying different types of accounts
+              including accounts such as CDs (Certificate of Deposit)
+            </h2>
+            <h2 class="note">
+              Opening these accounts will be ran through the bank splash page
+              once its developed
+            </h2>
+          </div>
+          <div class="carousel-item container-fluid">
+            <video class="L1Vid" width="440" height="280" controls>
+              <source src="TrinCap T1-4.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="carousel-item container-fluid">
+            <video class="L1Vid" width="440" height="280" controls>
+              <source src="TrinCap T1-5.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="carousel-item container-fluid">
+            <h1 class="headings noteHead">Note</h1>
+
+            <h2 class="note">
+              In this pilot, the Routing number is not available to view.
+              However, in later versions, there will be functionality added to
+              allow students to view their critical account information such as
+              their account number, routing number, and other key info.
+            </h2>
+          </div>
+          <div class="carousel-item container-fluid">
+            <video class="L1Vid" width="440" height="280" controls>
+              <source src="TrinCap T1-6.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="carousel-item container-fluid">
+            <video class="L1Vid" width="440" height="280" controls>
+              <source src="TrinCap T1-7.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="carousel-item container-fluid">
+            <video class="L1Vid" width="440" height="280" controls>
+              <source src="TrinCap T1-8.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="carousel-item container-fluid">
+            <h1 class="headings noteHead">Note</h1>
+            <h2 class="headings noteHead">For Staff</h2>
+
+            <h3 class="note">
+              Loans functionality will be greatly updated in later versions.
+              There will be things added such as a simulated credit check, loan
+              approval, approval delay, and a payback time. For now, loans will
+              just push the transaction.
+            </h3>
+          </div>
+          <div class="carousel-item container-fluid">
+            <h1 class="headings noteHead">Note</h1>
+            <h2 class="headings noteHead">For Students</h2>
+
+            <h3 class="note">
+              Loans in the real world are very serious and should not be taken
+              lightly. In this pilot, loans are easy to request and have almost
+              no consequences, however, this will change in the final version.
+              In the real world, there are major consequences for not paying
+              back loans, and they are often hard to manage with your other
+              bills. BE CAREFUL.
+            </h3>
+          </div>
+          <div class="carousel-item container-fluid">
+            <video class="L1Vid" width="440" height="280" controls>
+              <source src="TrinCap T1-9.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="carousel-item container-fluid">
+            <video class="L1Vid" width="440" height="280" controls>
+              <source src="TrinCap T1-10.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="carousel-item container-fluid" id="t1LastSlide">
+            <h1 class="headings noteHead">Note</h1>
+
+            <h2 class="note">
+              Congrats on making it through the Tutorial! You can now explore
+              the application further, or move straight into the next lesson
+            </h2>
+            <h2 class="note">
+              Please do not commit any transactions at this time. Simply look at
+              each page, and use the back button to return to the main page
+            </h2>
+            <h2 class="note">
+              Commiting any transactions prematurely can cause problems for the
+              next lessons
+            </h2>
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#carouselExampleControls"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#carouselExampleControls"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <div class="backButton closeButton">
+        <div class="backBox">
+          <h2 class="headings">Close</h2>
+          <div class="row btnRow">
+            <button class="form__btn closeBtn col">&rarr;</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <script src="script.js" type="module"></script>
+    <script src="lessons.js" type="module"></script>
+  </body>
+</html>
