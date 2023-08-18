@@ -1,0 +1,38 @@
+.depositTitle {
+  margin: 2rem 0 2rem 0;
+}
+
+.checkExample {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.checkExampleImg {
+  width: 80%;
+}
+
+.checkExampleHeading {
+  margin-top: 2rem;
+}
+
+.instructionsParagraph {
+  text-align: center;
+}
+
+.depositForm {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.submit {
+  text-align: center;
+  margin: auto;
+  margin-top: 2.5rem;
+}
+
+.submitBtn {
+  background-color: gray;
+  color: white;
+}
