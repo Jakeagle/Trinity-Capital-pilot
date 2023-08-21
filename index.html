@@ -279,6 +279,13 @@
         </div>
       </div>
       <hr />
+      <div class="feedbackAndClear">
+        <div class="row">
+          <div class="col feedbackButton boxes"><h2>Pilot Feedback</h2></div>
+          <div class="col clearStorage boxes"><h2>Clear Data</h2></div>
+        </div>
+      </div>
+      <hr />
       <div class="issues issuesEmail">
         <a
           href="mailto:jakeagleofficial01@gmail.com"
@@ -287,7 +294,80 @@
         >
       </div>
     </div>
+    <dialog class="feedbackPrompt">
+      <div class="feedbackForm">
+        <form
+          action="mailto:jakeagleofficial01@gmail.com"
+          method="post"
+          enctype="text/plain"
+        >
+          <div class="inputs">
+            <div class="row">
+              <div class="col">
+                <label for="Likes">What did you like about the app? </label>
+              </div>
+              <div class="col">
+                <input type="text" name="Likes" id="likes" />
+              </div>
+            </div>
+            <br />
+            <br />
+            <div class="row">
+              <div class="col">
+                <label for="Dislikes">What didnt you like about the app?</label>
+              </div>
+              <div class="col">
+                <input type="text" name="Dislikes" id="dislikes" />
+              </div>
+            </div>
+            <br />
+            <br />
+            <div class="row">
+              <div class="col">
+                <label for="Features"
+                  >What features would you like to see?</label
+                >
+              </div>
 
+              <div class="col">
+                <input type="text" name="Features" id="features" />
+              </div>
+            </div>
+            <br />
+            <br />
+            <div class="row">
+              <div class="col">
+                <label for="Issues"
+                  >Were there any bugs, or any issues you felt took away from
+                  the experience</label
+                >
+              </div>
+              <div class="col">
+                <input type="text" name="Issues" id="issues" />
+              </div>
+            </div>
+            <br />
+            <br />
+            <div class="row">
+              <div class="col">
+                <label for="Suggestions"
+                  >In a paragraph or two, describe your thoughts on the app, and
+                  suggestions you have for it</label
+                >
+              </div>
+              <div class="col">
+                <input type="text" name="Suggestions" id="suggestions" />
+              </div>
+            </div>
+            <br />
+            <br />
+            <div class="row submitBtn">
+              <div class="col-1"><input type="submit" value="Submit" /></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </dialog>
     <dialog class="T1">
       <h1 class="headings">Tutorial</h1>
       <div
@@ -468,7 +548,6 @@
         </div>
       </div>
     </dialog>
-
     <script src="Javascript/script.js" type="module"></script>
     <script src="Javascript/lessons.js" type="module"></script>
   </body>
