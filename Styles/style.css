@@ -473,3 +473,58 @@ a:hover {
   text-align: center;
   height: 25rem;
 }
+
+.feedbackForm {
+  margin: 1rem 20rem 0;
+}
+
+.feedbackPrompt {
+  font-family: 'Montserrat', sans-serif;
+  display: block;
+  border: none;
+  border-radius: 4rem;
+  overflow: scroll;
+  background-image: linear-gradient(to top left, #ae8626, #f7ef8a);
+  height: 40rem;
+  width: 70rem;
+  opacity: 0;
+  transition: all 1.5s;
+}
+
+.feedbackPrompt[open] {
+  opacity: 1;
+}
+.feedbackPrompt::-webkit-scrollbar {
+  display: none;
+}
+.feedbackPrompt::backdrop {
+  background-image: linear-gradient(to top left, #8e8d8d, #f7ef8a);
+  opacity: 0.5;
+  transition: all 2.5s;
+}
+.submitBtn {
+  border: none;
+  border-radius: 2rem;
+  text-align: center;
+  margin: 0 12rem;
+}
+
+.feedbackAndClear {
+  text-align: center;
+}
+
+.feedbackButton:hover {
+  color: #f7ef8a;
+}
+
+.feedbackButton {
+  color: white;
+}
+
+.clearStorage:hover {
+  color: #f7ef8a;
+}
+
+.clearStorage {
+  color: white;
+}
