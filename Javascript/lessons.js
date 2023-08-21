@@ -6,6 +6,12 @@ import { profiles, transactionsPush } from './script.js';
 const loginButton = document.querySelector('.login__btn');
 const tutorialBtn = document.querySelector('.tutorialBtn');
 const Lesson1Btn = document.querySelector('.lesson1Btn');
+const Lesson2Btn = document.querySelector('.lesson2Btn');
+const Lesson3Btn = document.querySelector('.lesson3Btn');
+const Lesson4Btn = document.querySelector('.lesson4Btn');
+const pilotFeedback = document.querySelector('.feedbackButton');
+const feedBackModal = document.querySelector('.feedbackPrompt');
+const clearStorage = document.querySelector('.clearStorage');
 
 const closeBtn = document.querySelector('.closeBtn');
 
@@ -74,4 +80,35 @@ if (Lesson1Btn) {
   });
 }
 
-/*******************************************Lesson 1************************************/
+if (Lesson2Btn) {
+  Lesson2Btn.addEventListener('click', function () {
+    location.replace('billandpayments.html');
+  });
+}
+
+if (Lesson3Btn) {
+  Lesson3Btn.addEventListener('click', function () {
+    location.replace('deposit.html');
+  });
+}
+
+if (Lesson4Btn) {
+  Lesson4Btn.addEventListener('click', function () {
+    location.replace('sendMoney.html');
+  });
+}
+/*******************************************Feedback and storage************************************/
+if (pilotFeedback) {
+  pilotFeedback.addEventListener('click', function () {
+    feedBackModal.showModal();
+  });
+}
+
+if (clearStorage) {
+  clearStorage.addEventListener('click', function () {
+    localStorage.clear();
+    location.reload();
+    alert('Data cleared');
+    location.reload();
+  });
+}
