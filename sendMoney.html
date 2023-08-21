@@ -113,7 +113,65 @@
         >
       </div>
     </div>
+    <dialog class="T1 L4">
+      <h1 class="headings">Lesson 4</h1>
+      <div
+        id="carouselExampleControls"
+        class="carousel slide"
+        data-ride="false"
+      >
+        <div class="carousel-inner">
+          <div class="carousel-item active container-fluid">
+            <video class="L1Vid" width="440" height="280" controls>
+              <source src="Lesson Videos/SendMoney - 1.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="carousel-item container-fluid">
+            <video class="L1Vid" width="440" height="280" controls>
+              <source src="Lesson Videos/SendMoney - 2.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div id="L4LastSlide" class="carousel-item container-fluid">
+            <video class="L1Vid" width="440" height="280" controls>
+              <source src="Lesson Videos/SendMoney - 3.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#carouselExampleControls"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#carouselExampleControls"
+          data-bs-slide="next"
+        >
+          <span
+            id="L4-next-button"
+            class="carousel-control-next-icon"
+            aria-hidden="true"
+          ></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      <div id="L4-back-button" class="backButton closeButton">
+        <div class="backBox">
+          <h2 class="headings">Close</h2>
+          <div class="row btnRow">
+            <button class="form__btn closeBtn col">&rarr;</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
 
     <script src="Javascript/sendMoney.js" type="module"></script>
+    <script src="Javascript/lesson-4.js"></script>
   </body>
 </html>
