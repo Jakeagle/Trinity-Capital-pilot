@@ -4,190 +4,81 @@ const mainApp = document.querySelector('.app');
 
 if (mainApp) mainApp.style.display = 'none';
 
-/***************************************************Objects*********************************************************/
+/***********************************************************Server Listeners**********************************************/
 
-const jfAccount1 = {
-  id: 1,
-  accountHolder: 'Jakob Ferguson',
-  username: '',
-  currency: 'USD',
-  locale: 'en-US',
-  transactions: [550, 1200, -200, 25, 25, 155, 1200, -300],
-  balanceTotal: 0,
-  bills: [],
-  payments: [],
-  accountType: 'Checking',
-  accountNumber: '4585120945465872',
-  movementsDates: [
-    '2019-11-18T21:31:17.178Z',
-    '2019-12-23T07:42:02.383Z',
-    '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-07-26T17:01:17.194Z',
-    '2020-07-28T23:36:17.929Z',
-    '2020-08-01T10:51:36.790Z',
-  ],
-};
+const getBTN = document.getElementById('get');
+const getPrfBTN = document.getElementById('getProfiles');
+const postBTN = document.getElementById('post');
+const input = document.getElementById('input');
 
-const jfAccount2 = {
-  id: 2,
-  accountHolder: 'Jakob Ferguson',
-  username: '',
-  currency: 'USD',
-  locale: 'en-US',
-  transactions: [700, 100, 2100, 25, 25, 155, -300, 500],
-  balanceTotal: 0,
-  accountType: 'Savings',
-  accountNumber: '3112153745644899',
-  movementsDates: [
-    '2019-11-18T21:31:17.178Z',
-    '2019-12-23T07:42:02.383Z',
-    '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-07-26T17:01:17.194Z',
-    '2020-07-28T23:36:17.929Z',
-    '2020-08-12T10:51:36.790Z',
-  ],
-};
+const socket = io('https://trinitycapital.azurewebsites.net');
 
-const djAccount1 = {
-  id: 3,
-  accountHolder: 'Darlene Jones',
-  username: '',
-  currency: 'USD',
-  locale: 'en-US',
-  transactions: [450, 1900, -100, 55, 5, 105, 1000, -500],
-  balanceTotal: 0,
-  bills: [],
-  payments: [],
-  accountType: 'Checking',
-  accountNumber: '1247885477086903',
+console.log('User connected:' + socket.id);
+socket.on('checkingAccountUpdate', updatedChecking => {
+  // Access the checkingAccount data from updatedUserProfile
+  const checkingAccount = updatedChecking;
+  console.log(checkingAccount, 'This is working');
 
-  movementsDates: [
-    '2019-11-01T13:15:33.035Z',
-    '2019-11-30T09:48:16.867Z',
-    '2019-12-25T06:04:23.907Z',
-    '2020-01-25T14:18:46.235Z',
-    '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
-  ],
-};
+  // Call your existing updateUI function with the updated checking account data
+  displayBalance(checkingAccount);
+  displayTransactions(checkingAccount);
+});
 
-const djAccount2 = {
-  id: 4,
-  accountHolder: 'Darlene Jones',
-  username: '',
-  currency: 'USD',
-  locale: 'en-US',
-  transactions: [450, 1900, -100, 780, 55, 150, 10, -1000],
-  balanceTotal: 0,
-  accountType: 'Savings',
-  accountNumber: '1247885477085708',
+/***********************************************************Server Functions**********************************************/
+const testServerProfiles = 'https://trinitycapital.azurewebsites.net/profiles';
+const currentAccountURL =
+  'https://trinitycapital.azurewebsites.net/currentProfile';
+const loanURL = 'https://trinitycapital.azurewebsites.net/loans';
+const balanceURL = 'https://trinitycapital.azurewebsites.net/balance';
 
-  movementsDates: [
-    '2019-11-01T13:15:33.035Z',
-    '2019-11-30T09:48:16.867Z',
-    '2019-12-25T06:04:23.907Z',
-    '2020-01-25T14:18:46.235Z',
-    '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
-  ],
-};
+// Store the received profiles in a global variable or a state variable if you're using a front-end framework
+let Profiles = [];
 
-const profile1 = {
-  memberName: 'Jakob Ferguson',
-  sex: 'male',
-  pin: 4564,
-  numberOfAccounts: 3,
-  accounts: [
-    {
-      ...jfAccount1,
-      type: 'Checking',
-      accountNumberA: '4585120945465872',
-      routingNumber: 141257185,
-      currency: 'USD',
-      locale: 'en-US',
-      created: '12 / 20 / 2001',
-    },
+async function getInfoProfiles() {
+  try {
+    const res = await fetch(testServerProfiles, {
+      method: 'GET',
+    });
 
-    {
-      ...jfAccount2,
-      type: 'Savings',
-      accountNumberA: '3112153745644899',
-      routingNumber: 141257185,
-      currency: 'USD',
-      locale: 'en-US',
-      created: '12 / 20 / 2018',
-    },
-  ],
-};
-const profile2 = {
-  memberName: 'Darlene Jones',
-  pin: 1231,
-  sex: 'female',
-  numberOfAccounts: 3,
-  accounts: [
-    {
-      ...djAccount1,
-      type: 'Checking',
-      accountNumberA: '1247885477086903',
-      routingNumber: 141257185,
-      currency: 'USD',
-      locale: 'en-US',
-    },
-    {
-      ...djAccount2,
-      type: 'Savings',
-      accountNumberA: '1247885477085708',
-      routingNumber: 141257185,
-      currency: 'USD',
-      locale: 'en-US',
-    },
-  ],
-};
+    if (res.ok) {
+      Profiles = await res.json();
 
-/**************************************** JSON Variables **********************************************/
+      // Log the initial profiles
+      console.log(Profiles);
 
-let profilesJsonRetrieve = localStorage.getItem('profiles');
-if (!profilesJsonRetrieve) {
-  //Sets up profiles to be set to local storage
-  const profilesRaw = [profile1, profile2];
-  //Sets up profiles as JSON
-  const profilesJson = JSON.stringify(profilesRaw);
-  //Pushes profiles to Local Storage
-  localStorage.setItem('profiles', profilesJson);
-  //Pulls profiles out of LS for use
-  profilesJsonRetrieve = localStorage.getItem('profiles');
+      // Now, listen for updates from the Socket.IO server
+      socket.on('profiles', updatedProfiles => {
+        // Update your UI with the updated profiles
+        console.log('Received updated profiles:', updatedProfiles);
+
+        // For example, you can update a list of profiles
+        // Assuming you have a function to update the UI
+      });
+      return Profiles;
+    } else {
+      console.error('Failed to fetch profiles:', res.statusText);
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
 }
 
-//Exports profiles for use in other scripts
-export const profiles = JSON.parse(profilesJsonRetrieve);
-// log accounts to see if it is an array of objects
-export const transactionsPush = function () {
-  localStorage.setItem('profiles', JSON.stringify(profiles));
-};
+async function loanPush() {
+  const res = await fetch(loanURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      parcel: [currentProfile, parseInt(loanAmount.value)],
+    }),
+  });
+  console.log(currentProfile);
+}
 
-const balanceCalc = function (arr) {
-  for (let i = 0; i < arr.length; i++) {
-    let newBalance = arr[i].accounts[0].transactions.reduce(
-      (acc, mov) => acc + mov,
-      0
-    );
-    arr[i].accounts[0].balanceTotal = newBalance;
-
-    transactionsPush();
-  }
-  console.log(profiles[0].accounts[0].balanceTotal);
-};
-
-balanceCalc(profiles);
+export let profiles = await getInfoProfiles();
 console.log(profiles);
+
 /******************************************Variables ***************************************************/
 
 let currentAccount;
@@ -271,12 +162,7 @@ if (loginButton) {
     if (currentProfile) {
       // Retrieve saved transactions for current account
 
-      for (const account of currentProfile.accounts) {
-        if (account.type === 'Checking') {
-          currentAccount = account;
-          break;
-        }
-      }
+      console.log(currentProfile);
 
       // Display welcome message
       const signOnText = document.querySelector('.signOntext');
@@ -291,17 +177,16 @@ if (loginButton) {
       mainApp.style.display = 'block';
       mainApp.style.opacity = 100;
 
+      currentAccount = currentProfile.checkingAccount;
       if (currentAccount) {
-        if (currentAccount.accountType === 'Checking') {
-          console.log('Running');
-          //Add currentAccount here
-          // Update the UI with the first account's information
-          updateUI(currentAccount);
-          //Starts loop function that displays the current Accounts bills
-          displayBills();
-          //Starts loop function that displays the current Accounts paychecks
-          displayPayments();
-        }
+        console.log(currentAccount);
+        //Add currentAccount here
+        // Update the UI with the first account's information
+        updateUI(currentAccount);
+        //Starts loop function that displays the current Accounts bills
+        displayBills();
+        //Starts loop function that displays the current Accounts paychecks
+        displayPayments();
 
         //Displays the "Current Balanace for "x" string
         balanceLabel.textContent = `Current balance for: #${currentAccount.accountNumber.slice(
@@ -352,6 +237,7 @@ if (accBtnSwitch) {
         accPinSwitch.value = '';
         //Updates main site with switched account
         updateUI(accountToSwitch);
+        currAcc(currentAccount);
 
         //Updates to the current time
         updateTime();
@@ -390,35 +276,11 @@ if (requestLoanbtn) {
     //prevents default action
     e.preventDefault();
 
+    loanPush();
+
+    loanAmount.value = '';
+
     //Declares the amount as the user entered amount.
-    const amount = Math.floor(loanAmount.value);
-
-    //Loops through the accounts
-    for (const account of currentProfile.accounts) {
-      //checks if the account type is a checking account
-      if (account.type === 'Checking') {
-        //sets current account to the checking account
-        currentAccount = account;
-        //checks to see if the amount is greater than 0 and greater than 10% of the last loan
-        if (
-          amount > 0 &&
-          currentAccount.transactions.some(mov => mov >= amount * 0.1)
-        ) {
-          //pushes loan to the transactions array
-          currentAccount.transactions.push(amount);
-
-          //Creates a new date for the new transaction
-          currentAccount.movementsDates.push(new Date().toISOString());
-
-          //Pushes new data to local storage
-          transactionsPush();
-          //updates UI with the new value
-          updateUI(currentAccount);
-        }
-        //clears the input text
-        loanAmount.value = '';
-      }
-    }
   });
 }
 
@@ -439,7 +301,7 @@ if (donateBtn) {
       currentAccount.movementsDates.push(new Date().toISOString());
 
       //Updates local storage
-      transactionsPush();
+
       //Update UI
       updateUI(currentAccount);
 
@@ -454,18 +316,6 @@ if (mainApp) {
   mainApp.style.opacity = 0;
 }
 
-//Creates Usernames using the first letters of the first and last name of the user
-// const createUsername = function (accs) {
-//   accs.forEach(function (acc) {
-//     acc.username = acc.memberName
-//       .toLowerCase()
-//       .split(' ')
-//       .map(name => name[0])
-//       .join('');
-//     transactionsPush();
-//   });
-// };
-
 const createUsername = function (prfs) {
   for (let i = 0; i < prfs.length; i++) {
     console.log(prfs[i].memberName);
@@ -475,8 +325,6 @@ const createUsername = function (prfs) {
       .map(name => name[0])
       .join('');
   }
-
-  transactionsPush();
 };
 createUsername(profiles);
 
@@ -494,63 +342,52 @@ const displayAccounts = function (currentAccount) {
   accountContainer.innerHTML = '';
 
   //Shows no accounts if there are no accounts int the current profile
-  if (currentProfile.accounts.length === 0) {
-    const html = `
-      <div class="row">
-        <p>No accounts found.</p>
-      </div>
-    `;
-    accountContainer.insertAdjacentHTML('afterend', html);
-    return;
-  }
 
   //Sort the accounts by type (checking first) and creation date
-  currentProfile.accounts.sort((a, b) => {
-    // First, sort by account type
-    if (a.accountType < b.accountType) return -1;
-    if (a.accountType > b.accountType) return 1;
 
-    // If account types are the same, sort by creation date
-    const aDates = a.movementsDates || [];
-    const bDates = b.movementsDates || [];
-    if (aDates.length === 0 && bDates.length === 0) return 0;
-    if (aDates.length === 0) return -1;
-    if (bDates.length === 0) return 1;
-    const aDate = new Date(aDates[0]);
-    const bDate = new Date(bDates[0]);
-    if (aDate < bDate) return -1;
-    if (aDate > bDate) return 1;
+  let balance = formatCur(
+    currentProfile.locale,
 
-    return 0;
-  });
+    currentProfile.currency
+  );
 
-  //Formats the date and display accounts
-  currentProfile.accounts.forEach(function (accnt) {
-    let totalMovements = accnt.transactions.reduce(
-      (sum, curr) => sum + curr,
-      0
-    );
+  let lastTransactionDate = new Date(
+    currentProfile.checkingAccount.movementsDates[
+      currentProfile.checkingAccount.movementsDates.length - 1
+    ]
+  ).toLocaleDateString(currentProfile.locale);
 
-    let balance = formatCur(
-      currentProfile.locale,
+  let lastTransactionDateSavings = new Date(
+    currentProfile.savingsAccount.movementsDates[
+      currentProfile.savingsAccount.movementsDates.length - 1
+    ]
+  ).toLocaleDateString(currentProfile.locale);
 
-      currentProfile.currency
-    );
-
-    let lastTransactionDate = new Date(
-      accnt.movementsDates[accnt.movementsDates.length - 1]
-    ).toLocaleDateString(currentProfile.locale);
-
-    const html = `
+  const html = [
+    `
+        <div class="row accountsRow">
+          <div class="col accountType">${
+            currentProfile.checkingAccount.accountType
+          }</div>
+          <div class="col accountNumber">${currentProfile.checkingAccount.accountNumber.slice(
+            -4
+          )}</div>
+          <div class="col updateDate">${lastTransactionDate}</div>
+        </div>
+      
       <div class="row accountsRow">
-        <div class="col accountType">${accnt.accountType}</div>
-        <div class="col accountNumber">${accnt.accountNumber.slice(-4)}</div>
-        <div class="col updateDate">${lastTransactionDate}</div>
+        <div class="col accountType">${
+          currentProfile.savingsAccount.accountType
+        }</div>
+        <div class="col accountNumber">${currentProfile.savingsAccount.accountNumber.slice(
+          -4
+        )}</div>
+        <div class="col updateDate">${lastTransactionDateSavings}</div>
       </div>
-    `;
+      `,
+  ];
 
-    accountContainer.insertAdjacentHTML('beforeEnd', html);
-  });
+  accountContainer.insertAdjacentHTML('beforeEnd', html);
 };
 
 //Display Transactions
@@ -630,7 +467,6 @@ export const displayBills = function () {
       currentProfile.accounts[0].movementsDates.push(new Date().toISOString());
 
       //Updates Local Storage with new data
-      transactionsPush();
 
       //Displays new data on the webpage
       updateUI(currentAccount);
@@ -668,7 +504,6 @@ export const displayPayments = function () {
       currentProfile.accounts[0].movementsDates.push(new Date().toISOString());
 
       //Updates Local Storage with new data
-      transactionsPush();
 
       //Displays new data on the webpage
       updateUI(currentAccount);
@@ -695,13 +530,13 @@ function formatCur(value, currency, locale) {
 //Displays the current balance based on the transactions array
 export const displayBalance = function (acc) {
   //calculates the balance based on the transaction array
-  acc.balance = acc.transactions.reduce((acc, mov) => acc + mov, 0);
-  acc.balanceTotal = acc.balance;
-  transactionsPush();
-  console.log(acc.balanceTotal);
 
   //displays balance
-  balanceValue.textContent = formatCur(acc.balance, acc.locale, acc.currency);
+  balanceValue.textContent = formatCur(
+    acc.balanceTotal,
+    acc.locale,
+    acc.currency
+  );
 };
 
 //Updates the webpage UI with all of the needed data
