@@ -19,6 +19,11 @@
     />
     <link rel="stylesheet" type="text/css" href="Styles/style.css" />
     <script
+      src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+      integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
+      crossorigin="anonymous"
+    ></script>
+    <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
       crossorigin="anonymous"
@@ -279,7 +284,13 @@
         </div>
       </div>
       <hr />
-     
+      <div class="feedbackAndClear">
+        <div class="row">
+          <div class="col feedbackButton boxes"><h2>Pilot Feedback</h2></div>
+          <div class="col clearStorage boxes"><h2>Clear Data</h2></div>
+        </div>
+      </div>
+      <hr />
       <div class="issues issuesEmail">
         <a
           href="mailto:trinitycapitalsim@gmail.com"
@@ -543,6 +554,7 @@
         </div>
       </div>
     </dialog>
+
     <script src="Javascript/script.js" type="module"></script>
     <script src="Javascript/lessons.js" type="module"></script>
   </body>
