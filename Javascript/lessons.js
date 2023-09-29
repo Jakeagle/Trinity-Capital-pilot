@@ -18,6 +18,7 @@ const closeBtn = document.querySelector('.closeBtn');
 //Modals
 const T1 = document.querySelector('.T1');
 
+T1.style.display = 'none';
 //back buttons
 const backButton = document.querySelector('.backBox');
 
@@ -40,6 +41,7 @@ if (backButton) {
 
 if (loginButton) {
   loginButton.addEventListener('click', function () {
+    T1.style.display = 'block';
     T1.showModal();
   });
 }
