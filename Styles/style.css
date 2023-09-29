@@ -424,8 +424,8 @@ a:hover {
   border-radius: 4rem;
   overflow: scroll;
   background-image: linear-gradient(to top left, #ae8626, #f7ef8a);
-  height: 40rem;
-  width: 70rem;
+  height: 80%;
+  width: 60%;
   opacity: 0;
   transition: all 1.5s;
 }
@@ -527,4 +527,61 @@ a:hover {
 
 .clearStorage {
   color: white;
+}
+
+@media (max-width: 768px) {
+  .T1 {
+    max-width: 30%; /* Adjust the maximum width as needed for mobile screens */
+    margin-right: 47.5rem;
+    height: 20%;
+  }
+
+  .T1::backdrop {
+    background-image: linear-gradient(to top left, #8e8d8d, #f7ef8a);
+    opacity: 0.5;
+    transition: all 2.5s;
+    max-width: 35%;
+  }
+
+  .L1Vid {
+    width: 50%;
+  }
+}
+
+@media (min-width: 770px) {
+  .T1 {
+    max-width: 100%; /* Adjust the maximum width as needed for mobile screens */
+    margin-left: 7.8rem;
+    height: 50%;
+  }
+
+  .T1::backdrop {
+    background-image: linear-gradient(to top left, #8e8d8d, #f7ef8a);
+    opacity: 0.5;
+    transition: all 2.5s;
+    max-width: 100%;
+  }
+
+  .L1Vid {
+    width: 50%;
+  }
+}
+
+@media (max-width: 10000px) {
+  .T1 {
+    max-width: 100%; /* Adjust the maximum width as needed for mobile screens */
+    margin: auto;
+    height: 70%;
+  }
+
+  .T1::backdrop {
+    background-image: linear-gradient(to top left, #8e8d8d, #f7ef8a);
+    opacity: 0.5;
+    transition: all 2.5s;
+    max-width: 100%;
+  }
+
+  .L1Vid {
+    width: 50%;
+  }
 }
