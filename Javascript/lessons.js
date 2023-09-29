@@ -12,13 +12,14 @@ const Lesson4Btn = document.querySelector('.lesson4Btn');
 const pilotFeedback = document.querySelector('.feedbackButton');
 const feedBackModal = document.querySelector('.feedbackPrompt');
 const clearStorage = document.querySelector('.clearStorage');
-
 const closeBtn = document.querySelector('.closeBtn');
 
 //Modals
 const T1 = document.querySelector('.T1');
 
 T1.style.display = 'none';
+
+feedBackModal.style.display = 'none';
 //back buttons
 const backButton = document.querySelector('.backBox');
 
@@ -41,7 +42,7 @@ if (backButton) {
 
 if (loginButton) {
   loginButton.addEventListener('click', function () {
-    T1.style.display = 'block';
+    T1.style.display = 'inline';
     T1.showModal();
   });
 }
