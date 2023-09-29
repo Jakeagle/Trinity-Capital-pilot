@@ -46,6 +46,7 @@ hr {
 
 .app {
   transition: all 1s;
+  width: 100%;
 }
 .formDiv {
   text-align: center;
@@ -424,14 +425,20 @@ a:hover {
   border-radius: 4rem;
   overflow: scroll;
   background-image: linear-gradient(to top left, #ae8626, #f7ef8a);
-  height: 80%;
-  width: 60%;
+
   opacity: 0;
   transition: all 1.5s;
 }
 
+.T1[closed] {
+  height: 0;
+  width: 0;
+}
+
 .T1[open] {
   opacity: 1;
+  height: 80%;
+  width: 60%;
 }
 .T1::-webkit-scrollbar {
   display: none;
@@ -440,6 +447,7 @@ a:hover {
   background-image: linear-gradient(to top left, #8e8d8d, #f7ef8a);
   opacity: 0.5;
   transition: all 2.5s;
+  width: 100%;
 }
 
 .carousel-control-next {
@@ -529,56 +537,19 @@ a:hover {
   color: white;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 376px) {
   .T1 {
-    max-width: 30%; /* Adjust the maximum width as needed for mobile screens */
-    margin-right: 47.5rem;
-    height: 20%;
+    width: 100%; /* Adjust the maximum width as needed for mobile screens */
+
+    height: 100%;
   }
 
   .T1::backdrop {
     background-image: linear-gradient(to top left, #8e8d8d, #f7ef8a);
     opacity: 0.5;
     transition: all 2.5s;
-    max-width: 35%;
-  }
-
-  .L1Vid {
-    width: 50%;
-  }
-}
-
-@media (min-width: 770px) {
-  .T1 {
-    max-width: 100%; /* Adjust the maximum width as needed for mobile screens */
-    margin-left: 7.8rem;
-    height: 50%;
-  }
-
-  .T1::backdrop {
-    background-image: linear-gradient(to top left, #8e8d8d, #f7ef8a);
-    opacity: 0.5;
-    transition: all 2.5s;
-    max-width: 100%;
-  }
-
-  .L1Vid {
-    width: 50%;
-  }
-}
-
-@media (max-width: 10000px) {
-  .T1 {
-    max-width: 100%; /* Adjust the maximum width as needed for mobile screens */
-    margin: auto;
-    height: 70%;
-  }
-
-  .T1::backdrop {
-    background-image: linear-gradient(to top left, #8e8d8d, #f7ef8a);
-    opacity: 0.5;
-    transition: all 2.5s;
-    max-width: 100%;
+    margin: 0;
+    width: 100%;
   }
 
   .L1Vid {
