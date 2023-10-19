@@ -430,11 +430,6 @@ a:hover {
   transition: all 1.5s;
 }
 
-.T1[closed] {
-  height: 0;
-  width: 0;
-}
-
 .T1[open] {
   opacity: 1;
   height: 80%;
@@ -539,7 +534,7 @@ a:hover {
 
 @media (max-width: 376px) {
   .T1 {
-    width: 100%; /* Adjust the maximum width as needed for mobile screens */
+    width: 20rem; /* Adjust the maximum width as needed for mobile screens */
 
     height: 100%;
   }
@@ -549,10 +544,15 @@ a:hover {
     opacity: 0.5;
     transition: all 2.5s;
     margin: 0;
-    width: 100%;
   }
 
   .L1Vid {
-    width: 50%;
+    width: 100%;
+  }
+
+  .carousel-control-prev-icon {
+    position: relative;
+    right: 0.3rem;
+    margin-right: 1rem;
   }
 }
