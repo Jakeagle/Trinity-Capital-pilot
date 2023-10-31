@@ -1,197 +1,143 @@
 'use strict';
 
-const mainApp = document.querySelector('.app');
+/********************************************Modal control*************************************/
+const mainApp = document.querySelector('.mainApp');
+const loginBox = document.querySelector('.signOnBox');
+const mobileLoginBox = document.querySelector('.mobileSignOnBox');
+const billsModal = document.querySelector('.billsAndPaymentsModal');
+const billsModalBTN = document.querySelector('.billsModalBTN');
+const closeBillModal = document.querySelector('.closeBills');
+
+billsModalBTN.addEventListener('click', function () {
+  billsModal.showModal();
+});
+
+closeBillModal.addEventListener('click', function () {
+  billsModal.close();
+});
+
+window.screen.width <= 1300 ? mobileLoginBox.showModal() : loginBox.showModal();
 
 if (mainApp) mainApp.style.display = 'none';
 
-/***************************************************Objects*********************************************************/
+/***********************************************************Server Listeners**********************************************/
 
-const jfAccount1 = {
-  id: 1,
-  accountHolder: 'Jakob Ferguson',
-  username: '',
-  currency: 'USD',
-  locale: 'en-US',
-  transactions: [550, 1200, -200, 25, 25, 155, 1200, -300],
-  balanceTotal: 0,
-  bills: [],
-  payments: [],
-  accountType: 'Checking',
-  accountNumber: '4585120945465872',
-  movementsDates: [
-    '2019-11-18T21:31:17.178Z',
-    '2019-12-23T07:42:02.383Z',
-    '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-07-26T17:01:17.194Z',
-    '2020-07-28T23:36:17.929Z',
-    '2020-08-01T10:51:36.790Z',
-  ],
-};
+export const socket = io('https://trinitycapitaltestserver-2.azurewebsites.net');
 
-const jfAccount2 = {
-  id: 2,
-  accountHolder: 'Jakob Ferguson',
-  username: '',
-  currency: 'USD',
-  locale: 'en-US',
-  transactions: [700, 100, 2100, 25, 25, 155, -300, 500],
-  balanceTotal: 0,
-  accountType: 'Savings',
-  accountNumber: '3112153745644899',
-  movementsDates: [
-    '2019-11-18T21:31:17.178Z',
-    '2019-12-23T07:42:02.383Z',
-    '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-07-26T17:01:17.194Z',
-    '2020-07-28T23:36:17.929Z',
-    '2020-08-12T10:51:36.790Z',
-  ],
-};
+console.log('User connected:' + socket.id);
+socket.on('checkingAccountUpdate', updatedChecking => {
+  // Access the checkingAccount data from updatedUserProfile
+  const checkingAccount = updatedChecking;
+  console.log(checkingAccount, 'This is working');
 
-const djAccount1 = {
-  id: 3,
-  accountHolder: 'Darlene Jones',
-  username: '',
-  currency: 'USD',
-  locale: 'en-US',
-  transactions: [450, 1900, -100, 55, 5, 105, 1000, -500],
-  balanceTotal: 0,
-  bills: [],
-  payments: [],
-  accountType: 'Checking',
-  accountNumber: '1247885477086903',
+  // Call your existing updateUI function with the updated checking account data
+  displayBalance(checkingAccount);
+  displayTransactions(checkingAccount);
+});
 
-  movementsDates: [
-    '2019-11-01T13:15:33.035Z',
-    '2019-11-30T09:48:16.867Z',
-    '2019-12-25T06:04:23.907Z',
-    '2020-01-25T14:18:46.235Z',
-    '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
-  ],
-};
+socket.on('donationChecking', updatedDonCheck => {
+  const checkingAccount = updatedDonCheck;
+  console.log(checkingAccount, 'This is working');
 
-const djAccount2 = {
-  id: 4,
-  accountHolder: 'Darlene Jones',
-  username: '',
-  currency: 'USD',
-  locale: 'en-US',
-  transactions: [450, 1900, -100, 780, 55, 150, 10, -1000],
-  balanceTotal: 0,
-  accountType: 'Savings',
-  accountNumber: '1247885477085708',
+  // Call your existing updateUI function with the updated checking account data
+  displayBalance(checkingAccount);
+  displayTransactions(checkingAccount);
+});
 
-  movementsDates: [
-    '2019-11-01T13:15:33.035Z',
-    '2019-11-30T09:48:16.867Z',
-    '2019-12-25T06:04:23.907Z',
-    '2020-01-25T14:18:46.235Z',
-    '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
-  ],
-};
+socket.on('donationSaving', updatedDonSav => {
+  const savingsAccount = updatedDonSav;
+  console.log(savingsAccount, 'This is working');
 
-const profile1 = {
-  memberName: 'Jakob Ferguson',
-  sex: 'male',
-  pin: 4564,
-  numberOfAccounts: 3,
-  accounts: [
-    {
-      ...jfAccount1,
-      type: 'Checking',
-      accountNumberA: '4585120945465872',
-      routingNumber: 141257185,
-      currency: 'USD',
-      locale: 'en-US',
-      created: '12 / 20 / 2001',
-    },
+  // Call your existing updateUI function with the updated checking account data
+  displayBalance(savingsAccount);
+  displayTransactions(savingsAccount);
+});
 
-    {
-      ...jfAccount2,
-      type: 'Savings',
-      accountNumberA: '3112153745644899',
-      routingNumber: 141257185,
-      currency: 'USD',
-      locale: 'en-US',
-      created: '12 / 20 / 2018',
-    },
-  ],
-};
-const profile2 = {
-  memberName: 'Darlene Jones',
-  pin: 1231,
-  sex: 'female',
-  numberOfAccounts: 3,
-  accounts: [
-    {
-      ...djAccount1,
-      type: 'Checking',
-      accountNumberA: '1247885477086903',
-      routingNumber: 141257185,
-      currency: 'USD',
-      locale: 'en-US',
-    },
-    {
-      ...djAccount2,
-      type: 'Savings',
-      accountNumberA: '1247885477085708',
-      routingNumber: 141257185,
-      currency: 'USD',
-      locale: 'en-US',
-    },
-  ],
-};
+/***********************************************************Server Functions**********************************************/
+const testServerProfiles = 'https://trinitycapitaltestserver-2.azurewebsites.net/profiles';
 
-/**************************************** JSON Variables **********************************************/
+const loanURL = 'https://trinitycapitaltestserver-2.azurewebsites.net/loans';
 
-let profilesJsonRetrieve = localStorage.getItem('profiles');
-if (!profilesJsonRetrieve) {
-  //Sets up profiles to be set to local storage
-  const profilesRaw = [profile1, profile2];
-  //Sets up profiles as JSON
-  const profilesJson = JSON.stringify(profilesRaw);
-  //Pushes profiles to Local Storage
-  localStorage.setItem('profiles', profilesJson);
-  //Pulls profiles out of LS for use
-  profilesJsonRetrieve = localStorage.getItem('profiles');
+const donationURL = 'https://trinitycapitaltestserver-2.azurewebsites.net/donations';
+
+const donationSavingsURL = 'https://trinitycapitaltestserver-2.azurewebsites.net/donationsSavings';
+
+// Store the received profiles in a global variable or a state variable if you're using a front-end framework
+let Profiles = [];
+
+export async function getInfoProfiles() {
+  try {
+    const res = await fetch(testServerProfiles, {
+      method: 'GET',
+    });
+
+    if (res.ok) {
+      Profiles = await res.json();
+
+      // Log the initial profiles
+      console.log(Profiles);
+
+      // Now, listen for updates from the Socket.IO server
+      socket.on('profiles', updatedProfiles => {
+        // Update your UI with the updated profiles
+        console.log('Received updated profiles:', updatedProfiles);
+
+        // For example, you can update a list of profiles
+        // Assuming you have a function to update the UI
+      });
+      return Profiles;
+    } else {
+      console.error('Failed to fetch profiles:', res.statusText);
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
 }
 
-//Exports profiles for use in other scripts
-export const profiles = JSON.parse(profilesJsonRetrieve);
-// log accounts to see if it is an array of objects
-export const transactionsPush = function () {
-  localStorage.setItem('profiles', JSON.stringify(profiles));
-};
+async function loanPush() {
+  const res = await fetch(loanURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      parcel: [currentProfile, parseInt(loanAmount.value)],
+    }),
+  });
+  console.log(currentProfile);
+}
 
-const balanceCalc = function (arr) {
-  for (let i = 0; i < arr.length; i++) {
-    let newBalance = arr[i].accounts[0].transactions.reduce(
-      (acc, mov) => acc + mov,
-      0
-    );
-    arr[i].accounts[0].balanceTotal = newBalance;
+async function donationPush() {
+  const res = await fetch(donationURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      parcel: [currentAccount, parseInt(donateAmount.value)],
+    }),
+  });
+}
 
-    transactionsPush();
-  }
-  console.log(profiles[0].accounts[0].balanceTotal);
-};
+async function donationPushSavings() {
+  const res = await fetch(donationSavingsURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      parcel: [currentAccount, parseInt(donateAmount.value)],
+    }),
+  });
+}
 
-balanceCalc(profiles);
+export let profiles = await getInfoProfiles();
 console.log(profiles);
+
 /******************************************Variables ***************************************************/
 
-let currentAccount;
-let currentProfile;
+export let currentAccount;
+export let currentProfile;
 let currentTime;
 let accPIN;
 let accUser;
@@ -206,7 +152,8 @@ const closeT1 = document.querySelector('.closeBtn');
 const signOnForm = document.querySelector('signOnForm');
 const signOnText = document.querySelector('.signOntext');
 const loginButton = document.querySelector('.login__btn');
-const loginText = document.querySelector('.login__input--user');
+const mobileLoginButton = document.querySelector('.mobileLoginBtn');
+
 const formDiv = document.querySelector('.formDiv');
 export let balance;
 
@@ -227,7 +174,7 @@ const donateBtn = document.querySelector('.form__btn--donate');
 const donateAmount = document.querySelector('.form__input--donate--amount');
 const donatePin = document.querySelector('.form__input--pin--donate');
 const accNumHTML = document.querySelector('.accountNumber');
-const balanceDate = document.querySelector(`.balance__date`);
+const balanceDate = document.querySelector(`.dateText`);
 const now = new Date();
 
 //Used for formatting dates
@@ -246,139 +193,135 @@ const options = {
 if (loginButton) {
   loginButton.addEventListener('click', function (event) {
     event.preventDefault();
-
-    // Get the value of the input field
     const loginPIN = document.querySelector('.login__input--pin');
-    const pin = parseInt(loginPIN.value);
-
-    for (let i = 0; i < profiles.length; i++) {
-      console.log(profiles[i].userName);
-      if (loginText.value === profiles[i].userName && pin === profiles[i].pin) {
-        currentProfile = profiles[i];
-      } else if (
-        loginText.value === profiles[i].userName &&
-        pin !== profiles[i].pin
-      ) {
-        alert('incorrect PIN');
-      } else if (
-        loginText.value !== profiles[i].userName &&
-        pin === profiles[i].pin
-      ) {
-        alert('incorrect Username');
-      }
-    }
-
-    if (currentProfile) {
-      // Retrieve saved transactions for current account
-
-      for (const account of currentProfile.accounts) {
-        if (account.type === 'Checking') {
-          currentAccount = account;
-          break;
-        }
-      }
-
-      // Display welcome message
-      const signOnText = document.querySelector('.signOntext');
-      signOnText.textContent = `Welcome Back ${
-        currentProfile.memberName.split(' ')[0]
-      }`;
-
-      // Hide login form and display main app
-      const formDiv = document.querySelector('.formDiv');
-      const mainApp = document.querySelector('.app');
-      formDiv.style.display = 'none';
-      mainApp.style.display = 'block';
-      mainApp.style.opacity = 100;
-
-      if (currentAccount) {
-        if (currentAccount.accountType === 'Checking') {
-          console.log('Running');
-          //Add currentAccount here
-          // Update the UI with the first account's information
-          updateUI(currentAccount);
-          //Starts loop function that displays the current Accounts bills
-          displayBills();
-          //Starts loop function that displays the current Accounts paychecks
-          displayPayments();
-        }
-
-        //Displays the "Current Balanace for "x" string
-        balanceLabel.textContent = `Current balance for: #${currentAccount.accountNumber.slice(
-          -4
-        )}`;
-
-        //Displays the "As of" portion with the current date
-        updateTime();
-        balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
-          currentProfile.locale,
-          options
-        ).format(currentTime)}`;
-        //Display saved transactions for current account
-        displayTransactions(currentAccount);
-      } else {
-        alert('No checking account found. Please contact customer service.');
-      }
-    }
+    const loginText = document.querySelector('.login__input--user');
+    loginFunc(loginPIN, loginText, loginBox);
+    // Get the value of the input field
   });
 }
+
+if (mobileLoginButton) {
+  mobileLoginButton.addEventListener('click', function (event) {
+    event.preventDefault();
+    const mobileLoginPIN = document.querySelector('.mobile_login__input--pin');
+    const mobileLoginText = document.querySelector(
+      '.mobile_login__input--user'
+    );
+    loginFunc(mobileLoginPIN, mobileLoginText, mobileLoginBox);
+    console.log('running');
+  });
+}
+
+const loginFunc = function (PIN, user, screen) {
+  const pin = parseInt(PIN.value);
+
+  for (let i = 0; i < profiles.length; i++) {
+    console.log(profiles[i].userName);
+    if (user.value === profiles[i].userName && pin === profiles[i].pin) {
+      currentProfile = profiles[i];
+    } else if (user.value === profiles[i].userName && pin !== profiles[i].pin) {
+      alert('incorrect PIN');
+    } else if (user.value !== profiles[i].userName && pin === profiles[i].pin) {
+      alert('incorrect Username');
+    }
+  }
+
+  if (currentProfile) {
+    console.log(currentProfile);
+    // Retrieve saved transactions for current account
+
+    screen.close();
+
+    const signOnSection = document.querySelector('.signOnSection');
+
+    signOnSection.style.display = 'none';
+    console.log(currentProfile);
+
+    // Display welcome message
+    const signOnText = document.querySelector('.signOnText');
+    signOnText.textContent = currentProfile.memberName.split(' ')[0];
+
+    // Hide login form and display main app
+    const formDiv = document.querySelector('.formDiv');
+    const mainApp = document.querySelector('.mainApp');
+
+    mainApp.style.display = 'flex';
+    mainApp.style.opacity = 100;
+
+    currentAccount = currentProfile.checkingAccount;
+    if (currentAccount) {
+      console.log(currentAccount);
+      //Add currentAccount here
+      // Update the UI with the first account's information
+      updateUI(currentAccount);
+      //Starts loop function that displays the current Accounts bills
+
+      //Displays the "Current Balanace for "x" string
+      // balanceLabel.textContent = `Current balance for: #${currentAccount.accountNumber.slice(
+      //   -4
+      // )}`;
+
+      //Displays the "As of" portion with the current date
+      updateTime();
+      balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
+        currentProfile.locale,
+        options
+      ).format(currentTime)}`;
+      //Display saved transactions for current account
+      displayTransactions(currentAccount);
+    } else {
+      alert('No checking account found. Please contact customer service.');
+    }
+  }
+};
 
 //Switch accounts
 if (accBtnSwitch) {
   accBtnSwitch.addEventListener('click', function (e) {
     e.preventDefault();
+    console.log(currentAccount);
     //The value for the account you want to switch too
     let targetAccount = accNumSwitch.value;
-    //Variable that matches the above with the matching account number
-    let accountToSwitch = currentProfile.accounts.find(
-      //Matches the last for of the account with the targetAccount entry
-      account => account.accountNumber.slice(-4) === targetAccount
-    );
-
     accPIN = parseInt(accPinSwitch.value);
-    if (!accountToSwitch) {
-      alert('Incorrect account number');
-    } else {
-      if (accPIN === currentProfile.pin) {
-        //Updates UI for current balance with switched account
-        balanceLabel.textContent = `Current balance for: #${accountToSwitch.accountNumber.slice(
+    //Variable that matches the above with the matching account number
+    let accountToSwitch;
+
+    if (accPIN === currentProfile.pin) {
+      if (
+        targetAccount === currentProfile.checkingAccount.accountNumber.slice(-4)
+      ) {
+        currentAccount = currentProfile.checkingAccount;
+        balanceLabel.textContent = `Current Balance for: #${currentAccount.accountNumber.slice(
           -4
         )}`;
-        //sets current account to the switched account
-        currentAccount = accountToSwitch;
-        //empties text field
-        accNumSwitch.value = '';
-        //empties text field
-        accPinSwitch.value = '';
-        //Updates main site with switched account
-        updateUI(accountToSwitch);
-
-        //Updates to the current time
-        updateTime();
-        //Updates the as of field
-        balanceDate.textContent = `As of ${new Intl.DateTimeFormat(
-          currentProfile.locale,
-          options
-        ).format(currentTime)}`;
-
-        //Variable for the loan section
-        const loanBox = document.querySelector('.operation--loan');
-        //checks for savings accounr
-
-        if (currentAccount.accountType === 'Savings') {
-          loanBox.style.display = 'none';
-        }
-        //takes away loans if savings
-        else if (currentAccount.accountType === 'Checking') {
-          loanBox.style.display = 'inline';
-        }
-        //checks for Checking
-
-        //Shows loan box
-      } else {
-        alert('Incorrect PIN');
+        updateUI(currentAccount);
+      } else if (
+        targetAccount === currentProfile.savingsAccount.accountNumber.slice(-4)
+      ) {
+        currentAccount = currentProfile.savingsAccount;
+        balanceLabel.textContent = `Current Balance for: #${currentAccount.accountNumber.slice(
+          -4
+        )}`;
+        updateUI(currentAccount);
       }
+    } else {
+      alert('Incorrect PIN');
     }
+
+    //Variable for the loan section
+    const loanBox = document.querySelector('.operation--loan');
+    //checks for savings accounr
+
+    if (currentAccount.accountType === 'Savings') {
+      loanBox.style.display = 'none';
+    }
+    //takes away loans if savings
+    else if (currentAccount.accountType === 'Checking') {
+      loanBox.style.display = 'inline';
+    }
+
+    accNumSwitch.value = '';
+    accPinSwitch.value = '';
   });
 }
 
@@ -390,35 +333,11 @@ if (requestLoanbtn) {
     //prevents default action
     e.preventDefault();
 
+    loanPush();
+
+    loanAmount.value = '';
+
     //Declares the amount as the user entered amount.
-    const amount = Math.floor(loanAmount.value);
-
-    //Loops through the accounts
-    for (const account of currentProfile.accounts) {
-      //checks if the account type is a checking account
-      if (account.type === 'Checking') {
-        //sets current account to the checking account
-        currentAccount = account;
-        //checks to see if the amount is greater than 0 and greater than 10% of the last loan
-        if (
-          amount > 0 &&
-          currentAccount.transactions.some(mov => mov >= amount * 0.1)
-        ) {
-          //pushes loan to the transactions array
-          currentAccount.transactions.push(amount);
-
-          //Creates a new date for the new transaction
-          currentAccount.movementsDates.push(new Date().toISOString());
-
-          //Pushes new data to local storage
-          transactionsPush();
-          //updates UI with the new value
-          updateUI(currentAccount);
-        }
-        //clears the input text
-        loanAmount.value = '';
-      }
-    }
   });
 }
 
@@ -427,25 +346,15 @@ if (donateBtn) {
   donateBtn.addEventListener('click', function (e) {
     e.preventDefault();
     //How much a user donates
-    let donationAmount = Number(donateAmount.value);
-    //User Pin
-    const pin = parseInt(donatePin.value);
-    //Checks account and pushes donation
-    if (pin === currentProfile.pin) {
-      currentAccount.transactions.push(-donationAmount);
 
-      // Add loan date
-
-      currentAccount.movementsDates.push(new Date().toISOString());
-
-      //Updates local storage
-      transactionsPush();
-      //Update UI
-      updateUI(currentAccount);
-
-      donatePin.value = '';
-      donateAmount.value = '';
+    if (currentAccount.accountType === 'Checking') {
+      donationPush();
+    } else if (currentAccount.accountType === 'Savings') {
+      donationPushSavings();
     }
+
+    donatePin.value = '';
+    donateAmount.value = '';
   });
 }
 
@@ -453,18 +362,6 @@ if (donateBtn) {
 if (mainApp) {
   mainApp.style.opacity = 0;
 }
-
-//Creates Usernames using the first letters of the first and last name of the user
-// const createUsername = function (accs) {
-//   accs.forEach(function (acc) {
-//     acc.username = acc.memberName
-//       .toLowerCase()
-//       .split(' ')
-//       .map(name => name[0])
-//       .join('');
-//     transactionsPush();
-//   });
-// };
 
 const createUsername = function (prfs) {
   for (let i = 0; i < prfs.length; i++) {
@@ -475,8 +372,6 @@ const createUsername = function (prfs) {
       .map(name => name[0])
       .join('');
   }
-
-  transactionsPush();
 };
 createUsername(profiles);
 
@@ -494,63 +389,52 @@ const displayAccounts = function (currentAccount) {
   accountContainer.innerHTML = '';
 
   //Shows no accounts if there are no accounts int the current profile
-  if (currentProfile.accounts.length === 0) {
-    const html = `
-      <div class="row">
-        <p>No accounts found.</p>
-      </div>
-    `;
-    accountContainer.insertAdjacentHTML('afterend', html);
-    return;
-  }
 
   //Sort the accounts by type (checking first) and creation date
-  currentProfile.accounts.sort((a, b) => {
-    // First, sort by account type
-    if (a.accountType < b.accountType) return -1;
-    if (a.accountType > b.accountType) return 1;
 
-    // If account types are the same, sort by creation date
-    const aDates = a.movementsDates || [];
-    const bDates = b.movementsDates || [];
-    if (aDates.length === 0 && bDates.length === 0) return 0;
-    if (aDates.length === 0) return -1;
-    if (bDates.length === 0) return 1;
-    const aDate = new Date(aDates[0]);
-    const bDate = new Date(bDates[0]);
-    if (aDate < bDate) return -1;
-    if (aDate > bDate) return 1;
+  let balance = formatCur(
+    currentProfile.locale,
 
-    return 0;
-  });
+    currentProfile.currency
+  );
 
-  //Formats the date and display accounts
-  currentProfile.accounts.forEach(function (accnt) {
-    let totalMovements = accnt.transactions.reduce(
-      (sum, curr) => sum + curr,
-      0
-    );
+  let lastTransactionDate = new Date(
+    currentProfile.checkingAccount.movementsDates[
+      currentProfile.checkingAccount.movementsDates.length - 1
+    ]
+  ).toLocaleDateString(currentProfile.locale);
 
-    let balance = formatCur(
-      currentProfile.locale,
+  let lastTransactionDateSavings = new Date(
+    currentProfile.savingsAccount.movementsDates[
+      currentProfile.savingsAccount.movementsDates.length - 1
+    ]
+  ).toLocaleDateString(currentProfile.locale);
 
-      currentProfile.currency
-    );
-
-    let lastTransactionDate = new Date(
-      accnt.movementsDates[accnt.movementsDates.length - 1]
-    ).toLocaleDateString(currentProfile.locale);
-
-    const html = `
+  const html = [
+    `
+        <div class="row accountsRow">
+          <div class="col accountType">${
+            currentProfile.checkingAccount.accountType
+          }</div>
+          <div class="col accountNumber">${currentProfile.checkingAccount.accountNumber.slice(
+            -4
+          )}</div>
+          <div class="col updateDate">${lastTransactionDate}</div>
+        </div>
+      
       <div class="row accountsRow">
-        <div class="col accountType">${accnt.accountType}</div>
-        <div class="col accountNumber">${accnt.accountNumber.slice(-4)}</div>
-        <div class="col updateDate">${lastTransactionDate}</div>
+        <div class="col accountType">${
+          currentProfile.savingsAccount.accountType
+        }</div>
+        <div class="col accountNumber">${currentProfile.savingsAccount.accountNumber.slice(
+          -4
+        )}</div>
+        <div class="col updateDate">${lastTransactionDateSavings}</div>
       </div>
-    `;
+      `,
+  ];
 
-    accountContainer.insertAdjacentHTML('beforeEnd', html);
-  });
+  accountContainer.insertAdjacentHTML('beforeEnd', html);
 };
 
 //Display Transactions
@@ -558,7 +442,7 @@ export const displayTransactions = function (currentAccount) {
   let movs;
 
   //selects the transactions HTML element
-  const transactionContainer = document.querySelector('.transactions');
+  const transactionContainer = document.querySelector('.transactionsColumn');
   transactionContainer.innerHTML = '';
 
   //Variable set for the transactions themselves
@@ -568,7 +452,7 @@ export const displayTransactions = function (currentAccount) {
   //A loop that runs through each transaction in the current account object
   movs.forEach(function (mov, i) {
     //ternerary to determine whether a transaction is a deposit or withdrawal
-    const type = mov > 0 ? 'deposit' : 'withdrawal';
+
     let date;
 
     //Sets the date for each transaction according to the date set in the current Account object
@@ -580,100 +464,200 @@ export const displayTransactions = function (currentAccount) {
     const displayDate = formatMovementDate(date, currentAccount.locale);
     //Formats transactions for user locale
     const formattedMov = formatCur(
-      mov,
+      mov.amount,
       currentAccount.locale,
       currentAccount.currency
     );
+    let transType;
+    let transName = mov.Name;
+
+    let movIcon;
+
+    if (mov.Category === 'car-note') {
+      movIcon = `<i class="fa-solid fa-car transImg"></i>`;
+    }
+    if (mov.Category === 'rent') {
+      movIcon = `<i class="fa-solid fa-house transImg"></i>`;
+    }
+    if (mov.Category === 'car-insurance') {
+      movIcon = `<i class="fa-solid fa-car-burst transImg"></i>`;
+    }
+    if (mov.Category === 'home-insurance') {
+      movIcon = `<i class="fa-solid fa-house-crack transImg"></i>`;
+    }
+    if (mov.Category === 'food') {
+      movIcon = `<i class="fa-solid fa-utensils transImg"></i>`;
+    }
+    if (mov.Category === 'electric') {
+      movIcon = `<i class="fa-solid fa-bolt transImg"></i>`;
+    }
+
+    if (mov.Category === 'gas') {
+      movIcon = `<i class="fa-solid fa-fire-flame-simple transImg"></i>`;
+    }
+
+    if (mov.Category === 'water') {
+      movIcon = `<i class="fa-solid fa-droplet transImg"></i>`;
+    }
+
+    if (mov.Category === 'trash-collection') {
+      movIcon = `<i class="fa-solid fa-dumpster transImg"></i>`;
+    }
+
+    if (mov.Category === 'phone-bill') {
+      movIcon = `<i class="fa-solid fa-phone transImg"></i>`;
+    }
+
+    if (mov.Category === 'internet') {
+      movIcon = `<i class="fa-solid fa-wifi transImg"></i>`;
+    }
+
+    if (mov.Category === 'custom-expense') {
+      movIcon = `<i class="fa-solid fa-screwdriver-wrench transImg"></i>`;
+    }
+
+    if (mov.Category === 'paycheck') {
+      movIcon = `<i class="fa-solid fa-dollar-sign transImg dollarSignImg"></i>`;
+    }
     //HTML for transactions
-    const html = `
-      <div class="transactions__row">
-        <div class="transactions__type transactions__type--${type} col-4">
-        <div class="transactionsTypeText"> 
-        ${i + 1} ${type}</div>
-    </div>
-        <div class="transactions__date col-4">${displayDate}</div>
-        <div class="transactions__value col-4">${formattedMov}</div>
-      </div>
-    `;
+    if (mov.amount < 0) {
+      transType = 'negTrans';
+    } else if (mov.amount > 0) {
+      transType = 'posTrans';
+    }
+    const html = `<div class="transaction row">
+                    <div class="transIcon col-4">
+                      ${movIcon}
+                    </div>
+                    <div class="transNameAndDate col">
+                      <p class="transName">${transName} (${mov.Category})</p>
+                      <p class="transDate">${displayDate}</p>
+                    </div>
+                    <div class="transAmount col">
+                      <p class="transAmountText ${transType}">${formattedMov}</p>
+                    </div>
+                  </div>`;
     //Inserts HTML with required data
     transactionContainer.insertAdjacentHTML('afterbegin', html);
+    displayBillList(currentAccount);
   });
 };
 
-//Displays all of the bills a user has set up
-export const displayBills = function () {
-  console.log(currentAccount.accountType);
-  //Simulated time for bills to appear
-  let interval;
-  //How much the bill actually is
-  let amount;
-  const transactionContainer = document.querySelector('.transactions');
-  if (transactionContainer) {
-    transactionContainer.innerHTML = '';
-  }
+export const displayBillList = function (currentAccount) {
+  let bills;
 
-  //Runs through each bill object in the bills array
+  //selects the transactions HTML element
+  const billListContainer = document.querySelector('.bills');
+  billListContainer.innerHTML = '';
 
-  for (let i = 0; i < currentAccount.bills.length; i++) {
-    //Sets interval to the value set in the current bill object
-    interval = currentAccount.bills[i].frequency;
-    //Sets amount to the value set in the current bill object
-    amount = currentAccount.bills[i].amount;
+  //Variable set for the transactions themselves
 
-    //Displays the bills using the amount, every interval set above
+  bills = currentAccount.bills;
 
-    setInterval(function () {
-      //Pushes amount to the transactions array
-      console.log(currentAccount.bills[i]);
-      currentProfile.accounts[0].transactions.push(amount);
-      //creates a new date for the transaction above
-      currentProfile.accounts[0].movementsDates.push(new Date().toISOString());
+  //A loop that runs through each transaction in the current account object
+  bills.forEach(function (bill, i) {
+    //ternerary to determine whether a transaction is a deposit or withdrawal
 
-      //Updates Local Storage with new data
-      transactionsPush();
+    let currentDate;
+    let advancedDate;
 
-      //Displays new data on the webpage
-      updateUI(currentAccount);
-    }, interval);
-  }
-};
+    //Sets the date for each transaction according to the date set in the current Account object
 
-//Displays all of the payments a user has set up
-export const displayPayments = function () {
-  console.log(currentAccount.accountType);
-  //Simulated time for bills to appear
-  let interval;
-  //How much the bill actually is
-  let amount;
-  const transactionContainer = document.querySelector('.transactions');
-  if (transactionContainer) {
-    transactionContainer.innerHTML = '';
-  }
+    //Sets up the date variable for the transactions
+    currentDate = new Date();
 
-  //Runs through each bill object in the bills array
+    if (bill.interval === 'weekly') {
+      advancedDate = currentDate.setUTCDate(currentDate.getUTCDate() + 7);
+    }
 
-  for (let i = 0; i < currentAccount.payments.length; i++) {
-    //Sets interval to the value set in the current bill object
-    interval = currentAccount.payments[i].frequency;
-    //Sets amount to the value set in the current bill object
-    amount = currentAccount.payments[i].amount;
+    if (bill.interval === 'bi-weekly') {
+      advancedDate = currentDate.setUTCDate(currentDate.getUTCDate() + 14);
+    }
 
-    //Displays the bills using the amount, every interval set above
+    if (bill.interval === 'monthly') {
+      advancedDate = currentDate.setUTCDate(currentDate.getUTCDate() + 30);
+    }
 
-    setInterval(function () {
-      console.log(currentAccount.payments[i]);
-      //Pushes amount to the transactions array
-      currentProfile.accounts[0].transactions.push(amount);
-      //creates a new date for the transaction above
-      currentProfile.accounts[0].movementsDates.push(new Date().toISOString());
+    if (bill.interval === 'yearly') {
+      advancedDate = currentDate.setUTCDate(currentDate.getUTCDate() + 365);
+    }
 
-      //Updates Local Storage with new data
-      transactionsPush();
+    //displays date next to transactions
+    const displayDate = formatMovementDate(advancedDate, currentAccount.locale);
+    console.log(displayDate);
+    //Formats transactions for user locale
+    const formattedMov = formatCur(
+      bill.amount,
+      currentAccount.locale,
+      currentAccount.currency
+    );
+    let transType;
+    let transName = bill.Name;
 
-      //Displays new data on the webpage
-      updateUI(currentAccount);
-    }, interval);
-  }
+    let billIcon;
+
+    if (bill.Category === 'car-note') {
+      billIcon = `<i class="fa-solid fa-car "></i>`;
+    }
+    if (bill.Category === 'rent') {
+      billIcon = `<i class="fa-solid fa-house "></i>`;
+    }
+    if (bill.Category === 'car-insurance') {
+      billIcon = `<i class="fa-solid fa-car-burst "></i>`;
+    }
+    if (bill.Category === 'home-insurance') {
+      billIcon = `<i class="fa-solid fa-house-crack "></i>`;
+    }
+    if (bill.Category === 'food') {
+      billIcon = `<i class="fa-solid fa-utensils "></i>`;
+    }
+    if (bill.Category === 'electric') {
+      billIcon = `<i class="fa-solid fa-bolt "></i>`;
+    }
+
+    if (bill.Category === 'gas') {
+      billIcon = `<i class="fa-solid fa-fire-flame-simple "></i>`;
+    }
+
+    if (bill.Category === 'water') {
+      billIcon = `<i class="fa-solid fa-droplet "></i>`;
+    }
+
+    if (bill.Category === 'trash-collection') {
+      billIcon = `<i class="fa-solid fa-dumpster "></i>`;
+    }
+
+    if (bill.Category === 'phone-bill') {
+      billIcon = `<i class="fa-solid fa-phone "></i>`;
+    }
+
+    if (bill.Category === 'internet') {
+      billIcon = `<i class="fa-solid fa-wifi wifiIcon "></i>`;
+    }
+
+    if (bill.Category === 'custom-expense') {
+      billIcon = `<i class="fa-solid fa-screwdriver-wrench billListCustom "></i>`;
+    }
+
+    if (bill.Category === 'paycheck') {
+      billIcon = `<i class="fa-solid fa-dollar-sign  "></i>`;
+    }
+    //HTML for transactions
+
+    const html = `<div class="billsRow row">
+    <div class="icon col-4">
+      ${billIcon}
+    </div>
+    <div class="billName col">
+      <p class="billText">${bill.Name}($${bill.amount})</p>
+    </div>
+    <div class="col billDate">
+      <p>Reoccurs: ${displayDate}</p>
+    </div>
+  </div>`;
+    //Inserts HTML with required data
+    billListContainer.insertAdjacentHTML('afterbegin', html);
+  });
 };
 
 //formats the transactions dates to the users locale
@@ -695,13 +679,13 @@ function formatCur(value, currency, locale) {
 //Displays the current balance based on the transactions array
 export const displayBalance = function (acc) {
   //calculates the balance based on the transaction array
-  acc.balance = acc.transactions.reduce((acc, mov) => acc + mov, 0);
-  acc.balanceTotal = acc.balance;
-  transactionsPush();
-  console.log(acc.balanceTotal);
 
   //displays balance
-  balanceValue.textContent = formatCur(acc.balance, acc.locale, acc.currency);
+  balanceValue.textContent = formatCur(
+    acc.balanceTotal,
+    acc.locale,
+    acc.currency
+  );
 };
 
 //Updates the webpage UI with all of the needed data
@@ -710,6 +694,6 @@ export const updateUI = function (acc) {
   displayTransactions(acc);
   //Displays the balance with correct data
   displayBalance(acc);
-  //Displays the users accounts
-  displayAccounts(acc);
+  //Displays the users bill list
+  displayBillList(acc);
 };
